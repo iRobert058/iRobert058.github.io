@@ -1,0 +1,98 @@
+[
+  {
+    "id": "thesis",
+    "tag": { "nl": "Bachelorthesis · 2026", "en": "Bachelor's thesis · 2026" },
+    "title": {
+      "nl": "Deceptive patterns & gewoontegedrag in webshops",
+      "en": "Deceptive patterns & habitual behaviour in web shops"
+    },
+    "intro": {
+      "nl": "Mijn bachelorthesis onderzoekt hoe webshops procedureel geheugen (de \"automatische piloot\" van gebruikers) kunnen verstoren en uitbuiten door interface-elementen te verplaatsen.",
+      "en": "My bachelor's thesis investigates how web shops can disrupt and exploit procedural memory (users' \"autopilot\") by relocating interface elements."
+    },
+    "image": "assets/img/project-thesis.svg",
+    "imageAlt": { "nl": "Screenshot van de experimentomgeving", "en": "Screenshot of the experiment environment" },
+    "problem": {
+      "nl": "Deceptive patterns worden vooral bestudeerd als visueel ontwerp, maar veel manipulatie werkt via gewoontes: je klikt waar je gisteren ook klikte. Over dat cognitieve mechanisme bestaat nog weinig empirisch onderzoek.",
+      "en": "Deceptive patterns are mostly studied as visual design, but much of the manipulation works through habit: you click where you've clicked yesterday. Little empirical research exists on that cognitive mechanism."
+    },
+    "role": {
+      "nl": "Zelfstandig uitgevoerd onderzoek: literatuurstudie, experimenteel ontwerp (within-subjects), bouw van de studieomgeving, dataverzameling en statistische analyse.",
+      "en": "Independently conducted research: literature review, experimental design (within-subjects), building the study environment, data collection and statistical analysis."
+    },
+    "result": {
+      "nl": "Experiment uitgevoerd met 40 deelnemers, als afsluitend onderzoek van mijn bachelor Information Sciences.",
+      "en": "Experiment conducted with 40 participants, as the capstone research of my Information Sciences bachelor's."
+    },
+    "tech": ["ShopLab", "Qualtrics", { "nl": "Experimenteel design", "en": "Experimental design" }, { "nl": "Statistische analyse", "en": "Statistical analysis" }, "LaTeX"],
+    "cta": {
+      "label": { "nl": "Vraag me naar de resultaten →", "en": "Ask me about the results →" },
+      "url": "#contact"
+    }
+  },
+  {
+    "id": "wkz",
+    "tag": {
+      "nl": "Universiteit Utrecht × Wilhelmina Kinderziekenhuis · 2023-2024",
+      "en": "Utrecht University × Wilhelmina Children's Hospital · 2023-2024"
+    },
+    "title": {
+      "nl": "Slim alarmsysteem voor het WKZ",
+      "en": "Smart alarm system for the WKZ"
+    },
+    "intro": {
+      "nl": "In opdracht van het Wilhelmina Kinderziekenhuis ontwierp ons projectteam een slim alarmsysteem, afgestemd op de eisen van de zorgpraktijk.",
+      "en": "Commissioned by the Wilhelmina Children's Hospital, our project team designed a smart alarm system tailored to the demands of clinical practice."
+    },
+    "image": "assets/img/project-wkz.png",
+    "imageAlt": { "nl": "Conceptmockup van het alarmsysteem", "en": "Concept mockup of the alarm system" },
+    "problem": {
+      "nl": "In een ziekenhuisomgeving strijden veel signalen om aandacht. Het systeem moest relevant alarmeren zonder zorgverleners te overladen, binnen de eisen die het WKZ stelde.",
+      "en": "In a hospital environment many signals compete for attention. The system had to alert meaningfully without overwhelming care staff, within the requirements set by the WKZ."
+    },
+    "role": {
+      "nl": "Interactieontwerp binnen het projectteam: eisen van de opdrachtgever vertalen naar concepten, prototypes uitwerken en toetsen aan de praktijk.",
+      "en": "Interaction design within the project team: translating client requirements into concepts, developing prototypes and testing them against practice."
+    },
+    "result": {
+      "nl": "Een ontwerp dat aansloot op de gestelde eisen en positief werd ontvangen door de opdrachtgever.",
+      "en": "A design that met the stated requirements and was well received by the client."
+    },
+    "tech": ["Interaction design", { "nl": "Requirements-analyse", "en": "Requirements analysis" }, "Prototyping", { "nl": "Stakeholdergesprekken", "en": "Stakeholder interviews" }],
+    "cta": {
+      "label": { "nl": "Meer weten over dit project →", "en": "Ask me about this project →" },
+      "url": "#contact"
+    }
+  },
+  {
+    "id": "execut",
+    "tag": { "nl": "Studenten-techconferentie · 2025–2026", "en": "Student tech conference · 2025–2026" },
+    "title": {
+      "nl": "exec(ut) 2026 - sprekers & programma",
+      "en": "exec(ut) 2026 - speakers & programme"
+    },
+    "intro": {
+      "nl": "Voor exec(ut), de studenten-ICT-conferentie in Utrecht, was ik binnen de commissie verantwoordelijk voor het werven en begeleiden van sprekers.",
+      "en": "For exec(ut), the student IT conference in Utrecht, I was responsible within the committee for recruiting and supporting speakers."
+    },
+    "image": "assets/img/project-execut.jpg",
+    "imageAlt": { "nl": "exec(ut) 2026 - sprekers & programma", "en": "exec(ut) 2026 - speakers & programme" },
+    "problem": {
+      "nl": "Een conferentie staat of valt met het programma: interessante sprekers vinden, overtuigen en begeleiden en ook nog binnen de tijd en het budget van een studentencommissie.",
+      "en": "A conference stands or falls with its programme: finding, convincing and supporting interesting speakers and also within the time and budget of a student committee."
+    },
+    "role": {
+      "nl": "Sprekers scouten en benaderen, relaties onderhouden, afspraken coördineren en bijdragen aan de planning en uitvoering van het event.",
+      "en": "Scouting and approaching speakers, maintaining relationships, coordinating arrangements and contributing to the planning and execution of the event."
+    },
+    "result": {
+      "nl": "Een gevuld sprekersprogramma voor de editie van 2026 - van eerste mail tot spreker op het podium.",
+      "en": "A fully booked speaker programme for the 2026 edition - from first email to speaker on stage."
+    },
+    "tech": [{ "nl": "Acquisitie", "en": "Acquisition" }, { "nl": "Relatiebeheer", "en": "Relationship management" }, { "nl": "Planning", "en": "Planning" }, "Events"],
+    "cta": {
+      "label": { "nl": "Bekijk exec(ut) →", "en": "Visit exec(ut) →" },
+      "url": "https://execut.nl"
+    }
+  }
+]

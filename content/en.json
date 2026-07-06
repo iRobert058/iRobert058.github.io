@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "about": "About",
+    "projects": "Projects",
+    "experience": "Experience",
+    "skills": "Skills",
+    "contact": "Contact"
+  },
+  "hero": {
+    "eyebrow": "Human-Computer Interaction · UX Research",
+    "title": "I design interfaces<br>that do what you <em>expect</em>.",
+    "sub": "Master's student in Human-Computer Interaction, holding a bachelor's degree in Information Sciences from Utrecht University. My research focuses on deceptive patterns and habitual behaviour in digital environments; alongside my studies I work as Senior Sales Associate and Daily Operations Lead at Amac.",
+    "cta_projects": "View my projects",
+    "cta_cv": "Download CV (PDF)",
+    "honest": "This site uses no cookies, no trackers and no deceptive patterns, the latter happens to be my field of research ;).",
+    "honest_btn": "Got it"
+  },
+  "highlights": {
+    "eyebrow": "Highlights",
+    "title": "At a glance",
+    "lead": "Four moments that best summarise my profile."
+  },
+  "about": {
+    "eyebrow": "About me",
+    "title": "Where people and technology meet",
+    "paragraphs": [
+      "I'm Robert Karzijn. My interest lies at the intersection of people and technology: how people use interfaces, which habits form along the way, and how design (deliberately or not) plays into that. In my bachelor's thesis I experimentally investigated how web shops can disrupt procedural memory by relocating interface elements.",
+      "Alongside my studies I work at Amac in Apeldoorn, where I progressed from Junior Sales Associate to Daily Operations Lead in two years and worked across several branches to share knowledge and experience. That combination keeps me sharp: theory on user behaviour in the lecture hall, and real users in front of me on the shop floor every day.",
+      "I'm currently pursuing a master's in Human-Computer Interaction, focusing on cognitive UX and ethical interface design. Outside study and work: photography, audio and the occasional evening of gaming."
+    ]
+  },
+  "projects": {
+    "eyebrow": "Featured projects",
+    "title": "From research to the stage",
+    "lead": "Three projects that show how I work: empirical research, designing with real stakeholders, and organising against a deadline.",
+    "label_problem": "Problem",
+    "label_role": "My role",
+    "label_result": "Outcome"
+  },
+  "experience": {
+    "eyebrow": "Experience & education",
+    "title": "My route so far",
+    "lead": "Study and work deliberately run in parallel for me: research and theory at university, responsibility in practice.",
+    "present": "present",
+    "kinds": {
+      "work": "Work",
+      "education": "Education",
+      "extracurricular": "Extracurricular"
+    }
+  },
+  "skills": {
+    "eyebrow": "Skills",
+    "title": "What I'm good at",
+    "tools": "Methods & tools",
+    "languages": "Languages"
+  },
+  "certificates": {
+    "eyebrow": "Certificates",
+    "title": "Certificates & recognition"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Get in touch",
+    "lead": "Interested in working together, an internship or a project? Send a message through the form; I usually reply within a few days.",
+    "name": "Name",
+    "email": "Email address",
+    "message": "Message",
+    "send": "Send message",
+    "status_sending": "Sending…",
+    "status_ok": "Thanks for your message. I'll get back to you as soon as possible.",
+    "status_err": "Sending failed. Please try again later or reach out via LinkedIn.",
+    "status_invalid": "Please fill in all fields with a valid email address.",
+    "status_unconfigured": "The form has not been connected to a processing service yet. See the README for configuration.",
+    "footer_location": "The Netherlands"
+  },
+  "footer": {
+    "location": "The Netherlands",
+    "note": "Built without frameworks, cookies or deceptive patterns."
+  }
+}
