@@ -1,0 +1,162 @@
+[
+  {
+    "period": {
+      "from": "2026",
+      "to": "present"
+    },
+    "kind": "education",
+    "title": {
+      "nl": "MSc Human-Computer Interaction",
+      "en": "MSc Human-Computer Interaction"
+    },
+    "org": "Universiteit Utrecht",
+    "description": {
+      "nl": "Master met focus op cognitieve UX, gebruikersonderzoek en ethisch interface-ontwerp.",
+      "en": "Master's programme focusing on cognitive UX, user research and ethical interface design."
+    }
+  },
+  {
+    "period": {
+      "from": "2026",
+      "to": "present"
+    },
+    "kind": "work",
+    "title": {
+      "nl": "Senior Sales Associate · Daily Operations Lead",
+      "en": "Senior Sales Associate · Daily Operations Lead"
+    },
+    "org": "Amac Apple Premium Reseller, Apeldoorn",
+    "description": {
+      "nl": "Eindverantwoordelijk voor de dagelijkse operatie: aanspreekpunt voor het team, adviseren van klanten en zorgen voor een soepel draaiende winkel. Daarnaast ingezet in verschillende filialen om kennis en ervaring te delen.",
+      "en": "Responsible for daily operations: point of contact for the team, advising customers and keeping the store running smoothly. Also deployed across several branches to share knowledge and experience."
+    }
+  },
+  {
+    "period": {
+      "from": "2025",
+      "to": "2026"
+    },
+    "kind": "extracurricular",
+    "title": {
+      "nl": "Commissielid exec(ut) conferentie",
+      "en": "Committee member, exec(ut) conference"
+    },
+    "org": "Utrecht",
+    "description": {
+      "nl": "Verantwoordelijk voor sprekerswerving en -relaties voor de studenten-techconferentie.",
+      "en": "Responsible for speaker recruitment and relations for the student tech conference."
+    }
+  },
+  {
+    "period": {
+      "from": "2025",
+      "to": "2026"
+    },
+    "kind": "work",
+    "title": {
+      "nl": "Medior Sales Associate",
+      "en": "Medior Sales Associate"
+    },
+    "org": "Amac Apple Premium Reseller, Apeldoorn",
+    "description": {
+      "nl": "Groeiende verantwoordelijkheid binnen het team: complexere klantvragen, ondersteuning van collega's en een grotere rol in de dagelijkse gang van zaken.",
+      "en": "Growing responsibility within the team: more complex customer cases, supporting colleagues and a larger role in day-to-day operations."
+    }
+  },
+  {
+    "period": {
+      "from": "2023",
+      "to": "2026"
+    },
+    "kind": "education",
+    "title": {
+      "nl": "BSc Information Sciences",
+      "en": "BSc Information Sciences"
+    },
+    "org": "Universiteit Utrecht",
+    "description": {
+      "nl": "Track Human-Technology Interaction. Afgestudeerd op experimenteel onderzoek naar deceptive patterns en gewoontegedrag in e-commerce.",
+      "en": "Human-Technology Interaction track. Graduated with experimental research on deceptive patterns and habitual behaviour in e-commerce."
+    }
+  },
+  {
+    "period": {
+      "from": "2025",
+      "to": "2025"
+    },
+    "kind": "work",
+    "title": {
+      "nl": "Student-assistent",
+      "en": "Teaching assistant"
+    },
+    "org": "Universiteit Utrecht",
+    "description": {
+      "nl": "Begeleiding van studenten bij de vakken Design of Interactive Systems en Process Modelling: tutorials geven en helpen bij opdrachten.",
+      "en": "Supporting students in the courses Design of Interactive Systems and Process Modelling: running tutorials and helping with assignments."
+    }
+  },
+  {
+    "period": {
+      "from": "2024",
+      "to": "2025"
+    },
+    "kind": "extracurricular",
+    "title": {
+      "nl": "Open Days-vertegenwoordiger BSc",
+      "en": "BSc Open Days representative"
+    },
+    "org": "Universiteit Utrecht",
+    "description": {
+      "nl": "Voorlichting en advies aan aankomende studenten over de bachelor Information Science.",
+      "en": "Informing and advising prospective students about the Information Science bachelor's programme."
+    }
+  },
+  {
+    "period": {
+      "from": "2024",
+      "to": "2025"
+    },
+    "kind": "work",
+    "title": {
+      "nl": "Junior Sales Associate",
+      "en": "Junior Sales Associate"
+    },
+    "org": "Amac Apple Premium Reseller, Apeldoorn",
+    "description": {
+      "nl": "Start bij Amac: klanten adviseren over Apple-producten en -diensten en de basis leggen voor mijn doorgroei binnen het bedrijf.",
+      "en": "Started at Amac: advising customers on Apple products and services, laying the foundation for my growth within the company."
+    }
+  },
+  {
+    "period": {
+      "from": "2019",
+      "to": "2024"
+    },
+    "kind": "work",
+    "title": {
+      "nl": "Vakkenvuller",
+      "en": "Shelf replenisher"
+    },
+    "org": "Albert Heijn, Epe",
+    "description": {
+      "nl": "Flexibel inzetbaar op verschillende afdelingen; leerde er werken in teamverband en verantwoordelijkheid nemen.",
+      "en": "Worked flexibly across departments; learned to work in a team and take responsibility."
+    }
+  },
+  {
+    "period": {
+      "from": "2017",
+      "to": "2023"
+    },
+    "kind": "education",
+    "title": {
+      "nl": "Atheneum, profiel Natuur & Techniek",
+      "en": "Pre-university education (Atheneum), Nature & Technology track"
+    },
+    "org": "Christelijk College de Noordgouw, Heerde",
+    "description": {
+      "nl": "Vwo-diploma als basis voor mijn universitaire studie.",
+      "en": "Pre-university diploma as the foundation for my studies."
+    }
+  }
+]

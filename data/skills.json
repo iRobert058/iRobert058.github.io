@@ -1,0 +1,24 @@
+{
+  "bars": [
+    { "label": { "nl": "Communicatie", "en": "Communication" }, "level": 92 },
+    { "label": { "nl": "IT-vaardigheden", "en": "IT skills" }, "level": 90 },
+    { "label": { "nl": "Leiderschap", "en": "Leadership" }, "level": 88 },
+    { "label": { "nl": "Teamwork", "en": "Teamwork" }, "level": 88 },
+    { "label": { "nl": "Probleemoplossend vermogen", "en": "Problem solving" }, "level": 85 }
+  ],
+  "tools": [
+    "UX-research",
+    { "nl": "Experimenteel design", "en": "Experimental design" },
+    "Qualtrics",
+    "HTML / CSS / JS",
+    "LaTeX / Overleaf",
+    "Git / GitHub",
+    "Prototyping",
+    { "nl": "Statistische analyse", "en": "Statistical analysis" }
+  ],
+  "languages": [
+    { "name": { "nl": "Nederlands", "en": "Dutch" }, "level": { "nl": "Moedertaal", "en": "Native" } },
+    { "name": { "nl": "Engels", "en": "English" }, "level": { "nl": "Volledige professionele vaardigheid", "en": "Full professional proficiency" } },
+    { "name": { "nl": "Duits", "en": "German" }, "level": { "nl": "Beperkte werkvaardigheid", "en": "Limited working proficiency" } }
+  ]
+}

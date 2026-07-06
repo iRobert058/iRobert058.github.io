@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="nl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robert Karzijn - Human-Computer Interaction & UX-onderzoek</title>
+<meta name="description" content="Portfolio van Robert Karzijn: masterstudent Human-Computer Interaction met een bachelor Information Sciences (Universiteit Utrecht). Onderzoek naar deceptive patterns, interactieontwerp en operationeel leiderschap.">
+<meta property="og:title" content="Robert Karzijn — Portfolio">
+<meta property="og:description" content="Ik ontwerp interfaces die doen wat je verwacht. Human-Computer Interaction, UX-onderzoek en interactieontwerp.">
+<meta property="og:type" content="website">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="%23E23C46"/><text x="32" y="44" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="white" text-anchor="middle">RK</text></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="#top"><span class="dot"></span><span data-site="name">Robert Karzijn</span></a>
+    <div class="nav-links">
+      <a href="#over" data-t="nav.about"></a>
+      <a href="#projecten" data-t="nav.projects"></a>
+      <a href="#ervaring" data-t="nav.experience"></a>
+      <a href="#vaardigheden" data-t="nav.skills"></a>
+      <a href="#contact" data-t="nav.contact"></a>
+    </div>
+    <div class="nav-ctrl">
+      <button class="pill" id="langBtn" aria-label="Switch language">EN</button>
+      <button class="pill" id="themeBtn" aria-label="Toggle dark mode">☾</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow" data-t="hero.eyebrow"></span>
+    <h1 data-t-html="hero.title"></h1>
+    <p class="sub" data-t="hero.sub"></p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#projecten" data-t="hero.cta_projects"></a>
+      <a class="btn btn-ghost" id="cvBtn" download data-t="hero.cta_cv"></a>
+    </div>
+    <div class="honest" id="honest">
+      <p data-t="hero.honest"></p>
+      <button id="honestBtn" data-t="hero.honest_btn"></button>
+    </div>
+  </div>
+</header>
+
+<section id="hoogtepunten">
+  <div class="wrap">
+    <span class="eyebrow" data-t="highlights.eyebrow"></span>
+    <h2 data-t="highlights.title"></h2>
+    <p class="lead" data-t="highlights.lead"></p>
+    <div class="highlights-grid" id="highlightsGrid"></div>
+  </div>
+</section>
+
+<section id="over">
+  <div class="wrap">
+    <span class="eyebrow" data-t="about.eyebrow"></span>
+    <h2 data-t="about.title"></h2>
+    <div class="about-grid">
+      <div class="about-text reveal" id="aboutText"></div>
+      <div class="portrait reveal"><img id="portraitImg" alt="Portretfoto van Robert Karzijn"></div>
+    </div>
+  </div>
+</section>
+
+<section id="projecten">
+  <div class="wrap">
+    <span class="eyebrow" data-t="projects.eyebrow"></span>
+    <h2 data-t="projects.title"></h2>
+    <p class="lead" data-t="projects.lead"></p>
+    <div id="projectsList"></div>
+  </div>
+</section>
+
+<section id="ervaring">
+  <div class="wrap">
+    <span class="eyebrow" data-t="experience.eyebrow"></span>
+    <h2 data-t="experience.title"></h2>
+    <p class="lead" data-t="experience.lead"></p>
+    <div class="timeline" id="timelineList"></div>
+  </div>
+</section>
+
+<section id="vaardigheden">
+  <div class="wrap">
+    <span class="eyebrow" data-t="skills.eyebrow"></span>
+    <h2 data-t="skills.title"></h2>
+    <div class="skills-grid">
+      <div id="skillBars"></div>
+      <div class="skills-side">
+        <h4 data-t="skills.tools"></h4>
+        <div class="chips" id="toolChips"></div>
+        <h4 data-t="skills.languages"></h4>
+        <div id="languageList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="certificaten" class="hidden">
+  <div class="wrap">
+    <span class="eyebrow" data-t="certificates.eyebrow"></span>
+    <h2 data-t="certificates.title"></h2>
+    <div id="certList"></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-card reveal">
+      <div class="contact-inner">
+        <span class="eyebrow" data-t="contact.eyebrow"></span>
+        <h2 data-t="contact.title"></h2>
+        <p class="lead" data-t="contact.lead"></p>
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="field">
+            <label for="cf-name" data-t="contact.name"></label>
+            <input id="cf-name" name="name" type="text" required autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="cf-email" data-t="contact.email"></label>
+            <input id="cf-email" name="email" type="email" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="cf-message" data-t="contact.message"></label>
+            <textarea id="cf-message" name="message" required></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit" data-t="contact.send"></button>
+          <p class="form-status" id="formStatus" role="status"></p>
+        </form>
+        <div class="contact-socials" id="socialLinks"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© <span id="year"></span> <span data-site="name">Robert Karzijn</span> · <span data-t="footer.location"></span></div>
+    <div class="foot-note" data-t="footer.note"></div>
+  </div>
+</footer>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>

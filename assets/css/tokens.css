@@ -1,0 +1,47 @@
+/* =============================================================
+   DESIGN TOKENS — pas hier de volledige huisstijl aan.
+   Kleuren, lettertypen, radius en spacing staan alleen hier.
+   ============================================================= */
+
+:root {
+  /* Kleuren — licht thema */
+  --bg: #FCFCFB;
+  --surface: #FFFFFF;
+  --ink: #17181C;
+  --muted: #5A5E66;
+  --line: #E8E7E3;
+  --accent: #E23C46;
+  --accent-contrast: #FFFFFF;
+  --accent-soft: #FCEDEE;
+
+  /* Effecten */
+  --shadow: 0 2px 8px rgba(23, 24, 28, .05), 0 12px 32px rgba(23, 24, 28, .06);
+
+  /* Vorm & maat */
+  --radius: 16px;
+  --radius-sm: 10px;
+  --maxw: 1080px;
+  --section-gap: 104px;
+
+  /* Typografie */
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "Hanken Grotesk", system-ui, sans-serif;
+  --font-mono: "Spline Sans Mono", ui-monospace, monospace;
+  --fs-body: 17px;
+  --lh-body: 1.65;
+
+  /* Beweging */
+  --ease: cubic-bezier(.6, 0, .2, 1);
+  --reveal-duration: .7s;
+}
+
+[data-theme="dark"] {
+  --bg: #121316;
+  --surface: #1A1C20;
+  --ink: #ECECEA;
+  --muted: #9CA0A8;
+  --line: #2A2D33;
+  --accent: #FF5C63;
+  --accent-soft: #2A1D1F;
+  --shadow: 0 2px 8px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .35);
+}

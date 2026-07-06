@@ -1,0 +1,38 @@
+[
+  {
+    "year": "2026",
+    "title": { "nl": "Bachelorthesis", "en": "Bachelor's thesis" },
+    "text": {
+      "nl": "Experimenteel onderzoek naar deceptive patterns en gewoontegedrag in webshops (N = 40).",
+      "en": "Experimental research on deceptive patterns and habitual behaviour in web shops (N = 40)."
+    },
+    "link": "#projecten"
+  },
+  {
+    "year": "2026",
+    "title": { "nl": "BSc Information Sciences", "en": "BSc Information Sciences" },
+    "text": {
+      "nl": "Bachelordiploma behaald aan de Universiteit Utrecht, hoofdtrack: Mens-technologie interactie. 2de track: Informatiesystemen. ",
+      "en": "Bachelor's degree obtained at Utrecht University, Main track: Human-Technology Interaction. Second track: Information Systems."
+    },
+    "link": "#ervaring"
+  },
+  {
+    "year": "2024 - 2026",
+    "title": { "nl": "Doorgroei bij Amac", "en": "Growth at Amac" },
+    "text": {
+      "nl": "In twee jaar van Junior Sales Associate naar Senior Sales Associate met dagverantwoording.",
+      "en": "From Junior Sales Associate to Senior Sales Associate and Daily Operations Lead in two years."
+    },
+    "link": "#ervaring"
+  },
+  {
+    "year": "2026",
+    "title": { "nl": "exec(ut) 2026", "en": "exec(ut) 2026" },
+    "text": {
+      "nl": "Verantwoordelijk voor het sprekersprogramma van de studenten-techconferentie in Utrecht.",
+      "en": "Responsible for the speaker programme of the student tech conference in Utrecht."
+    },
+    "link": "https://execut.nl"
+  }
+]

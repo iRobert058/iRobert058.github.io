@@ -1,0 +1,79 @@
+{
+  "nav": {
+    "about": "Over mij",
+    "projects": "Projecten",
+    "experience": "Ervaring",
+    "skills": "Vaardigheden",
+    "contact": "Contact"
+  },
+  "hero": {
+    "eyebrow": "Human-Computer Interaction · UX-onderzoek",
+    "title": "Ik ontwerp interfaces<br>die doen wat je <em>verwacht</em>.",
+    "sub": "Masterstudent Human-Computer Interaction, met een bachelor Information Sciences van de Universiteit Utrecht. Mijn onderzoek richt zich op deceptive patterns en gewoontegedrag in digitale omgevingen; daarnaast werk ik als Senior Sales Associate met dagverantwoordelijkheid bij Amac.",
+    "cta_projects": "Bekijk mijn projecten",
+    "cta_cv": "Download CV (PDF)",
+    "honest": "Deze site gebruikt geen cookies, geen trackers en geen deceptive patterns en dat laatste is toevallig mijn onderzoeksgebied ;).",
+    "honest_btn": "Duidelijk"
+  },
+  "highlights": {
+    "eyebrow": "Hoogtepunten",
+    "title": "In het kort",
+    "lead": "Vier momenten die mijn profiel het best samenvatten."
+  },
+  "about": {
+    "eyebrow": "Over mij",
+    "title": "Waar mens en technologie elkaar raken",
+    "paragraphs": [
+      "Ik ben Robert Karzijn. Mijn interesse ligt op het snijvlak van mens en technologie: hoe mensen interfaces gebruiken, welke gewoontes daarbij ontstaan en hoe ontwerp daar (zowel bewust of onbewust) op inspeelt. In mijn bachelorthesis onderzocht ik experimenteel hoe webshops procedureel geheugen kunnen verstoren door interface elementen te verplaatsen.",
+      "Naast mijn studie werk ik bij Amac in Apeldoorn, waar ik in twee jaar doorgroeide van Junior Sales Associate naar Daily Operations Lead en in verschillende filialen meedraaide om kennis en ervaring te delen. Die combinatie houdt me scherp: theorie over gebruikersgedrag in de collegezaal, en elke dag echte gebruikers tegenover me op de winkelvloer.",
+      "Momenteel volg ik de master Human-Computer Interaction, met focus op cognitieve UX en ethisch interface-ontwerp. Buiten studie en werk: fotografie, audio en af en toe een avond gamen."
+    ]
+  },
+  "projects": {
+    "eyebrow": "Uitgelichte projecten",
+    "title": "Van onderzoek tot podium",
+    "lead": "Drie projecten die laten zien hoe ik werk: empirisch onderzoek, ontwerpen met echte stakeholders en organiseren met een deadline.",
+    "label_problem": "Probleem",
+    "label_role": "Mijn rol",
+    "label_result": "Resultaat"
+  },
+  "experience": {
+    "eyebrow": "Ervaring & opleiding",
+    "title": "Mijn route tot nu toe",
+    "lead": "Studie en werk lopen bij mij bewust parallel: onderzoek en theorie aan de universiteit, verantwoordelijkheid in de praktijk.",
+    "present": "heden",
+    "kinds": {
+      "work": "Werk",
+      "education": "Opleiding",
+      "extracurricular": "Nevenactiviteit"
+    }
+  },
+  "skills": {
+    "eyebrow": "Vaardigheden",
+    "title": "Waar ik goed in ben",
+    "tools": "Methoden & tools",
+    "languages": "Talen"
+  },
+  "certificates": {
+    "eyebrow": "Certificaten",
+    "title": "Certificaten & erkenningen"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Neem contact op",
+    "lead": "Interesse in een samenwerking, stage of project? Stuur een bericht via het formulier; ik reageer doorgaans binnen een paar dagen.",
+    "name": "Naam",
+    "email": "E-mailadres",
+    "message": "Bericht",
+    "send": "Verstuur bericht",
+    "status_sending": "Versturen…",
+    "status_ok": "Bedankt voor je bericht. Ik neem zo snel mogelijk contact met je op.",
+    "status_err": "Versturen is niet gelukt. Probeer het later opnieuw of stuur een bericht via LinkedIn.",
+    "status_invalid": "Vul alle velden in met een geldig e-mailadres.",
+    "status_unconfigured": "Het formulier is nog niet gekoppeld aan een verwerkingsdienst. Zie de README voor de configuratie."
+  },
+  "footer": {
+    "location": "Nederland",
+    "note": "Gebouwd zonder frameworks, cookies of deceptive patterns."
+  }
+}
