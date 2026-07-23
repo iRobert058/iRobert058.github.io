@@ -21,8 +21,8 @@
       "en": "Independently conducted research: literature review, experimental design (within-subjects), building the study environment, data collection and statistical analysis."
     },
     "result": {
-      "nl": "Experiment uitgevoerd met 40 deelnemers, als afsluitend onderzoek van mijn bachelor Information Sciences.",
-      "en": "Experiment conducted with 40 participants, as the capstone research of my Information Sciences bachelor's."
+      "nl": "Afsluitend onderzoek van mijn bachelor Information Sciences: experiment met 40 deelnemers, beoordeeld met een 8,5.",
+      "en": "Capstone research for my Information Sciences bachelor's: an experiment with 40 participants, graded 8.5 out of 10."
     },
     "tech": ["ShopLab", "Qualtrics", { "nl": "Experimenteel design", "en": "Experimental design" }, { "nl": "Statistische analyse", "en": "Statistical analysis" }, "LaTeX"],
     "cta": {
