@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="nl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacyverklaring — Robert Karzijn</title>
+<meta name="description" content="Privacyverklaring van robertkarzijn.nl: welke gegevens er via het contactformulier verwerkt worden en waarom.">
+<link rel="canonical" href="https://robertkarzijn.nl/privacy.html">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/main.css">
+<style>
+  .pv-topbar { display: flex; justify-content: flex-end; padding: 24px 24px 0; max-width: 680px; margin: 0 auto; }
+  .pv-wrap { max-width: 680px; margin: 0 auto; padding: 24px 24px 120px; }
+  .pv-back { font-family: var(--font-mono); font-size: 13px; color: var(--accent); text-decoration: none; }
+  .pv-wrap h1 { font-family: var(--font-display); font-size: clamp(28px, 5vw, 40px); margin: 20px 0 8px; }
+  .pv-updated { color: var(--muted); font-size: 14px; margin-bottom: 40px; }
+  .pv-wrap h2 { font-family: var(--font-display); font-size: 20px; margin: 36px 0 12px; }
+  .pv-wrap p, .pv-wrap li { color: var(--ink); margin-bottom: 12px; }
+  .pv-wrap ul { padding-left: 20px; }
+  .pv-wrap a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="pv-topbar">
+  <button class="pill" id="langBtn" aria-label="Switch language">EN</button>
+</div>
+
+<div class="pv-wrap">
+  <a class="pv-back" href="index.html" data-t="back">← Terug naar home</a>
+  <h1 data-t="title">Privacyverklaring</h1>
+  <p class="pv-updated" data-t="updated">Laatst bijgewerkt: 1 september 2026</p>
+
+  <p data-t="intro">Deze website (robertkarzijn.nl) is mijn persoonlijke portfolio. Ik gebruik geen cookies, geen trackers en geen analytics. De enige plek waar persoonsgegevens verwerkt worden, is het contactformulier.</p>
+
+  <h2 data-t="h_data">Welke gegevens verwerk ik</h2>
+  <p data-t-html="p_data">Als je het contactformulier invult, worden je naam, e-mailadres en bericht verzonden naar <a href="https://formspree.io" target="_blank" rel="noopener">Formspree</a>, de dienst die deze berichten voor mij verwerkt en doorstuurt naar mijn e-mail. Ik gebruik deze gegevens uitsluitend om te reageren op je bericht.</p>
+
+  <h2 data-t="h_retention">Bewaartermijn</h2>
+  <p data-t="p_retention">Ik bewaar berichten niet langer dan nodig is om je vraag te beantwoorden en verwijder e-mailcorrespondentie zodra die niet meer relevant is.</p>
+
+  <h2 data-t="h_share">Delen met derden</h2>
+  <p data-t-html="p_share">Ik deel je gegevens niet met derden, behalve met Formspree als noodzakelijke verwerker van het contactformulier. Zie het <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">privacybeleid van Formspree</a> voor meer informatie over hoe zij gegevens verwerken.</p>
+
+  <h2 data-t="h_rights">Jouw rechten</h2>
+  <p data-t-html="p_rights">Onder de AVG heb je het recht om inzage, correctie of verwijdering van je gegevens te vragen. Neem hiervoor contact met me op via <a href="mailto:robertkarzijn@gmail.com">robertkarzijn@gmail.com</a>.</p>
+
+  <h2 data-t="h_questions">Vragen</h2>
+  <p data-t-html="p_questions">Heb je vragen over deze verklaring? Stuur gerust een bericht via <a href="mailto:robertkarzijn@gmail.com">e-mail</a> of <a href="https://www.linkedin.com/in/robert-karzijn-260696279" target="_blank" rel="noopener">LinkedIn</a>.</p>
+</div>
+
+<script>
+  (function () {
+    document.documentElement.dataset.theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
+    var dict = {
+      nl: {
+        back: "← Terug naar home",
+        title: "Privacyverklaring",
+        updated: "Laatst bijgewerkt: 1 september 2026",
+        intro: "Deze website (robertkarzijn.nl) is mijn persoonlijke portfolio. Ik gebruik geen cookies, geen trackers en geen analytics — de enige plek waar persoonsgegevens verwerkt worden, is het contactformulier.",
+        h_data: "Welke gegevens verwerk ik",
+        p_data: 'Als je het contactformulier invult, worden je naam, e-mailadres en bericht verzonden naar <a href="https://formspree.io" target="_blank" rel="noopener">Formspree</a>, de dienst die deze berichten voor mij verwerkt en doorstuurt naar mijn e-mail. Ik gebruik deze gegevens uitsluitend om te reageren op je bericht.',
+        h_retention: "Bewaartermijn",
+        p_retention: "Ik bewaar berichten niet langer dan nodig is om je vraag te beantwoorden en verwijder e-mailcorrespondentie zodra die niet meer relevant is.",
+        h_share: "Delen met derden",
+        p_share: 'Ik deel je gegevens niet met derden, behalve met Formspree als noodzakelijke verwerker van het contactformulier. Zie het <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">privacybeleid van Formspree</a> voor meer informatie over hoe zij gegevens verwerken.',
+        h_rights: "Jouw rechten",
+        p_rights: 'Onder de AVG heb je het recht om inzage, correctie of verwijdering van je gegevens te vragen. Neem hiervoor contact met me op via <a href="mailto:robertkarzijn@gmail.com">robertkarzijn@gmail.com</a>.',
+        h_questions: "Vragen",
+        p_questions: 'Heb je vragen over deze verklaring? Stuur gerust een bericht via <a href="mailto:robertkarzijn@gmail.com">e-mail</a> of <a href="https://www.linkedin.com/in/robert-karzijn-260696279" target="_blank" rel="noopener">LinkedIn</a>.',
+        pageTitle: "Privacyverklaring - Robert Karzijn"
+      },
+      en: {
+        back: "← Back to home",
+        title: "Privacy Policy",
+        updated: "Last updated: September 1, 2026",
+        intro: "This website (robertkarzijn.nl) is my personal portfolio. I don't use cookies, trackers or analytics — the only place personal data is processed is the contact form.",
+        h_data: "What data I process",
+        p_data: 'When you fill in the contact form, your name, email address and message are sent to <a href="https://formspree.io" target="_blank" rel="noopener">Formspree</a>, the service that processes these messages for me and forwards them to my email. I use this data only to respond to your message.',
+        h_retention: "Retention period",
+        p_retention: "I don't keep messages longer than needed to answer your question, and delete email correspondence once it's no longer relevant.",
+        h_share: "Sharing with third parties",
+        p_share: 'I don\'t share your data with third parties, except with Formspree as the necessary processor of the contact form. See <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">Formspree\'s privacy policy</a> for more on how they process data.',
+        h_rights: "Your rights",
+        p_rights: 'Under the GDPR you have the right to request access to, correction of, or deletion of your data. Contact me at <a href="mailto:robertkarzijn@gmail.com">robertkarzijn@gmail.com</a>.',
+        h_questions: "Questions",
+        p_questions: 'Questions about this policy? Feel free to reach out via <a href="mailto:robertkarzijn@gmail.com">email</a> or <a href="https://www.linkedin.com/in/robert-karzijn-260696279" target="_blank" rel="noopener">LinkedIn</a>.',
+        pageTitle: "Privacy Policy - Robert Karzijn"
+      }
+    };
+
+    var langBtn = document.getElementById("langBtn");
+
+    function applyLang(lang) {
+      document.documentElement.lang = lang;
+      document.title = dict[lang].pageTitle;
+      langBtn.textContent = lang === "nl" ? "EN" : "NL";
+      document.querySelectorAll("[data-t]").forEach(function (el) {
+        el.textContent = dict[lang][el.dataset.t];
+      });
+      document.querySelectorAll("[data-t-html]").forEach(function (el) {
+        el.innerHTML = dict[lang][el.dataset.tHtml];
+      });
+    }
+
+    var lang = localStorage.getItem("site-lang") === "en" ? "en" : "nl";
+    applyLang(lang);
+
+    langBtn.addEventListener("click", function () {
+      lang = lang === "nl" ? "en" : "nl";
+      localStorage.setItem("site-lang", lang);
+      applyLang(lang);
+    });
+  })();
+</script>
+
+</body>
+</html>

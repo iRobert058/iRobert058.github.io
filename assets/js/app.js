@@ -8,7 +8,7 @@
   "use strict";
 
   const state = {
-    lang: "nl",
+    lang: localStorage.getItem("site-lang") === "en" ? "en" : "nl",
     theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
   };
 
@@ -197,9 +197,11 @@
 
   /* ---------- Taal & thema ---------- */
   const langBtn = $("#langBtn");
+  langBtn.textContent = state.lang === "nl" ? "EN" : "NL";
   langBtn.addEventListener("click", () => {
     state.lang = state.lang === "nl" ? "en" : "nl";
     langBtn.textContent = state.lang === "nl" ? "EN" : "NL";
+    localStorage.setItem("site-lang", state.lang);
     renderAll();
   });
 
@@ -223,6 +225,8 @@
     e.preventDefault();
     const L = ui[state.lang].contact;
     status.className = "form-status";
+
+    if (form.company.value) return; // honeypot: bots fill this hidden field, humans never do
 
     if (!form.checkValidity()) {
       status.textContent = L.status_invalid;

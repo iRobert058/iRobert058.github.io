@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="nl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Robert Karzijn</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/main.css">
+<style>
+  .nf-topbar { display: flex; justify-content: flex-end; padding: 24px; }
+  .nf-wrap {
+    min-height: calc(100vh - 72px); display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 24px;
+  }
+  .nf-code {
+    font-family: var(--font-mono); font-size: 15px; color: var(--accent);
+    letter-spacing: .08em; text-transform: uppercase; margin-bottom: 18px;
+  }
+  .nf-wrap h1 {
+    font-family: var(--font-display); font-weight: 700; letter-spacing: -.02em;
+    font-size: clamp(32px, 6vw, 52px); margin-bottom: 16px;
+  }
+  .nf-wrap p { color: var(--muted); max-width: 480px; margin-bottom: 40px; }
+  .nf-stage { position: relative; height: 120px; width: 100%; max-width: 420px; }
+  .nf-stage .btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); white-space: nowrap; }
+  .nf-hint { margin-top: 20px; font-size: 14px; color: var(--muted); min-height: 1.4em; }
+</style>
+</head>
+<body>
+
+<div class="nf-topbar">
+  <button class="pill" id="langBtn" aria-label="Switch language">EN</button>
+</div>
+
+<div class="nf-wrap">
+  <span class="nf-code" data-t="code">Foutcode 404</span>
+  <h1 data-t="title">Deze pagina bestaat niet.</h1>
+  <p data-t="lead">Toevallig mijn onderzoeksgebied: interface-elementen die zich niet gedragen zoals je verwacht. Probeer de knop maar eens te raken.</p>
+  <div class="nf-stage">
+    <button class="btn btn-primary" id="nfBtn" data-t="btn">Terug naar home</button>
+  </div>
+  <p class="nf-hint" id="nfHint">&nbsp;</p>
+</div>
+
+<script>
+  (function () {
+    document.documentElement.dataset.theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
+    var dict = {
+      nl: {
+        code: "Foutcode 404",
+        title: "Deze pagina bestaat niet.",
+        lead: "Toevallig mijn onderzoeksgebied: interface-elementen die zich niet gedragen zoals je verwacht. Probeer de knop maar eens te raken.",
+        btn: "Terug naar home",
+        hintDodge: "(dit is precies zo oneerlijk als het klinkt)",
+        hintDone: "oké, dat is genoeg — hier, echt deze keer:",
+        pageTitle: "404 — Robert Karzijn"
+      },
+      en: {
+        code: "Error 404",
+        title: "This page doesn't exist.",
+        lead: "Fittingly, this is my field of research: interface elements that don't behave the way you expect. Try catching the button.",
+        btn: "Back to home",
+        hintDodge: "(this is exactly as unfair as it sounds)",
+        hintDone: "okay, that's enough — here, for real this time:",
+        pageTitle: "404 — Robert Karzijn"
+      }
+    };
+
+    var langBtn = document.getElementById("langBtn");
+    var hint = document.getElementById("nfHint");
+    var lang = localStorage.getItem("site-lang") === "en" ? "en" : "nl";
+
+    function applyLang(l) {
+      document.documentElement.lang = l;
+      document.title = dict[l].pageTitle;
+      langBtn.textContent = l === "nl" ? "EN" : "NL";
+      document.querySelectorAll("[data-t]").forEach(function (el) {
+        el.textContent = dict[l][el.dataset.t];
+      });
+      hint.textContent = dodges > 0 ? dict[l][dodges >= maxDodges ? "hintDone" : "hintDodge"] : " ";
+    }
+
+    langBtn.addEventListener("click", function () {
+      lang = lang === "nl" ? "en" : "nl";
+      localStorage.setItem("site-lang", lang);
+      applyLang(lang);
+    });
+
+    var btn = document.getElementById("nfBtn");
+    var stage = document.querySelector(".nf-stage");
+    var dodges = 0;
+    var maxDodges = 3;
+
+    btn.addEventListener("mouseenter", function () {
+      if (dodges >= maxDodges) return;
+      dodges++;
+      var stageRect = stage.getBoundingClientRect();
+      var btnRect = btn.getBoundingClientRect();
+      var maxX = (stageRect.width - btnRect.width) / 2;
+      var maxY = (stageRect.height - btnRect.height) / 2;
+      var x = (Math.random() * 2 - 1) * maxX;
+      var y = (Math.random() * 2 - 1) * maxY;
+      btn.style.transform = "translate(calc(-50% + " + x + "px), calc(-50% + " + y + "px))";
+      hint.textContent = dict[lang][dodges >= maxDodges ? "hintDone" : "hintDodge"];
+      if (dodges >= maxDodges) {
+        btn.style.transform = "translate(-50%, -50%)";
+      }
+    });
+
+    btn.addEventListener("click", function () {
+      if (dodges < maxDodges) return;
+      window.location.href = "index.html";
+    });
+
+    applyLang(lang);
+  })();
+</script>
+
+</body>
+</html>
