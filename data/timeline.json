@@ -33,6 +33,22 @@
   },
   {
     "period": {
+      "from": "2026",
+      "to": "present"
+    },
+    "kind": "extracurricular",
+    "title": {
+      "nl": "Secretaris",
+      "en": "Secretary"
+    },
+    "org": "Stichting Sticky, Utrecht",
+    "description": {
+      "nl": "Verantwoordelijk voor de notulen, correspondentie en administratie van het bestuur van de stichting, die activiteiten organiseert ten behoeve van Studievereniging Sticky.",
+      "en": "Responsible for the board's minutes, correspondence and administration for the foundation, which organises activities on behalf of Studievereniging Sticky."
+    }
+  },
+  {
+    "period": {
       "from": "2025",
       "to": "2026"
     },
