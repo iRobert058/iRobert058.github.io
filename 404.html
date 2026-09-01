@@ -24,9 +24,6 @@
     font-size: clamp(32px, 6vw, 52px); margin-bottom: 16px;
   }
   .nf-wrap p { color: var(--muted); max-width: 480px; margin-bottom: 40px; }
-  .nf-stage { position: relative; height: 120px; width: 100%; max-width: 420px; }
-  .nf-stage .btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); white-space: nowrap; }
-  .nf-hint { margin-top: 20px; font-size: 14px; color: var(--muted); min-height: 1.4em; }
 </style>
 </head>
 <body>
@@ -38,11 +35,8 @@
 <div class="nf-wrap">
   <span class="nf-code" data-t="code">Foutcode 404</span>
   <h1 data-t="title">Deze pagina bestaat niet.</h1>
-  <p data-t="lead">Toevallig mijn onderzoeksgebied: interface-elementen die zich niet gedragen zoals je verwacht. Probeer de knop maar eens te raken.</p>
-  <div class="nf-stage">
-    <button class="btn btn-primary" id="nfBtn" data-t="btn">Terug naar home</button>
-  </div>
-  <p class="nf-hint" id="nfHint">&nbsp;</p>
+  <p data-t="lead">Een interface-element dat zich niet gedraagt zoals verwacht - toevallig mijn onderzoeksgebied.</p>
+  <button class="btn btn-primary" id="nfBtn" data-t="btn">Terug naar home</button>
 </div>
 
 <script>
@@ -53,25 +47,20 @@
       nl: {
         code: "Foutcode 404",
         title: "Deze pagina bestaat niet.",
-        lead: "Toevallig mijn onderzoeksgebied: interface-elementen die zich niet gedragen zoals je verwacht. Probeer de knop maar eens te raken.",
+        lead: "Een interface-element dat zich niet gedraagt zoals verwacht - toevallig mijn onderzoeksgebied.",
         btn: "Terug naar home",
-        hintDodge: "(dit is precies zo oneerlijk als het klinkt)",
-        hintDone: "oké, dat is genoeg - hier, echt deze keer:",
         pageTitle: "404 - Robert Karzijn"
       },
       en: {
         code: "Error 404",
         title: "This page doesn't exist.",
-        lead: "Fittingly, this is my field of research: interface elements that don't behave the way you expect. Try catching the button.",
+        lead: "An interface element that doesn't behave as expected - fittingly, my field of research.",
         btn: "Back to home",
-        hintDodge: "(this is exactly as unfair as it sounds)",
-        hintDone: "okay, that's enough - here, for real this time:",
         pageTitle: "404 - Robert Karzijn"
       }
     };
 
     var langBtn = document.getElementById("langBtn");
-    var hint = document.getElementById("nfHint");
     var lang = localStorage.getItem("site-lang") === "en" ? "en" : "nl";
 
     function applyLang(l) {
@@ -81,7 +70,6 @@
       document.querySelectorAll("[data-t]").forEach(function (el) {
         el.textContent = dict[l][el.dataset.t];
       });
-      hint.textContent = dodges > 0 ? dict[l][dodges >= maxDodges ? "hintDone" : "hintDodge"] : " ";
     }
 
     langBtn.addEventListener("click", function () {
@@ -90,29 +78,7 @@
       applyLang(lang);
     });
 
-    var btn = document.getElementById("nfBtn");
-    var stage = document.querySelector(".nf-stage");
-    var dodges = 0;
-    var maxDodges = 3;
-
-    btn.addEventListener("mouseenter", function () {
-      if (dodges >= maxDodges) return;
-      dodges++;
-      var stageRect = stage.getBoundingClientRect();
-      var btnRect = btn.getBoundingClientRect();
-      var maxX = (stageRect.width - btnRect.width) / 2;
-      var maxY = (stageRect.height - btnRect.height) / 2;
-      var x = (Math.random() * 2 - 1) * maxX;
-      var y = (Math.random() * 2 - 1) * maxY;
-      btn.style.transform = "translate(calc(-50% + " + x + "px), calc(-50% + " + y + "px))";
-      hint.textContent = dict[lang][dodges >= maxDodges ? "hintDone" : "hintDodge"];
-      if (dodges >= maxDodges) {
-        btn.style.transform = "translate(-50%, -50%)";
-      }
-    });
-
-    btn.addEventListener("click", function () {
-      if (dodges < maxDodges) return;
+    document.getElementById("nfBtn").addEventListener("click", function () {
       window.location.href = "index.html";
     });
 
