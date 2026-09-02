@@ -31,6 +31,43 @@
     }
   },
   {
+    "id": "wkz",
+    "tag": {
+      "nl": "Universiteit Utrecht × Wilhelmina Kinderziekenhuis · 2023-2024",
+      "en": "Utrecht University × Wilhelmina Children's Hospital · 2023-2024"
+    },
+    "title": {
+      "nl": "Slim alarmsysteem voor het WKZ",
+      "en": "Smart alarm system for the WKZ"
+    },
+    "intro": {
+      "nl": "In opdracht van het Wilhelmina Kinderziekenhuis ontwierp ons projectteam een slim alarmsysteem, afgestemd op de eisen van de zorgpraktijk.",
+      "en": "Commissioned by the Wilhelmina Children's Hospital, our project team designed a smart alarm system tailored to the demands of clinical practice."
+    },
+    "image": "assets/img/project-wkz.png",
+    "imageAlt": {
+      "nl": "Eigen, illustratief prototype van het alarmsysteem-concept (nagebouwd; geen weergave van het opgeleverde ontwerp)",
+      "en": "My own illustrative prototype of the alarm system concept (a re-creation, not the delivered design)"
+    },
+    "problem": {
+      "nl": "In een ziekenhuisomgeving strijden veel signalen om aandacht. Het systeem moest relevant alarmeren zonder zorgverleners te overladen, binnen de eisen die het WKZ stelde.",
+      "en": "In a hospital environment many signals compete for attention. The system had to alert meaningfully without overwhelming care staff, within the requirements set by the WKZ."
+    },
+    "role": {
+      "nl": "Interactieontwerp binnen het projectteam: eisen van de opdrachtgever vertalen naar concepten, prototypes uitwerken en toetsen aan de praktijk.",
+      "en": "Interaction design within the project team: translating client requirements into concepts, developing prototypes and testing them against practice."
+    },
+    "result": {
+      "nl": "Een ontwerp dat aansloot op de gestelde eisen en positief werd ontvangen door de opdrachtgever.",
+      "en": "A design that met the stated requirements and was well received by the client."
+    },
+    "tech": ["Interaction design", { "nl": "Requirements-analyse", "en": "Requirements analysis" }, "Prototyping", { "nl": "Stakeholdergesprekken", "en": "Stakeholder interviews" }],
+    "cta": {
+      "label": { "nl": "Bekijk het interactieve prototype →", "en": "View the interactive prototype →" },
+      "url": "wkz-prototype.html"
+    }
+  },
+  {
     "id": "execut",
     "tag": { "nl": "Studenten-techconferentie · 2025–2026", "en": "Student tech conference · 2025–2026" },
     "title": {

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="nl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKZ Alarmsysteem — conceptprototype · Robert Karzijn</title>
+<link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Hanken+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--bg); }
+
+  /* ---------- Portfolio chrome ---------- */
+  .backbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px; font-family: var(--font-body); background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .backbar a {
+    color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .backbar a:hover { color: var(--ink); }
+  .backbar .note {
+    font-size: 12.5px; color: var(--muted); font-family: var(--font-mono);
+  }
+
+  /* ---------- Prototype (bespoke styling, independent of site theme) ---------- */
+  .wkz-app {
+    font-family: 'Montserrat', system-ui, sans-serif;
+    background: oklch(98% 0.004 240);
+    color: oklch(24% 0.02 250);
+    position: relative;
+    display: flex;
+    min-height: calc(100vh - 57px);
+  }
+  .wkz-app a { color: #2E77B7; }
+  .wkz-app .mono { font-variant-numeric: tabular-nums; }
+  .wkz-app .icon { display: block; flex-shrink: 0; }
+
+  .wkz-sidebar {
+    width: 248px; flex-shrink: 0; background: oklch(21% 0.028 230); color: oklch(92% 0.01 230);
+    display: flex; flex-direction: column;
+  }
+  .nav-row { cursor: pointer; transition: background 0.12s ease; border-radius: 9px; }
+  .nav-row:hover { background: oklch(28% 0.032 230) !important; }
+  .room-card { cursor: pointer; transition: box-shadow 0.14s ease, transform 0.14s ease; }
+  .room-card:hover { box-shadow: 0 4px 16px oklch(20% 0.02 250 / 0.08); transform: translateY(-1px); }
+  .ack-btn { cursor: pointer; transition: background 0.12s ease; font-family: inherit; }
+  .ack-btn:hover { background: oklch(97% 0.01 240) !important; }
+  .primary-btn { cursor: pointer; transition: filter 0.12s ease; font-family: inherit; border: none; }
+  .primary-btn:hover { filter: brightness(1.08); }
+  .ghost-btn { cursor: pointer; transition: background 0.12s ease; font-family: inherit; }
+  .ghost-btn:hover { background: oklch(95% 0.006 240) !important; }
+  .close-btn { cursor: pointer; }
+  .close-btn:hover { background: oklch(93% 0.008 240) !important; }
+  .backdrop { cursor: pointer; }
+
+  .wkz-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .wkz-topbar {
+    padding: 26px 32px 18px; display: flex; align-items: flex-start; justify-content: space-between;
+    border-bottom: 1px solid oklch(91% 0.006 240); gap: 16px; flex-wrap: wrap;
+  }
+  .wkz-legend { display: flex; align-items: center; gap: 14px; }
+  .wkz-alert-rail { padding: 20px 32px 4px; display: flex; flex-direction: column; gap: 10px; min-height: 104px; }
+  .wkz-alerts { display: flex; gap: 14px; flex-wrap: wrap; }
+  .wkz-alert-card { flex: 1 1 260px; display: flex; align-items: center; gap: 13px; padding: 14px 16px; border-radius: 16px; }
+  .wkz-rooms { padding: 22px 32px 28px; }
+  .wkz-room-grid { margin-top: 12px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .wkz-detail-panel {
+    position: absolute; top: 0; right: 0; bottom: 0; width: 400px; background: oklch(100% 0 0);
+    box-shadow: -8px 0 28px oklch(15% 0.02 250 / 0.14); display: flex; flex-direction: column;
+  }
+
+  @media (max-width: 900px) {
+    .wkz-app { flex-direction: column; min-height: auto; }
+    .wkz-sidebar { width: 100%; flex-direction: row; align-items: center; gap: 18px; padding: 12px 16px; overflow-x: auto; }
+    .wkz-sidebar > div { border: none !important; padding: 0 !important; margin: 0 !important; flex-shrink: 0; }
+    .wkz-sidebar .wkz-wardlist { flex-direction: row !important; padding: 0 !important; }
+    .wkz-sidebar .wkz-profile { display: none; }
+    .wkz-room-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .wkz-detail-panel { width: 100%; }
+  }
+  @media (max-width: 480px) {
+    .wkz-room-grid { grid-template-columns: 1fr; }
+    .wkz-topbar, .wkz-alert-rail, .wkz-rooms { padding-left: 18px; padding-right: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="backbar">
+  <a href="index.html#projects">&larr; Terug naar portfolio</a>
+  <span class="note">Conceptprototype — eigen ontwerp, niet het daadwerkelijke WKZ-systeem</span>
+</div>
+
+<div class="wkz-app" id="wkzApp"></div>
+
+<script>
+(function () {
+  var COLORS = {
+    red: 'oklch(56% 0.19 25)', redBg: 'oklch(96% 0.03 25)', redBorder: 'oklch(88% 0.06 25)', redIcon: 'oklch(92% 0.05 25)',
+    amber: 'oklch(58% 0.15 65)', amberBg: 'oklch(96% 0.035 75)', amberBorder: 'oklch(89% 0.07 75)', amberIcon: 'oklch(92% 0.06 75)',
+    blue: 'oklch(55% 0.11 245)', blueBg: 'oklch(96% 0.015 245)', blueBorder: 'oklch(89% 0.03 245)', blueIcon: 'oklch(93% 0.02 245)',
+    green: 'oklch(63% 0.11 155)', greenBg: 'oklch(95% 0.02 155)', greenBorder: 'oklch(88% 0.03 155)',
+    neutralBorder: 'oklch(91% 0.006 240)'
+  };
+  var ACCENT = '#2E77B7';
+
+  var STATUS_META = {
+    critical: { label: 'Kritiek', order: 0, color: COLORS.red, bg: COLORS.redBg, border: COLORS.redBorder, iconBg: COLORS.redIcon },
+    urgent: { label: 'Urgent', order: 1, color: COLORS.amber, bg: COLORS.amberBg, border: COLORS.amberBorder, iconBg: COLORS.amberIcon },
+    info: { label: 'Informatief', order: 2, color: COLORS.blue, bg: COLORS.blueBg, border: COLORS.blueBorder, iconBg: COLORS.blueIcon },
+    stable: { label: 'Stabiel', order: 3, color: COLORS.green, bg: COLORS.greenBg, border: COLORS.greenBorder },
+    empty: { label: 'Leeg', order: 4, color: 'oklch(72% 0.006 240)', bg: 'oklch(97% 0.004 240)', border: COLORS.neutralBorder }
+  };
+
+  var WARD_ORDER = ['picu', 'a', 'b', 'neo', 'dag'];
+  var WARD_LABELS = { picu: 'Kinder-IC', a: 'Kinderafdeling A', b: 'Kinderafdeling B', neo: 'Babyafdeling', dag: 'Dagbehandeling' };
+
+  var RAW = {
+    a: [
+      { id: 'a-r1', room: 'Kamer 1 - Bed 1', hr: 92, spo2: 98, resp: 22, temp: 36.8, status: 'stable', updated: 'Bijgewerkt 4 min geleden' },
+      { id: 'a-r2', room: 'Kamer 1 - Bed 2', hr: 88, spo2: 99, resp: 20, temp: 36.6, status: 'stable', updated: 'Bijgewerkt 6 min geleden' },
+      { id: 'a-r3', room: 'Kamer 2 - Bed 1', hr: 101, spo2: 97, resp: 24, temp: 37.0, status: 'stable', updated: 'Bijgewerkt 3 min geleden' },
+      { id: 'a-r4', room: 'Kamer 2 - Bed 2', hr: 95, spo2: 98, resp: 21, temp: 36.7, status: 'stable', updated: 'Bijgewerkt 5 min geleden' },
+      { id: 'a-r5', room: 'Kamer 3 - Bed 1', hr: 118, spo2: 91, resp: 30, temp: 37.4, status: 'urgent', abnormal: 'spo2', alarmDesc: 'SpO2 91% - dalende trend', alarmTime: '5 min geleden', updated: 'Bijgewerkt 5 min geleden' },
+      { id: 'a-r6', room: 'Kamer 3 - Bed 2', hr: 90, spo2: 98, resp: 19, temp: 36.6, status: 'stable', updated: 'Bijgewerkt 2 min geleden' },
+      { id: 'a-r7', room: 'Kamer 4 - Bed 1', hr: 99, spo2: 97, resp: 23, temp: 36.9, status: 'stable', updated: 'Bijgewerkt 7 min geleden' },
+      { id: 'a-r8', room: 'Kamer 4 - Bed 2', status: 'empty' },
+      { id: 'a-r9', room: 'Kamer 5 - Bed 1', hr: 87, spo2: 99, resp: 20, temp: 36.5, status: 'stable', updated: 'Bijgewerkt 1 min geleden' },
+      { id: 'a-r10', room: 'Kamer 6 - Bed 1', hr: 93, spo2: 98, resp: 21, temp: 36.7, status: 'stable', updated: 'Bijgewerkt 4 min geleden' },
+      { id: 'a-r11', room: 'Kamer 6 - Bed 2', hr: 168, spo2: 94, resp: 34, temp: 38.1, status: 'critical', abnormal: 'hr', alarmDesc: 'Hartslag 168 bpm - boven grenswaarde', alarmTime: '2 min geleden', updated: 'Bijgewerkt 2 min geleden' },
+      { id: 'a-r12', room: 'Kamer 9 - Bed 1', hr: 96, spo2: 97, resp: 22, temp: 36.8, status: 'info', alarmDesc: 'Infuuszak bijna leeg', alarmTime: '12 min geleden', updated: 'Bijgewerkt 12 min geleden' }
+    ],
+    picu: [
+      { id: 'p-r1', room: 'IC-Bed 1', hr: 110, spo2: 96, resp: 26, temp: 37.1, status: 'stable', updated: 'Bijgewerkt 2 min geleden' },
+      { id: 'p-r2', room: 'IC-Bed 2', hr: 132, spo2: 89, resp: 36, temp: 38.4, status: 'critical', abnormal: 'spo2', alarmDesc: 'SpO2 89% - beademing controleren', alarmTime: '1 min geleden', updated: 'Bijgewerkt 1 min geleden' },
+      { id: 'p-r3', room: 'IC-Bed 3', hr: 104, spo2: 97, resp: 24, temp: 37.0, status: 'stable', updated: 'Bijgewerkt 3 min geleden' },
+      { id: 'p-r4', room: 'IC-Bed 4', status: 'empty' },
+      { id: 'p-r5', room: 'IC-Bed 5', hr: 98, spo2: 98, resp: 22, temp: 36.8, status: 'stable', updated: 'Bijgewerkt 6 min geleden' },
+      { id: 'p-r6', room: 'IC-Bed 6', hr: 115, spo2: 95, resp: 28, temp: 37.3, status: 'stable', updated: 'Bijgewerkt 4 min geleden' }
+    ],
+    neo: [
+      { id: 'n-r1', room: 'Couveuse 1', hr: 142, spo2: 97, resp: 44, temp: 36.9, status: 'stable', updated: 'Bijgewerkt 3 min geleden' },
+      { id: 'n-r2', room: 'Couveuse 2', hr: 150, spo2: 93, resp: 52, temp: 37.6, status: 'urgent', abnormal: 'resp', alarmDesc: 'Ademfrequentie verhoogd', alarmTime: '8 min geleden', updated: 'Bijgewerkt 8 min geleden' },
+      { id: 'n-r3', room: 'Couveuse 3', hr: 138, spo2: 98, resp: 41, temp: 36.7, status: 'stable', updated: 'Bijgewerkt 5 min geleden' },
+      { id: 'n-r4', room: 'Couveuse 4', status: 'empty' },
+      { id: 'n-r5', room: 'Couveuse 5', hr: 145, spo2: 97, resp: 45, temp: 36.8, status: 'stable', updated: 'Bijgewerkt 2 min geleden' }
+    ],
+    b: [
+      { id: 'b-r1', room: 'Kamer 1 - Bed 1', hr: 89, spo2: 99, resp: 19, temp: 36.5, status: 'stable', updated: 'Bijgewerkt 5 min geleden' },
+      { id: 'b-r2', room: 'Kamer 1 - Bed 2', status: 'empty' },
+      { id: 'b-r3', room: 'Kamer 2 - Bed 1', hr: 94, spo2: 98, resp: 20, temp: 36.6, status: 'stable', updated: 'Bijgewerkt 7 min geleden' },
+      { id: 'b-r4', room: 'Kamer 2 - Bed 2', hr: 91, spo2: 98, resp: 21, temp: 36.7, status: 'stable', updated: 'Bijgewerkt 4 min geleden' },
+      { id: 'b-r5', room: 'Kamer 3 - Bed 1', status: 'empty' },
+      { id: 'b-r6', room: 'Kamer 3 - Bed 2', hr: 97, spo2: 97, resp: 22, temp: 36.9, status: 'stable', updated: 'Bijgewerkt 3 min geleden' }
+    ],
+    dag: [
+      { id: 'd-r1', room: 'Behandelkamer 1', hr: 100, spo2: 98, resp: 20, temp: 36.7, status: 'stable', updated: 'Bijgewerkt 6 min geleden' },
+      { id: 'd-r2', room: 'Behandelkamer 2', status: 'empty' },
+      { id: 'd-r3', room: 'Behandelkamer 3', hr: 93, spo2: 99, resp: 19, temp: 36.5, status: 'stable', updated: 'Bijgewerkt 9 min geleden' },
+      { id: 'd-r4', room: 'Behandelkamer 4', status: 'empty' }
+    ]
+  };
+
+  var state = { activeWardId: 'a', openRoomKey: null, acknowledged: [] };
+
+  function isAck(id) { return state.acknowledged.indexOf(id) !== -1; }
+  function effectiveStatus(room) {
+    return (room.status !== 'empty' && room.status !== 'stable' && isAck(room.id)) ? 'stable' : room.status;
+  }
+
+  function icon(name, size, color) {
+    size = size || 16; color = color || 'currentColor';
+    var paths = {
+      bell: '<path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42"></path>',
+      heart: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>',
+      drop: '<path d="M12 2.69s-5.5 6.14-5.5 10.19a5.5 5.5 0 0 0 11 0C17.5 8.83 12 2.69 12 2.69"></path>',
+      check: '<path d="M20 6 9 17l-5-5"></path>',
+      bed: '<rect x="3" y="10" width="18" height="9" rx="1.5"></rect><path d="M5 10V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3M3 19v1M21 19v1"></path>',
+      close: '<path d="M18 6 6 18M6 6l12 12"></path>',
+      search: '<circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.35-4.35"></path>',
+      moon: '<path d="M12 3a6 6 0 0 0-6 6c0 7-3 9-3 9h18s-3-2-3-9a6 6 0 0 0-6-6"></path>',
+      settings: '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852 1 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>'
+    };
+    return '<svg class="icon" width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + paths[name] + '</svg>';
+  }
+
+  function buildVitals(room) {
+    function tile(label, value, field) {
+      var flagged = room.abnormal === field && effectiveStatus(room) !== 'stable';
+      var meta = flagged ? STATUS_META[room.status] : STATUS_META.stable;
+      return {
+        label: label, value: value,
+        color: flagged ? meta.color : 'oklch(24% 0.02 250)',
+        bg: flagged ? meta.bg : 'oklch(98% 0.004 240)',
+        border: flagged ? meta.border : COLORS.neutralBorder
+      };
+    }
+    return [
+      tile('Hartslag', room.hr + ' bpm', 'hr'),
+      tile('SpO2', room.spo2 + '%', 'spo2'),
+      tile('Ademhaling', room.resp + '/min', 'resp'),
+      tile('Temperatuur', room.temp.toFixed(1) + '°C', 'temp')
+    ];
+  }
+
+  function buildHistory(room) {
+    var entries = [];
+    if (room.alarmDesc) {
+      entries.push({ time: room.alarmTime, text: room.alarmDesc, dotColor: STATUS_META[room.status].color });
+    } else {
+      entries.push({ time: 'Zojuist gecontroleerd', text: 'Vitale functies binnen normale waarden', dotColor: COLORS.green });
+    }
+    entries.push({ time: '22:00 · Shift-start', text: 'Baseline vastgelegd, geen bijzonderheden', dotColor: 'oklch(80% 0.008 240)' });
+    return entries;
+  }
+
+  function buildWardView(wardId) {
+    var rooms = RAW[wardId].map(function (room) {
+      var eff = effectiveStatus(room);
+      var meta = STATUS_META[eff];
+      var occupied = room.status !== 'empty';
+      return {
+        id: room.id, room: room.room,
+        hr: room.hr ? room.hr + ' bpm' : '', spo2: room.spo2 ? room.spo2 + '%' : '',
+        occupied: occupied, empty: !occupied, updated: room.updated || '',
+        statusColor: meta.color, borderColor: eff === 'stable' ? COLORS.neutralBorder : meta.border,
+        hasBadge: eff !== 'stable' && eff !== 'empty', badgeLabel: meta.label, badgeColor: meta.color, badgeBg: meta.bg
+      };
+    });
+
+    var alerts = RAW[wardId]
+      .filter(function (room) { return (room.status === 'critical' || room.status === 'urgent' || room.status === 'info') && !isAck(room.id); })
+      .sort(function (x, y) { return STATUS_META[x.status].order - STATUS_META[y.status].order; })
+      .map(function (room) {
+        return {
+          id: room.id, level: STATUS_META[room.status].label, room: room.room, desc: room.alarmDesc, time: room.alarmTime,
+          color: STATUS_META[room.status].color, bg: STATUS_META[room.status].bg, border: STATUS_META[room.status].border, iconBg: STATUS_META[room.status].iconBg
+        };
+      });
+
+    var bedCount = RAW[wardId].length;
+    var alertSummary = alerts.length === 0 ? 'geen actieve meldingen' : alerts.length === 1 ? '1 actieve melding' : alerts.length + ' actieve meldingen';
+
+    return { label: WARD_LABELS[wardId], rooms: rooms, alerts: alerts, bedCount: bedCount, alertSummary: alertSummary };
+  }
+
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+
+  function renderSidebar() {
+    var items = WARD_ORDER.map(function (id) {
+      var count = RAW[id].filter(function (room) { return (room.status === 'critical' || room.status === 'urgent' || room.status === 'info') && !isAck(room.id); }).length;
+      var active = id === state.activeWardId;
+      var rowBg = active ? 'oklch(30% 0.035 230)' : 'transparent';
+      var textColor = active ? 'oklch(98% 0.004 230)' : 'oklch(80% 0.01 230)';
+      var weight = active ? '600' : '500';
+      var dotColor = active ? ACCENT : 'oklch(48% 0.015 230)';
+      var badgeBg = count > 0 ? 'oklch(38% 0.04 230)' : 'transparent';
+      return (
+        '<div class="nav-row" data-action="select-ward" data-ward="' + id + '" style="display:flex; align-items:center; justify-content:space-between; padding:10px 10px; background:' + rowBg + ';">' +
+          '<div style="display:flex; align-items:center; gap:10px;">' +
+            '<div style="width:7px; height:7px; border-radius:50%; background:' + dotColor + ';"></div>' +
+            '<span style="font-size:13.5px; font-weight:' + weight + '; color:' + textColor + '; white-space:nowrap;">' + esc(WARD_LABELS[id]) + '</span>' +
+          '</div>' +
+          (count > 0 ? '<span style="font-size:11px; font-weight:700; color:oklch(92% 0.01 230); background:' + badgeBg + '; min-width:18px; height:18px; padding:0 5px; border-radius:9px; display:flex; align-items:center; justify-content:center;">' + count + '</span>' : '') +
+        '</div>'
+      );
+    }).join('');
+
+    return (
+      '<div class="wkz-sidebar">' +
+        '<div style="padding:28px 24px 20px; display:flex; flex-direction:column; gap:2px; border-bottom:1px solid oklch(32% 0.03 230);">' +
+          '<div style="display:flex; align-items:center; gap:9px;">' +
+            '<div style="width:9px; height:9px; border-radius:3px; background:' + ACCENT + ';"></div>' +
+            '<span style="font-family:\'Montserrat\',sans-serif; font-weight:600; font-size:17px; letter-spacing:-0.01em; color:oklch(97% 0.005 230);">Sentinel</span>' +
+          '</div>' +
+          '<span style="font-size:12px; color:oklch(65% 0.02 230); padding-left:18px;">Kinderzorg alarmsysteem</span>' +
+        '</div>' +
+        '<div class="wkz-wardlist" style="padding:16px 14px; display:flex; flex-direction:column; gap:2px;">' +
+          '<span style="font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:oklch(55% 0.02 230); padding:6px 10px 8px;">Afdelingen</span>' +
+          items +
+        '</div>' +
+        '<div class="wkz-profile" style="margin-top:auto; padding:18px 20px; border-top:1px solid oklch(32% 0.03 230); display:flex; align-items:center; gap:11px;">' +
+          '<div style="width:34px; height:34px; border-radius:50%; background:oklch(40% 0.05 230); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:oklch(95% 0.01 230); flex-shrink:0;">MK</div>' +
+          '<div style="display:flex; flex-direction:column; min-width:0;">' +
+            '<span style="font-size:13px; font-weight:600; color:oklch(96% 0.005 230); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">M. de Vries</span>' +
+            '<span style="font-size:11.5px; color:oklch(62% 0.02 230);">Verpleegkundige</span>' +
+          '</div>' +
+          '<span style="margin-left:auto; opacity:0.55;">' + icon('settings', 16) + '</span>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderTopbar(ward) {
+    var legend = [
+      { label: 'Kritiek', color: COLORS.red },
+      { label: 'Urgent', color: COLORS.amber },
+      { label: 'Informatief', color: COLORS.blue }
+    ].map(function (item) {
+      return '<div style="display:flex; align-items:center; gap:6px;"><div style="width:8px; height:8px; border-radius:50%; background:' + item.color + ';"></div><span style="font-size:12px; color:oklch(48% 0.015 250);">' + item.label + '</span></div>';
+    }).join('');
+
+    return (
+      '<div class="wkz-topbar">' +
+        '<div style="display:flex; flex-direction:column; gap:3px;">' +
+          '<h1 style="margin:0; font-family:\'Montserrat\',sans-serif; font-size:22px; font-weight:600; letter-spacing:-0.01em; color:oklch(20% 0.02 250);">' + esc(ward.label) + '</h1>' +
+          '<span style="font-size:13px; color:oklch(52% 0.015 250);">Nachtdienst | ' + ward.bedCount + ' bedden | ' + esc(ward.alertSummary) + '</span>' +
+        '</div>' +
+        '<div style="display:flex; align-items:center; gap:22px; flex-wrap:wrap;">' +
+          '<div class="wkz-legend" style="padding-right:20px; border-right:1px solid oklch(91% 0.006 240);">' + legend + '</div>' +
+          '<div style="display:flex; align-items:center; gap:7px; color:oklch(45% 0.02 250);">' + icon('moon', 16) + '<span class="mono" style="font-size:13px; font-weight:600;">23:42</span></div>' +
+          '<div style="width:34px; height:34px; border-radius:50%; background:oklch(93% 0.01 240); display:flex; align-items:center; justify-content:center;">' + icon('search', 16, 'oklch(45% 0.02 250)') + '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderAlertRail(ward) {
+    var body;
+    if (ward.alerts.length > 0) {
+      body = '<div class="wkz-alerts">' + ward.alerts.map(function (a) {
+        return (
+          '<div class="wkz-alert-card" style="background:' + a.bg + '; border:1px solid ' + a.border + ';">' +
+            '<div style="width:38px; height:38px; border-radius:12px; background:' + a.iconBg + '; display:flex; align-items:center; justify-content:center; flex-shrink:0;">' + icon('bell', 18, a.color) + '</div>' +
+            '<div class="room-card" data-action="open-room" data-room="' + a.id + '" style="display:flex; flex-direction:column; gap:2px; min-width:0; flex:1;">' +
+              '<div style="display:flex; align-items:center; gap:8px;">' +
+                '<span style="font-size:11px; font-weight:700; letter-spacing:0.03em; text-transform:uppercase; color:' + a.color + ';">' + a.level + '</span>' +
+                '<span style="font-size:12px; color:oklch(50% 0.015 250);">' + esc(a.room) + '</span>' +
+              '</div>' +
+              '<span style="font-size:13px; font-weight:500; color:oklch(24% 0.02 250); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + esc(a.desc) + '</span>' +
+              '<span style="font-size:11.5px; color:oklch(55% 0.015 250);">' + esc(a.time) + '</span>' +
+            '</div>' +
+            '<button class="ack-btn" data-action="ack-room" data-room="' + a.id + '" style="flex-shrink:0; font-size:12.5px; font-weight:600; color:' + a.color + '; background:oklch(100% 0 0); border:1px solid ' + a.border + '; border-radius:10px; padding:7px 12px;">Bevestigen</button>' +
+          '</div>'
+        );
+      }).join('') + '</div>';
+    } else {
+      body = (
+        '<div style="display:flex; align-items:center; gap:10px; padding:14px 16px; border-radius:16px; background:oklch(97% 0.01 155); border:1px solid oklch(90% 0.03 155);">' +
+          icon('check', 17, 'oklch(50% 0.11 155)') +
+          '<span style="font-size:13px; color:oklch(38% 0.06 155); font-weight:500;">Geen actieve meldingen op deze afdeling.</span>' +
+        '</div>'
+      );
+    }
+    return (
+      '<div class="wkz-alert-rail">' +
+        '<span style="font-size:11.5px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:oklch(52% 0.015 250);">Actieve meldingen, op prioriteit</span>' +
+        body +
+      '</div>'
+    );
+  }
+
+  function renderRoomGrid(ward) {
+    var cards = ward.rooms.map(function (r) {
+      var vitals = r.occupied
+        ? '<div style="display:flex; align-items:center; gap:16px;">' +
+            '<div style="display:flex; align-items:center; gap:5px; color:oklch(45% 0.02 250);">' + icon('heart', 13) + '<span class="mono" style="font-size:12.5px; font-weight:600;">' + r.hr + '</span></div>' +
+            '<div style="display:flex; align-items:center; gap:5px; color:oklch(45% 0.02 250);">' + icon('drop', 13) + '<span class="mono" style="font-size:12.5px; font-weight:600;">' + r.spo2 + '</span></div>' +
+          '</div>'
+        : '<span style="font-size:12.5px; color:oklch(58% 0.01 250); font-style:italic;">Bed leeg</span>';
+      var badge = r.hasBadge ? '<span style="font-size:10.5px; font-weight:700; letter-spacing:0.02em; color:' + r.badgeColor + '; background:' + r.badgeBg + '; padding:2px 8px; border-radius:8px;">' + r.badgeLabel + '</span>' : '';
+      return (
+        '<div class="room-card" data-action="open-room" data-room="' + r.id + '" style="padding:14px 15px; border-radius:16px; background:oklch(100% 0 0); border:1px solid ' + r.borderColor + '; display:flex; flex-direction:column; gap:10px;">' +
+          '<div style="display:flex; align-items:center; justify-content:space-between;">' +
+            '<span style="font-size:13px; font-weight:600; color:oklch(24% 0.02 250);">' + esc(r.room) + '</span>' +
+            '<div style="width:9px; height:9px; border-radius:50%; background:' + r.statusColor + ';"></div>' +
+          '</div>' +
+          vitals +
+          '<div style="display:flex; align-items:center; justify-content:space-between; margin-top:2px;">' +
+            '<span style="font-size:11px; color:oklch(58% 0.012 250);">' + esc(r.updated) + '</span>' +
+            badge +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+
+    return (
+      '<div class="wkz-rooms">' +
+        '<span style="font-size:11.5px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:oklch(52% 0.015 250);">Overzicht kamers</span>' +
+        '<div class="wkz-room-grid">' + cards + '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderDetail() {
+    var openKey = state.openRoomKey;
+    if (!openKey) return '';
+
+    var foundWard = null, foundRoom = null;
+    for (var i = 0; i < WARD_ORDER.length; i++) {
+      var wid = WARD_ORDER[i];
+      var hit = RAW[wid].filter(function (room) { return room.id === openKey; })[0];
+      if (hit) { foundWard = wid; foundRoom = hit; break; }
+    }
+    if (!foundRoom) return '';
+
+    var eff = effectiveStatus(foundRoom);
+    var meta = STATUS_META[eff];
+    var occupied = foundRoom.status !== 'empty';
+    var hasActiveAlarm = eff !== 'stable' && eff !== 'empty';
+
+    var body;
+    if (occupied) {
+      var vitalsHtml = buildVitals(foundRoom).map(function (v) {
+        return '<div style="padding:12px 14px; border-radius:12px; background:' + v.bg + '; border:1px solid ' + v.border + ';"><span style="font-size:11px; color:oklch(48% 0.015 250); display:block; margin-bottom:4px;">' + v.label + '</span><span class="mono" style="font-size:17px; font-weight:700; color:' + v.color + ';">' + v.value + '</span></div>';
+      }).join('');
+      var historyHtml = buildHistory(foundRoom).map(function (h) {
+        return (
+          '<div style="display:flex; gap:11px;">' +
+            '<div style="display:flex; flex-direction:column; align-items:center; padding-top:4px;">' +
+              '<div style="width:8px; height:8px; border-radius:50%; background:' + h.dotColor + '; flex-shrink:0;"></div>' +
+              '<div style="width:1px; flex:1; background:oklch(90% 0.006 240); margin-top:4px;"></div>' +
+            '</div>' +
+            '<div style="display:flex; flex-direction:column; gap:2px; padding-bottom:4px;">' +
+              '<span style="font-size:12.5px; font-weight:500; color:oklch(28% 0.02 250);">' + esc(h.text) + '</span>' +
+              '<span style="font-size:11.5px; color:oklch(56% 0.015 250);">' + esc(h.time) + '</span>' +
+            '</div>' +
+          '</div>'
+        );
+      }).join('');
+      body = (
+        '<div style="display:flex; flex-direction:column; gap:10px;">' +
+          '<span style="font-size:11.5px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:oklch(52% 0.015 250);">Vitale functies</span>' +
+          '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">' + vitalsHtml + '</div>' +
+        '</div>' +
+        '<div style="display:flex; flex-direction:column; gap:10px;">' +
+          '<span style="font-size:11.5px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:oklch(52% 0.015 250);">Geschiedenis</span>' +
+          '<div style="display:flex; flex-direction:column; gap:14px;">' + historyHtml + '</div>' +
+        '</div>'
+      );
+    } else {
+      body = (
+        '<div style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; padding:32px 12px; color:oklch(55% 0.012 250);">' +
+          icon('bed', 28, 'oklch(70% 0.008 240)') +
+          '<span style="font-size:13px;">Dit bed is momenteel niet in gebruik.</span>' +
+        '</div>'
+      );
+    }
+
+    var closeGrow = hasActiveAlarm ? 1 : 2;
+
+    return (
+      '<div class="backdrop" data-action="close-detail" style="position:absolute; inset:0; background:oklch(15% 0.01 250 / 0.32);"></div>' +
+      '<div class="wkz-detail-panel">' +
+        '<div style="padding:24px 24px 18px; display:flex; align-items:flex-start; justify-content:space-between; border-bottom:1px solid oklch(92% 0.006 240);">' +
+          '<div style="display:flex; flex-direction:column; gap:6px;">' +
+            '<span style="font-size:11px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:' + meta.color + ';">' + meta.label + '</span>' +
+            '<h2 style="margin:0; font-family:\'Montserrat\',sans-serif; font-size:19px; font-weight:600; color:oklch(20% 0.02 250);">' + esc(foundRoom.room) + '</h2>' +
+            '<span style="font-size:12.5px; color:oklch(52% 0.015 250);">' + esc(WARD_LABELS[foundWard]) + '</span>' +
+          '</div>' +
+          '<div class="close-btn" data-action="close-detail" style="width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">' + icon('close', 16, 'oklch(45% 0.02 250)') + '</div>' +
+        '</div>' +
+        '<div style="flex:1; overflow-y:auto; padding:22px 24px; display:flex; flex-direction:column; gap:24px;">' + body + '</div>' +
+        '<div style="padding:18px 24px 22px; border-top:1px solid oklch(92% 0.006 240); display:flex; gap:10px;">' +
+          (hasActiveAlarm ? '<button class="primary-btn" data-action="ack-room" data-room="' + foundRoom.id + '" style="flex:1; background:' + meta.color + '; color:oklch(100% 0 0); font-size:13.5px; font-weight:600; padding:11px; border-radius:11px;">Bevestigen</button>' : '') +
+          '<button class="ghost-btn" data-action="close-detail" style="flex:' + closeGrow + '; background:oklch(96% 0.006 240); color:oklch(30% 0.02 250); font-size:13.5px; font-weight:600; padding:11px; border-radius:11px; border:none;">Sluiten</button>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function render() {
+    var ward = buildWardView(state.activeWardId);
+    var html = (
+      renderSidebar() +
+      '<div class="wkz-main">' + renderTopbar(ward) + renderAlertRail(ward) + renderRoomGrid(ward) + '</div>' +
+      renderDetail()
+    );
+    document.getElementById('wkzApp').innerHTML = html;
+  }
+
+  document.getElementById('wkzApp').addEventListener('click', function (e) {
+    var el = e.target.closest('[data-action]');
+    if (!el) return;
+    var action = el.dataset.action;
+    if (action === 'select-ward') {
+      state.activeWardId = el.dataset.ward;
+      state.openRoomKey = null;
+    } else if (action === 'open-room') {
+      state.openRoomKey = el.dataset.room;
+    } else if (action === 'ack-room') {
+      if (state.acknowledged.indexOf(el.dataset.room) === -1) state.acknowledged.push(el.dataset.room);
+    } else if (action === 'close-detail') {
+      state.openRoomKey = null;
+    } else {
+      return;
+    }
+    render();
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
