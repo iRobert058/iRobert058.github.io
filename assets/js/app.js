@@ -1,7 +1,7 @@
 /* =============================================================
-   app.js — laadt content (content/*.json) en data (data/*.json)
-   en rendert de site. Content aanpassen = JSON aanpassen;
-   deze code hoeft daarvoor niet gewijzigd te worden.
+   app.js — loads content (content/*.json) and data (data/*.json)
+   and renders the site. Changing content = changing JSON;
+   this code does not need to be touched for that.
    ============================================================= */
 
 (async function () {
@@ -12,12 +12,12 @@
     theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
   };
 
-  /* ---------- Data laden ---------- */
+  /* ---------- Load data ---------- */
   async function loadJSON(path) {
-    // "no-cache" laat de browser altijd hervalideren (ETag), zodat een contentwijziging direct
-    // zichtbaar is, maar ongewijzigde JSON niet opnieuw gedownload wordt
+    // "no-cache" makes the browser always revalidate (ETag), so content changes show up
+    // immediately while unchanged JSON is not downloaded again
     const res = await fetch(path, { cache: "no-cache" });
-    if (!res.ok) throw new Error(`Kon ${path} niet laden (${res.status})`);
+    if (!res.ok) throw new Error(`Could not load ${path} (${res.status})`);
     return res.json();
   }
 
@@ -40,8 +40,8 @@
     document.body.insertAdjacentHTML(
       "afterbegin",
       '<p style="padding:120px 24px;text-align:center;font-family:sans-serif">' +
-        "Content kon niet geladen worden. Draai de site via een (lokale) webserver, " +
-        "bijvoorbeeld <code>npx serve</code> of <code>python -m http.server</code>.</p>"
+        "Content could not be loaded. Serve the site through a (local) web server, " +
+        "for example <code>npx serve</code> or <code>python -m http.server</code>.</p>"
     );
     return;
   }
@@ -53,7 +53,7 @@
   const esc = (s) =>
     String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  /* ---------- Statische UI-teksten ---------- */
+  /* ---------- Static UI strings ---------- */
   function applyUIStrings() {
     document.documentElement.lang = state.lang;
     document.querySelectorAll("[data-t]").forEach((el) => {
@@ -69,7 +69,7 @@
     });
   }
 
-  /* ---------- Sectie-renderers ---------- */
+  /* ---------- Section renderers ---------- */
   function renderHighlights() {
     $("#highlightsGrid").innerHTML = highlights
       .map((h) => {
@@ -167,7 +167,7 @@
       .join("");
   }
 
-  /* ---------- Reveal-animaties ---------- */
+  /* ---------- Reveal animations ---------- */
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
@@ -196,7 +196,7 @@
     observeReveals();
   }
 
-  /* ---------- Taal & thema ---------- */
+  /* ---------- Language & theme ---------- */
   const langBtn = $("#langBtn");
   langBtn.textContent = state.lang === "nl" ? "EN" : "NL";
   langBtn.addEventListener("click", () => {
@@ -216,10 +216,10 @@
     applyTheme();
   });
 
-  /* ---------- Eerlijke banner ---------- */
+  /* ---------- Honest banner ---------- */
   $("#honestBtn").addEventListener("click", () => $("#honest").classList.add("gone"));
 
-  /* ---------- Contactformulier ---------- */
+  /* ---------- Contact form ---------- */
   const form = $("#contactForm");
   const status = $("#formStatus");
   form.addEventListener("submit", async (e) => {
