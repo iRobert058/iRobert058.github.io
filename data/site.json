@@ -1,7 +1,7 @@
 {
   "name": "Robert Karzijn",
   "cvFile": "assets/cv-robert-karzijn.pdf",
-  "portraitImage": "assets/img/portrait.png",
+  "portraitImage": "assets/img/portrait.webp",
   "formEndpoint": "https://formspree.io/f/mykqonro",
   "socials": [
     { "label": "LinkedIn", "url": "https://www.linkedin.com/in/robert-karzijn-260696279" },

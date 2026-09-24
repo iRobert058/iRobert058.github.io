@@ -14,26 +14,27 @@
 
   /* ---------- Data laden ---------- */
   async function loadJSON(path) {
-    // "no-store" voorkomt dat de browser oude JSON uit de cache toont na een contentwijziging
-    const res = await fetch(path, { cache: "no-store" });
+    // "no-cache" laat de browser altijd hervalideren (ETag), zodat een contentwijziging direct
+    // zichtbaar is, maar ongewijzigde JSON niet opnieuw gedownload wordt
+    const res = await fetch(path, { cache: "no-cache" });
     if (!res.ok) throw new Error(`Kon ${path} niet laden (${res.status})`);
     return res.json();
   }
 
   let ui, site, highlights, projects, timeline, skills, certificates;
   try {
-    [site, highlights, projects, timeline, skills, certificates] = await Promise.all([
+    let nl, en;
+    [site, highlights, projects, timeline, skills, certificates, nl, en] = await Promise.all([
       loadJSON("data/site.json"),
       loadJSON("data/highlights.json"),
       loadJSON("data/projects.json"),
       loadJSON("data/timeline.json"),
       loadJSON("data/skills.json"),
       loadJSON("data/certificates.json"),
+      loadJSON("content/nl.json"),
+      loadJSON("content/en.json"),
     ]);
-    ui = {
-      nl: await loadJSON("content/nl.json"),
-      en: await loadJSON("content/en.json"),
-    };
+    ui = { nl, en };
   } catch (err) {
     console.error(err);
     document.body.insertAdjacentHTML(
@@ -96,7 +97,7 @@
     $("#projectsList").innerHTML = projects
       .map((p) => {
         const img = p.image
-          ? `<div class="pimg"><img src="${esc(p.image)}" alt="${esc(t(p.imageAlt))}" loading="lazy"></div>`
+          ? `<div class="pimg"><img src="${esc(p.image)}" alt="${esc(t(p.imageAlt))}" loading="lazy" decoding="async"></div>`
           : "";
         const chips = p.tech.map((c) => `<span class="chip">${esc(t(c))}</span>`).join("");
         const external = p.cta.url.startsWith("http");

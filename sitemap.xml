@@ -2,12 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://robertkarzijn.nl/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-09-24</lastmod>
+  </url>
+  <url>
+    <loc>https://robertkarzijn.nl/wkz-prototype.html</loc>
+    <lastmod>2026-09-24</lastmod>
   </url>
   <url>
     <loc>https://robertkarzijn.nl/privacy.html</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <lastmod>2026-09-01</lastmod>
   </url>
 </urlset>
