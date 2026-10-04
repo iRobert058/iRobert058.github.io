@@ -12,6 +12,7 @@
     "sub": "Masterstudent Human-Computer Interaction, met een bachelor Informatiekunde van Universiteit Utrecht. Ik voel me het meest thuis tussen partijen: stakeholders en gebruikers begrijpen, eisen vertalen naar ontwerp en mensen meenemen in het verhaal van onderzoek en sprekersacquisitie tot de winkelvloer bij Amac.",
     "cta_projects": "Bekijk mijn projecten",
     "cta_cv": "Download CV (PDF)",
+    "cta_github": "Bekijk mijn GitHub ↗",
     "honest": "Deze site gebruikt geen cookies, geen trackers en geen deceptive patterns en dat laatste is toevallig mijn onderzoeksgebied ;).",
     "honest_btn": "Duidelijk"
   },
@@ -32,10 +33,11 @@
   "projects": {
     "eyebrow": "Uitgelichte projecten",
     "title": "Van onderzoek tot podium",
-    "lead": "Drie projecten die laten zien hoe ik werk: empirisch onderzoek, ontwerpen met echte stakeholders en organiseren met een deadline.",
+    "lead": "Drie projecten die laten zien hoe ik werk: empirisch onderzoek, zelf een app ontwerpen en bouwen, en organiseren met een deadline.",
     "label_problem": "Probleem",
     "label_role": "Mijn rol",
-    "label_result": "Resultaat"
+    "label_result": "Resultaat",
+    "watch_trailer": "Bekijk de trailer"
   },
   "experience": {
     "eyebrow": "Ervaring & opleiding",

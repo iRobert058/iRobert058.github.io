@@ -96,9 +96,17 @@
     const L = ui[state.lang].projects;
     $("#projectsList").innerHTML = projects
       .map((p) => {
-        const img = p.image
-          ? `<div class="pimg"><img src="${esc(p.image)}" alt="${esc(t(p.imageAlt))}" loading="lazy" decoding="async"></div>`
+        const imgTag = p.image
+          ? `<img src="${esc(p.image)}" alt="${esc(t(p.imageAlt))}" loading="lazy" decoding="async">`
           : "";
+        // A video links out instead of embedding, so the page stays free of third-party cookies
+        const img = !p.image
+          ? ""
+          : p.video
+            ? `<a class="pimg pvideo" href="${esc(p.video)}" target="_blank" rel="noopener">${imgTag}
+                <span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>${esc(L.watch_trailer)}</span>
+              </a>`
+            : `<div class="pimg">${imgTag}</div>`;
         const chips = p.tech.map((c) => `<span class="chip">${esc(t(c))}</span>`).join("");
         const external = p.cta.url.startsWith("http");
         return `<article class="project reveal">
@@ -258,6 +266,9 @@
 
   /* ---------- Init ---------- */
   $("#cvBtn").href = site.cvFile;
+  const github = (site.socials || []).find((s) => s.label === "GitHub");
+  if (github) $("#githubBtn").href = github.url;
+  else $("#githubBtn").remove();
   $("#year").textContent = new Date().getFullYear();
   applyTheme();
   renderAll();

@@ -12,6 +12,7 @@
     "sub": "Master's student in Human-Computer Interaction, holding a bachelor's degree in Information Sciences from Utrecht University. I'm at my best in between parties: understanding stakeholders and users, translating requirements into design and bringing people along from research and speaker acquisition to the shop floor at Amac.",
     "cta_projects": "View my projects",
     "cta_cv": "Download CV (PDF)",
+    "cta_github": "View my GitHub ↗",
     "honest": "This site uses no cookies, no trackers and no deceptive patterns, the latter happens to be my field of research ;).",
     "honest_btn": "Got it"
   },
@@ -32,10 +33,11 @@
   "projects": {
     "eyebrow": "Featured projects",
     "title": "From research to the stage",
-    "lead": "Three projects that show how I work: empirical research, designing with real stakeholders, and organising against a deadline.",
+    "lead": "Three projects that show how I work: empirical research, designing and building an app myself, and organising against a deadline.",
     "label_problem": "Problem",
     "label_role": "My role",
-    "label_result": "Outcome"
+    "label_result": "Outcome",
+    "watch_trailer": "Watch the trailer"
   },
   "experience": {
     "eyebrow": "Experience & education",

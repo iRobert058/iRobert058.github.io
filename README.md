@@ -23,7 +23,6 @@ Deliberately **without frameworks or a build step**: vanilla HTML, CSS and JavaS
 ├── index.html                 # Structure (skeleton without content)
 ├── privacy.html               # Privacy statement (NL/EN)
 ├── 404.html                   # Custom 404 page (NL/EN)
-├── wkz-prototype.html         # Interactive WKZ alarm system concept prototype
 ├── docs/setup-overview.svg    # Diagram of the hosting setup
 ├── assets/
 │   ├── css/tokens.css         # All design tokens: colours, typography, spacing (light + dark)

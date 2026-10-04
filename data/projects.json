@@ -31,40 +31,38 @@
     }
   },
   {
-    "id": "wkz",
-    "tag": {
-      "nl": "Universiteit Utrecht × Wilhelmina Kinderziekenhuis · 2023-2024",
-      "en": "Utrecht University × Wilhelmina Children's Hospital · 2023-2024"
-    },
+    "id": "mobipad",
+    "tag": { "nl": "Eigen project · 2026", "en": "Personal project · 2026" },
     "title": {
-      "nl": "Slim alarmsysteem voor het WKZ",
-      "en": "Smart alarm system for the WKZ"
+      "nl": "MobiPad - je iPhone als gamecontroller",
+      "en": "MobiPad - your iPhone as a game controller"
     },
     "intro": {
-      "nl": "In opdracht van het Wilhelmina Kinderziekenhuis ontwierp ons projectteam een slim alarmsysteem, afgestemd op de eisen van de zorgpraktijk.",
-      "en": "Commissioned by the Wilhelmina Children's Hospital, our project team designed a smart alarm system tailored to the demands of clinical practice."
+      "nl": "MobiPad maakt van een iPhone een draadloze gamecontroller voor emulators op de Mac. Tot vier telefoons kunnen tegelijk meespelen, elk als eigen speler.",
+      "en": "MobiPad turns an iPhone into a wireless game controller for emulators on a Mac. Up to four phones can play at once, each as its own player."
     },
-    "image": "assets/img/project-wkz.webp",
+    "image": "assets/img/project-mobipad.webp",
     "imageAlt": {
-      "nl": "Eigen, illustratief prototype van het alarmsysteem-concept (nagebouwd; geen weergave van het opgeleverde ontwerp)",
-      "en": "My own illustrative prototype of the alarm system concept (a re-creation, not the delivered design)"
+      "nl": "Thumbnail van de MobiPad-trailer: \"Your iPhone is a game controller. For emulators on your Mac\", naast een iPhone met de controller-layout",
+      "en": "MobiPad trailer thumbnail: \"Your iPhone is a game controller. For emulators on your Mac\", next to an iPhone showing the controller layout"
     },
+    "video": "https://youtu.be/Zz7HWUbX5kM",
     "problem": {
-      "nl": "In een ziekenhuisomgeving strijden veel signalen om aandacht. Het systeem moest relevant alarmeren zonder zorgverleners te overladen, binnen de eisen die het WKZ stelde.",
-      "en": "In a hospital environment many signals compete for attention. The system had to alert meaningfully without overwhelming care staff, within the requirements set by the WKZ."
+      "nl": "Wie op de Mac wil gamen, heeft voor elke speler een fysieke controller nodig. Een systeembrede virtuele controller vereist bovendien een betaalde Apple-entitlement, dus de input moest via een andere route bij emulators als Dolphin, Cemu en Ryujinx komen.",
+      "en": "Gaming on a Mac needs a physical controller for every player. A system-wide virtual controller also requires a paid Apple entitlement, so the input had to reach emulators such as Dolphin, Cemu and Ryujinx another way."
     },
     "role": {
-      "nl": "Interactieontwerp binnen het projectteam: eisen van de opdrachtgever vertalen naar concepten, prototypes uitwerken en toetsen aan de praktijk.",
-      "en": "Interaction design within the project team: translating client requirements into concepts, developing prototypes and testing them against practice."
+      "nl": "Zelfstandig ontworpen en gebouwd: requirements, architectuur, de iPhone-app met drie controller-layouts (waaronder een Wii Remote met bewegingsbesturing), een Mac-menubalkapp en een versleuteld netwerkprotocol, inclusief geautomatiseerde tests.",
+      "en": "Designed and built on my own: requirements, architecture, the iPhone app with three controller layouts (including a Wii Remote with motion controls), a Mac menu bar app and an encrypted network protocol, with automated tests."
     },
     "result": {
-      "nl": "Een ontwerp dat aansloot op de gestelde eisen en positief werd ontvangen door de opdrachtgever.",
-      "en": "A design that met the stated requirements and was well received by the client."
+      "nl": "Een werkende app die op echte hardware is getest: een iPhone 16 Pro koppelt met de Mac en speelt in Dolphin, inclusief de Wii-aanwijzer via de gyroscoop. Open source onder de MIT-licentie.",
+      "en": "A working app tested on real hardware: an iPhone 16 Pro pairs with the Mac and plays in Dolphin, including the Wii pointer driven by the gyroscope. Open source under the MIT license."
     },
-    "tech": ["Interaction design", { "nl": "Requirements-analyse", "en": "Requirements analysis" }, "Prototyping", { "nl": "Stakeholdergesprekken", "en": "Stakeholder interviews" }],
+    "tech": ["Swift", "SwiftUI", "Core Motion", "Bonjour", "CryptoKit", { "nl": "UDP-netwerken", "en": "UDP networking" }],
     "cta": {
-      "label": { "nl": "Bekijk het interactieve prototype →", "en": "View the interactive prototype →" },
-      "url": "wkz-prototype.html"
+      "label": { "nl": "Bekijk MobiPad op GitHub →", "en": "View MobiPad on GitHub →" },
+      "url": "https://github.com/iRobert058/MobiPad"
     }
   },
   {
