@@ -47,6 +47,7 @@
   --band-line-strong: #74757C;
   --band-accent: #FF5C63;
   --band-accent-soft: #3A2124;
+  --band-edge: transparent;    /* hairline above/below a band: only needed in dark mode */
 
   /* Effects */
   --shadow: 0 1px 2px rgba(23, 24, 28, .06), 0 10px 30px rgba(23, 24, 28, .07);
@@ -129,6 +130,7 @@
   --band-line-strong: #66625A;
   --band-accent: #FF5C63;
   --band-accent-soft: #2A1D1C;
+  --band-edge: #2B2925;
 
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .35);
   --shadow-lg: 0 2px 6px rgba(0, 0, 0, .3), 0 28px 60px -12px rgba(0, 0, 0, .6);

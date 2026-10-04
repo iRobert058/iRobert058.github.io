@@ -53,6 +53,8 @@
   const $ = (sel) => document.querySelector(sel);
   const t = (value) => (value && typeof value === "object" ? value[state.lang] ?? value.nl : value);
   const uiText = (key) => key.split(".").reduce((obj, k) => (obj ? obj[k] : undefined), ui[state.lang]);
+  // Typography only: keep a spaced dash with the word before it, so a title never starts a line with "- "
+  const keepDash = (s) => String(s ?? "").replace(/ ([-–—]) /g, "\u00A0$1 ");
   const esc = (s) =>
     String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -131,38 +133,55 @@
       .join("");
   }
 
+  // Each project is a small case study: a (sticky) title column beside the visual and problem / role / result
   function renderProjects() {
     const L = ui[state.lang].projects;
+    const size = (p) => (p.imageWidth && p.imageHeight ? ` width="${Number(p.imageWidth)}" height="${Number(p.imageHeight)}"` : "");
     $("#projectsList").innerHTML = projects
-      .map((p) => {
-        const imgTag = p.image
-          ? `<img src="${esc(p.image)}" alt="${esc(t(p.imageAlt))}" loading="lazy" decoding="async">`
+      .map((p, i) => {
+        const img = p.image
+          ? `<img src="${esc(p.image)}" alt="${esc(t(p.imageAlt))}"${size(p)} loading="lazy" decoding="async">`
           : "";
         // A video links out instead of embedding, so the page stays free of third-party cookies
-        const img = !p.image
+        const visual = !img
           ? ""
           : p.video
-            ? `<a class="pimg pvideo" href="${esc(p.video)}" target="_blank" rel="noopener">${imgTag}
-                <span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>${esc(L.watch_trailer)}</span>
-              </a>`
-            : `<div class="pimg">${imgTag}</div>`;
-        const chips = p.tech.map((c) => `<span class="chip">${esc(t(c))}</span>`).join("");
+            ? `<a class="case-visual case-video" href="${esc(p.video)}" target="_blank" rel="noopener">${img}
+                <span class="case-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>${esc(L.watch_trailer)} ↗</span></a>`
+            : `<div class="case-visual">${img}</div>`;
         const external = p.cta.url.startsWith("http");
-        return `<article class="project reveal" id="project-${esc(p.id)}">
-          <span class="tag">${esc(t(p.tag))}</span>
-          <h3>${esc(t(p.title))}</h3>
-          <p class="intro">${esc(t(p.intro))}</p>
-          ${img}
-          <div class="pgrid">
-            <div class="pblock"><h4>${esc(L.label_problem)}</h4><p>${esc(t(p.problem))}</p></div>
-            <div class="pblock"><h4>${esc(L.label_role)}</h4><p>${esc(t(p.role))}</p></div>
+        const tags = p.tech.map((c) => `<li>${esc(t(c))}</li>`).join("");
+        return `<article class="case reveal" id="project-${esc(p.id)}">
+          <div class="case-side">
+            <p class="case-meta"><span class="case-no">${String(i + 1).padStart(2, "0")}</span>${esc(t(p.tag))}</p>
+            <h3>${esc(keepDash(t(p.title)))}</h3>
+            <p class="case-intro">${esc(t(p.intro))}</p>
+            <a class="case-cta" href="${esc(p.cta.url)}"${external ? ' target="_blank" rel="noopener"' : ""}>${esc(t(p.cta.label))}</a>
           </div>
-          <div class="chips">${chips}</div>
-          <div class="pblock presult"><h4>${esc(L.label_result)}</h4><p>${esc(t(p.result))}</p></div>
-          <a class="plink" href="${esc(p.cta.url)}"${external ? ' target="_blank" rel="noopener"' : ""}>${esc(t(p.cta.label))}</a>
+          <div class="case-main">
+            ${visual}
+            <dl class="case-facts">
+              <div><dt>${esc(L.label_problem)}</dt><dd>${esc(t(p.problem))}</dd></div>
+              <div><dt>${esc(L.label_role)}</dt><dd>${esc(t(p.role))}</dd></div>
+              <div><dt>${esc(L.label_result)}</dt><dd>${esc(t(p.result))}</dd></div>
+            </dl>
+            <ul class="tags">${tags}</ul>
+          </div>
         </article>`;
       })
       .join("");
+  }
+
+  // Full-bleed photo interludes (data/site.json → interludes), filled into the slots in order.
+  // Entries without a src are skipped; with none, the slots stay empty and take no space.
+  function renderInterludes() {
+    const photos = (site.interludes || []).filter((it) => it && it.src);
+    document.querySelectorAll(".interlude-slot").forEach((slot, i) => {
+      const it = photos[i];
+      slot.innerHTML = it
+        ? `<figure class="interlude"><img src="${esc(it.src)}" alt="${esc(t(it.alt) ?? "")}" width="${Number(it.width) || 2400}" height="${Number(it.height) || 1350}"${it.position ? ` style="object-position:${esc(it.position)}"` : ""} loading="lazy" decoding="async">${it.caption ? `<figcaption>${esc(t(it.caption))}</figcaption>` : ""}</figure>`
+        : "";
+    });
   }
 
   function renderTimeline() {
@@ -258,6 +277,7 @@
     renderAbout();
     renderPillars();
     renderProjects();
+    renderInterludes();
     renderTimeline();
     renderSkills();
     renderCertificates();

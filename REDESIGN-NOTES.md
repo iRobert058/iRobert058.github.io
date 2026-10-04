@@ -4,13 +4,13 @@ Branch `redesign/v2`, cut from `main` at `813bcf4` (V1.13). Nothing here touches
 
 ## Progress
 
-_Last update: 2026-10-05 02:05 CEST_
+_Last update: 2026-10-05 02:30 CEST_
 
 - [x] 1. Study the repo and the reference, write this brief
 - [x] 2a. Tokens, self-hosted fonts, base styles
 - [x] 2b. Nav (sticky, mobile menu) and hero (specimen demo, honest banner)
 - [x] 2c. Highlights, About (facts), pillars
-- [ ] 2d. Projects (ink band) and interludes
+- [x] 2d. Projects (ink band) and interludes
 - [ ] 2e. Experience timeline (groups, "Nu", details)
 - [ ] 2f. Skills (capabilities by pillar), certificates, contact (ink band, `_gotcha`)
 - [ ] 2g. Motion pass (scroll-driven reveals + fallback)
@@ -18,7 +18,7 @@ _Last update: 2026-10-05 02:05 CEST_
 - [ ] 4. Verification (matrix, keyboard, Lighthouse/axe, originality script), README
 - [ ] 5. Stretch: project detail pages
 
-**Next:** 2d (projects on an ink band, interludes). Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
+**Next:** 2e (experience timeline: groups, "Nu", details). Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
 **Half-finished:** nothing.
 
 ---
@@ -119,6 +119,11 @@ Reference: jopmors.com (studied 2026-10-05 via screenshots at 1440 and 390, plus
 | 16 | About facts in `content/*.json` → `about.facts: [{label, value}]` | Only the four facts the brief named, all taken from existing copy. Possible additions are under TODOs. |
 | 17 | The portrait `alt` is now translated (`about.portrait_alt`, via a new `data-t-alt` attribute) | It was hardcoded Dutch. The Dutch text is unchanged. |
 | 18 | Highlights restyled as a ruled four-up strip of "moments" with an arrow (→ in-page, ↗ external) | Copy and data unchanged. Still four columns, matching the "four moments" lead. |
+| 19 | Project meta line = the existing `tag` ("Bachelorthesis · 2026"), prefixed with the case number | The tag already is a type · year line. Splitting it into new `year` / `type` fields would duplicate data you'd have to keep in sync. |
+| 20 | Optional `imageWidth` / `imageHeight` in `projects.json` (set for all three) | Gives every project image width/height attributes (no layout shift). Projects without them still render. |
+| 21 | Projects keep linking out to the trailer (no embed); the play pill now says "Bekijk de trailer ↗" | No third-party embeds. The ↗ signals it leaves the site. |
+| 22 | `site.json` → `"interludes": []` with three fixed slots (before Projecten, between Ervaring and Vaardigheden, before Contact), filled in order | Predictable placement without a positioning field. Empty slots take no space. Tested by serving a modified `site.json` in the browser, so the repo was never touched. |
+| 23 | Ink band in dark mode is *deeper* than the page (#0A0A09 vs #12110F) with hairlines (`--band-edge`) | A slightly lighter band read as a card; the deeper one keeps the letterbox feel. |
 | 13 | Specimen product: a drawn instant camera at "€ 89,95" on `shop.example` (a reserved example domain) | Neutral and recognisably a shop, with the brand red as the camera stripe. It's a nod to the photography without claiming anything. |
 
 ## Copy to review (NL + EN)
@@ -180,6 +185,20 @@ Every claim in the pillar texts is lifted from `projects.json` / `timeline.json`
 
 ## TODOs for Robert
 
+- **Interlude photos** (`data/site.json` → `interludes`). Add up to three entries; they fill these slots in order:
+  1. between *Werkwijze* and *Projecten* (leads into the dark band)
+  2. between *Ervaring* and *Vaardigheden*
+  3. right before *Contact*.
+
+  Entry shape: `{ "src": "assets/img/interlude-1.webp", "alt": { "nl": "…", "en": "…" }, "width": 2400, "height": 1350, "position": "50% 40%", "caption": { "nl": "…", "en": "…" } }`. Only `src` and `alt` are needed; use `""` alt for a purely atmospheric photo.
+
+  **Export:** landscape **16:9 at 2400 × 1350 px**, WebP at about q78, ideally ≤ 300 KB:
+
+  ```
+  cwebp -q 78 -resize 2400 0 photo.jpg -o assets/img/interlude-1.webp
+  ```
+
+  Desktop shows a 21:9 crop, which loses about 12% at the top and bottom. Phones show 4:3, which crops the sides. Keep the subject near the centre, or set `position`.
 - **About facts:** the list has only the four facts the brief named. Possible additions if you want them: where you're based (city), what you're open to (internship, part-time role, thesis project) and since when, or your research focus in one line.
 
 ## Known issues

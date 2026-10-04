@@ -196,12 +196,17 @@ document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark
   </div>
 </section>
 
-<section id="projecten">
+<!-- Interlude slots: full-bleed photos from data/site.json → interludes, filled in order; empty slots render nothing -->
+<div class="interlude-slot"></div>
+
+<section id="projecten" class="sec band">
   <div class="wrap">
-    <span class="eyebrow" data-t="projects.eyebrow"></span>
-    <h2 data-t="projects.title"></h2>
-    <p class="lead" data-t="projects.lead"></p>
-    <div id="projectsList"></div>
+    <header class="sec-head">
+      <p class="eyebrow"><span class="sec-no" aria-hidden="true"></span><span data-t="projects.eyebrow"></span></p>
+      <h2 data-t="projects.title"></h2>
+      <p class="lead" data-t="projects.lead"></p>
+    </header>
+    <div class="cases" id="projectsList"></div>
   </div>
 </section>
 
@@ -213,6 +218,8 @@ document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark
     <div class="timeline" id="timelineList"></div>
   </div>
 </section>
+
+<div class="interlude-slot"></div>
 
 <section id="vaardigheden">
   <div class="wrap">
@@ -237,6 +244,8 @@ document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark
     <div id="certList"></div>
   </div>
 </section>
+
+<div class="interlude-slot"></div>
 
 <section id="contact">
   <div class="wrap">
