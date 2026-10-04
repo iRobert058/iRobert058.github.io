@@ -184,18 +184,55 @@
     });
   }
 
+  // One list, file order (newest first). Entries that share a "group" become one card that shows the
+  // progression oldest → newest; descriptions sit in native <details>; "present" entries get a "Nu" marker.
   function renderTimeline() {
     const L = ui[state.lang].experience;
+    const when = (p) => (p.from === p.to ? p.from : `${p.from} — ${p.to === "present" ? L.present : p.to}`);
+    const now = (p) => (p.to === "present" ? `<span class="tl-now">${esc(L.now)}</span>` : "");
+    const more = (item) =>
+      `<details class="tl-more"><summary>${esc(L.details)}<span class="sr-only">: ${esc(t(item.title))}</span></summary>
+        <p>${esc(t(item.description))}</p></details>`;
+    const kind = (item) => esc(L.kinds[item.kind] ?? item.kind);
+    const done = new Set();
     $("#timelineList").innerHTML = timeline
       .map((item) => {
-        const to = item.period.to === "present" ? L.present : item.period.to;
-        const when = item.period.from === item.period.to ? item.period.from : `${item.period.from} — ${to}`;
-        return `<div class="titem reveal">
-          <span class="when">${esc(when)}</span><span class="kind">${esc(L.kinds[item.kind] ?? item.kind)}</span>
-          <h3>${esc(t(item.title))}</h3>
-          <div class="org">${esc(item.org)}</div>
-          <p>${esc(t(item.description))}</p>
-        </div>`;
+        if (!item.group) {
+          return `<li class="tl-row reveal">
+            <p class="tl-when">${esc(when(item.period))}${now(item.period)}</p>
+            <div class="tl-body">
+              <p class="tl-kind">${kind(item)}</p>
+              <h3>${esc(t(item.title))}</h3>
+              <p class="tl-org">${esc(item.org)}</p>
+              ${more(item)}
+            </div>
+          </li>`;
+        }
+        if (done.has(item.group)) return "";
+        done.add(item.group);
+        const steps = timeline.filter((x) => x.group === item.group).reverse(); // oldest first
+        const span = {
+          from: steps[0].period.from,
+          to: steps.some((x) => x.period.to === "present") ? "present" : steps[steps.length - 1].period.to,
+        };
+        return `<li class="tl-row tl-group reveal">
+          <p class="tl-when">${esc(when(span))}${now(span)}</p>
+          <div class="tl-body">
+            <p class="tl-kind">${kind(item)} · ${esc(L.growth)}</p>
+            <h3>${esc(item.org)}</h3>
+            <ol class="tl-steps" style="--steps: ${steps.length}">
+              ${steps
+                .map(
+                  (x, i) => `<li class="tl-step${x.period.to === "present" ? " is-now" : ""}" style="--step: ${i}">
+                    <span class="tl-step-when">${esc(when(x.period))}</span>
+                    <span class="tl-step-title">${esc(t(x.title))}</span>
+                    ${more(x)}
+                  </li>`
+                )
+                .join("")}
+            </ol>
+          </div>
+        </li>`;
       })
       .join("");
   }

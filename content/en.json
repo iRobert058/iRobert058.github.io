@@ -89,6 +89,9 @@
     "title": "My route so far",
     "lead": "Study and work deliberately run in parallel for me: research and theory at university, responsibility in practice.",
     "present": "present",
+    "now": "Current",
+    "details": "Details",
+    "growth": "Growth",
     "kinds": {
       "work": "Work",
       "education": "Education",

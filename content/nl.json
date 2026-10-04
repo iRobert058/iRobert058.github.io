@@ -89,6 +89,9 @@
     "title": "Mijn route tot nu toe",
     "lead": "Studie en werk lopen bij mij bewust parallel: onderzoek en theorie aan de universiteit, verantwoordelijkheid in de praktijk.",
     "present": "heden",
+    "now": "Nu",
+    "details": "Details",
+    "growth": "Doorgroei",
     "kinds": {
       "work": "Werk",
       "education": "Opleiding",

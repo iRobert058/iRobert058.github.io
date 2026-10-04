@@ -210,12 +210,14 @@ document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark
   </div>
 </section>
 
-<section id="ervaring">
+<section id="ervaring" class="sec">
   <div class="wrap">
-    <span class="eyebrow" data-t="experience.eyebrow"></span>
-    <h2 data-t="experience.title"></h2>
-    <p class="lead" data-t="experience.lead"></p>
-    <div class="timeline" id="timelineList"></div>
+    <header class="sec-head">
+      <p class="eyebrow"><span class="sec-no" aria-hidden="true"></span><span data-t="experience.eyebrow"></span></p>
+      <h2 data-t="experience.title"></h2>
+      <p class="lead" data-t="experience.lead"></p>
+    </header>
+    <ol class="timeline" id="timelineList"></ol>
   </div>
 </section>
 

@@ -4,21 +4,21 @@ Branch `redesign/v2`, cut from `main` at `813bcf4` (V1.13). Nothing here touches
 
 ## Progress
 
-_Last update: 2026-10-05 02:30 CEST_
+_Last update: 2026-10-05 02:50 CEST_
 
 - [x] 1. Study the repo and the reference, write this brief
 - [x] 2a. Tokens, self-hosted fonts, base styles
 - [x] 2b. Nav (sticky, mobile menu) and hero (specimen demo, honest banner)
 - [x] 2c. Highlights, About (facts), pillars
 - [x] 2d. Projects (ink band) and interludes
-- [ ] 2e. Experience timeline (groups, "Nu", details)
+- [x] 2e. Experience timeline (groups, "Nu", details)
 - [ ] 2f. Skills (capabilities by pillar), certificates, contact (ink band, `_gotcha`)
 - [ ] 2g. Motion pass (scroll-driven reveals + fallback)
 - [ ] 3. Hardening (meta, JSON-LD, noscript, robots, 404, privacy page fonts)
 - [ ] 4. Verification (matrix, keyboard, Lighthouse/axe, originality script), README
 - [ ] 5. Stretch: project detail pages
 
-**Next:** 2e (experience timeline: groups, "Nu", details). Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
+**Next:** 2f (skills grouped by pillar, certificates, contact band with `_gotcha`, footer). Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
 **Half-finished:** nothing.
 
 ---
@@ -124,6 +124,9 @@ Reference: jopmors.com (studied 2026-10-05 via screenshots at 1440 and 390, plus
 | 21 | Projects keep linking out to the trailer (no embed); the play pill now says "Bekijk de trailer ↗" | No third-party embeds. The ↗ signals it leaves the site. |
 | 22 | `site.json` → `"interludes": []` with three fixed slots (before Projecten, between Ervaring and Vaardigheden, before Contact), filled in order | Predictable placement without a positioning field. Empty slots take no space. Tested by serving a modified `site.json` in the browser, so the repo was never touched. |
 | 23 | Ink band in dark mode is *deeper* than the page (#0A0A09 vs #12110F) with hairlines (`--band-edge`) | A slightly lighter band read as a card; the deeper one keeps the letterbox feel. |
+| 24 | `timeline.json` gains an optional `group` (set to `"amac"` on the three Amac roles). Grouped entries render as **one card at the position of the newest one**, with the roles oldest → newest as a staircase. | It turns the Junior → Medior → Senior growth into one visual feature. Any future group (e.g. two roles at the UU) works the same way, with no code change. |
+| 25 | Descriptions sit in native `<details>`, closed by default. Each summary reads "Details" plus a screen-reader-only ": <role title>". | The list stays scannable. Nine identical "Details" buttons would be ambiguous for screen-reader users without the title. |
+| 26 | "Nu" marker = any entry (or group) whose `to` is `"present"` | Derived from data, so nothing to maintain. |
 | 13 | Specimen product: a drawn instant camera at "€ 89,95" on `shop.example` (a reserved example domain) | Neutral and recognisably a shop, with the brand red as the camera stripe. It's a nod to the photography without claiming anything. |
 
 ## Copy to review (NL + EN)
@@ -180,6 +183,14 @@ All new strings are in `content/nl.json` / `content/en.json` unless noted. They'
 | 03 title | Organiseren | Organise |
 | 03 promise | Mensen meenemen, ook als de deadline dichtbij komt. | Bringing people along, even when the deadline gets close. |
 | 03 text | Bij exec(ut) werfde en begeleidde ik de sprekers van de studenten-techconferentie, van eerste mail tot podium. Bij Amac ben ik als Daily Operations Lead het aanspreekpunt voor het team. | At exec(ut) I recruited and supported the speakers of the student tech conference, from first email to stage. At Amac, as Daily Operations Lead, I'm the point of contact for the team. |
+
+**Experience** (`experience.*`)
+
+| Key | NL | EN |
+|---|---|---|
+| `now` (marker) | Nu | Current |
+| `details` (disclosure) | Details | Details |
+| `growth` (label on the Amac card) | Doorgroei | Growth |
 
 Every claim in the pillar texts is lifted from `projects.json` / `timeline.json`. Note that the research text describes the experiment and doesn't state a finding.
 
