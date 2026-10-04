@@ -14,7 +14,10 @@
     "cta_cv": "Download CV (PDF)",
     "cta_github": "Bekijk mijn GitHub ↗",
     "honest": "Deze site gebruikt geen cookies, geen trackers en geen deceptive patterns en dat laatste is toevallig mijn onderzoeksgebied ;).",
-    "honest_btn": "Duidelijk"
+    "honest_btn": "Duidelijk",
+    "video_pause": "Intro pauzeren",
+    "video_play": "Intro afspelen",
+    "video_replay": "Intro opnieuw afspelen"
   },
   "highlights": {
     "eyebrow": "Hoogtepunten",

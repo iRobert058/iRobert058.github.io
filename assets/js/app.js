@@ -12,6 +12,37 @@
     theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
   };
 
+  /* ---------- Hero video ---------- */
+  // Started before the content loads, so the intro never waits on the JSON
+  const heroVideo = document.getElementById("heroVideo");
+  const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches || navigator.connection?.saveData;
+  if (calm) heroVideo.poster = heroVideo.dataset.posterEnd; // rest on the finished title; the button still plays it
+  else heroVideo.play().catch(() => {}); // autoplay can be refused (e.g. Low Power Mode); the button then offers play
+
+  /* ---------- Hero scroll ---------- */
+  // The page sheet slides up over the pinned video. --p runs from 0 to 1 until the sheet covers it;
+  // the CSS lets the video recede with it, and the nav stays transparent while it floats over the video.
+  const heroStage = document.getElementById("heroStage");
+  const pageSheet = document.getElementById("pageSheet");
+  const nav = document.querySelector("nav");
+  let scrollQueued = false;
+  function updateHeroScroll() {
+    scrollQueued = false;
+    // The sheet starts at offsetTop, so it has covered the video once the page has scrolled that far
+    const p = Math.min(Math.max(scrollY / pageSheet.offsetTop, 0), 1);
+    heroStage.style.setProperty("--p", p.toFixed(3));
+    heroStage.classList.toggle("covered", p === 1);
+    nav.classList.toggle("on-stage", p < 0.5); // past halfway the faded video is too light for white nav text
+  }
+  const queueHeroScroll = () => {
+    if (scrollQueued) return;
+    scrollQueued = true;
+    requestAnimationFrame(updateHeroScroll);
+  };
+  addEventListener("scroll", queueHeroScroll, { passive: true });
+  addEventListener("resize", queueHeroScroll);
+  updateHeroScroll();
+
   /* ---------- Load data ---------- */
   async function loadJSON(path) {
     // "no-cache" makes the browser always revalidate (ETag), so content changes show up
@@ -169,6 +200,14 @@
       .join("");
   }
 
+  function renderVideoButton() {
+    const s = heroVideo.ended ? "ended" : heroVideo.paused ? "paused" : "playing";
+    const label = uiText({ playing: "hero.video_pause", paused: "hero.video_play", ended: "hero.video_replay" }[s]);
+    heroStage.dataset.state = s;
+    videoBtn.setAttribute("aria-label", label);
+    videoBtn.title = label;
+  }
+
   function renderSocials() {
     $("#socialLinks").innerHTML = (site.socials || [])
       .map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`)
@@ -189,7 +228,7 @@
   );
 
   function observeReveals() {
-    document.querySelectorAll(".reveal, .skills-grid").forEach((el) => io.observe(el));
+    document.querySelectorAll(".reveal, .skills-grid, .hero h1 em").forEach((el) => io.observe(el));
   }
 
   function renderAll() {
@@ -201,6 +240,7 @@
     renderSkills();
     renderCertificates();
     renderSocials();
+    renderVideoButton();
     observeReveals();
   }
 
@@ -223,6 +263,13 @@
     state.theme = state.theme === "dark" ? "light" : "dark";
     applyTheme();
   });
+
+  /* ---------- Hero video controls ---------- */
+  // Pause/play/replay: the intro moves for longer than 5 seconds, so it must be stoppable (WCAG 2.2.2)
+  const videoBtn = $("#heroVideoBtn");
+  ["play", "pause", "ended"].forEach((type) => heroVideo.addEventListener(type, renderVideoButton));
+  // play() on an ended video starts it from the beginning, which covers replay
+  videoBtn.addEventListener("click", () => (heroVideo.paused ? heroVideo.play().catch(() => {}) : heroVideo.pause()));
 
   /* ---------- Honest banner ---------- */
   $("#honestBtn").addEventListener("click", () => $("#honest").classList.add("gone"));

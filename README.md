@@ -12,6 +12,7 @@ A single static page that serves as a digital business card for employers, clien
 - **Dark mode**: follows the system preference (`prefers-color-scheme`) automatically and can be toggled manually.
 - **Content sections**: hero, highlights, about me, featured projects (problem / role / techniques / result), a combined timeline of work and education, skills and languages, and a contact form. A certificates section appears automatically as soon as certificates are present in the data.
 - **Contact form without visible personal details**: messages go through a configurable endpoint (Formspree-compatible); no email address or phone number is shown on the site, to protect my privacy.
+- **Intro video in the hero**: a short, silent, self-hosted intro animation fills the first screen, plays once and then rests on its final title. On scroll, the rest of the page slides up over it like a sheet while the video shrinks slightly and fades into the page. It has a pause/play/replay button. With `prefers-reduced-motion` the video doesn't autoplay (it shows the final frame) and simply scrolls away without the effect; Data Saver also turns off autoplay.
 - **Subtle micro-animations**: animated skill bars and a drawn accent underline in the hero. `prefers-reduced-motion` is respected.
 - **No cookies, no trackers and no deceptive patterns**: a deliberate choice that ties in with my research field, and the wink behind the "cookie banner" on the site.
 
@@ -28,7 +29,8 @@ Deliberately **without frameworks or a build step**: vanilla HTML, CSS and JavaS
 │   ├── css/tokens.css         # All design tokens: colours, typography, spacing (light + dark)
 │   ├── css/main.css           # Component styles, built on the tokens
 │   ├── js/app.js              # Loads JSON, renders sections, handles i18n / theme / form
-│   └── img/                   # Images (WebP, max ~1600px wide)
+│   ├── img/                   # Images (WebP, max ~1600px wide), incl. the hero video posters
+│   └── video/                 # Hero intro video (AV1 + H.264 fallback)
 ├── content/                   # UI strings & "About me" per language (nl.json, en.json)
 └── data/                      # Structured content: projects, timeline, skills,
                                # highlights, certificates, site config
@@ -58,6 +60,21 @@ Keep images small: export as WebP at no more than ~1600px wide (960px for the po
 ```bash
 cwebp -q 80 -resize 1600 0 input.jpg -o assets/img/project-name.webp
 ```
+
+### Replacing the hero video
+
+The hero plays `assets/video/hero-intro-av1.mp4` (AV1, smallest, picked by browsers that support it) with `assets/video/hero-intro.mp4` (H.264) as the fallback for everything else. The posters are `assets/img/hero-start.webp` (first frame, shown while loading) and `assets/img/hero-end.webp` (final frame, shown instead of the animation with reduced motion). Keep the video silent, centred and ending on a still frame, since it stops on its last frame. With [ffmpeg](https://ffmpeg.org) (`brew install ffmpeg`), from a source render `intro.mp4`:
+
+```bash
+# Optional: -ss/-to trim the source (the current video uses -ss 0.5 -to 13.8 to skip the empty start and the fade-out)
+VF="format=yuv420p,setparams=colorspace=bt709:color_primaries=bt709:color_trc=iec61966-2-1"
+ffmpeg -i intro.mp4 -an -vf "$VF" -c:v libsvtav1 -preset 4 -crf 34 -movflags +faststart assets/video/hero-intro-av1.mp4
+ffmpeg -i intro.mp4 -an -vf "$VF" -c:v libx264 -preset veryslow -tune animation -crf 24 -movflags +faststart assets/video/hero-intro.mp4
+ffmpeg -i intro.mp4 -frames:v 1 -quality 82 assets/img/hero-start.webp
+ffmpeg -sseof -0.1 -i intro.mp4 -frames:v 1 -quality 82 assets/img/hero-end.webp
+```
+
+`-an` drops the audio (a muted hero never plays it), and the sRGB tag keeps the video's colours matching the page in Safari and Chrome. If the new video's edges are a different colour, update `--stage-bg` in `tokens.css`.
 
 ## Running locally
 

@@ -14,6 +14,11 @@
   --accent-contrast: #FFFFFF;
   --accent-soft: #FCEDEE;
 
+  /* Hero video stage — always dark, matched to the intro video in both themes */
+  --stage-bg: #0D0F10;
+  --stage-ink: #ECECEA;
+  --stage-accent: #FF5C63;
+
   /* Effects */
   --shadow: 0 2px 8px rgba(23, 24, 28, .05), 0 12px 32px rgba(23, 24, 28, .06);
 

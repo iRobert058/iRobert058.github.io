@@ -14,7 +14,10 @@
     "cta_cv": "Download CV (PDF)",
     "cta_github": "View my GitHub ↗",
     "honest": "This site uses no cookies, no trackers and no deceptive patterns, the latter happens to be my field of research ;).",
-    "honest_btn": "Got it"
+    "honest_btn": "Got it",
+    "video_pause": "Pause intro",
+    "video_play": "Play intro",
+    "video_replay": "Replay intro"
   },
   "highlights": {
     "eyebrow": "Highlights",

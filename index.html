@@ -62,7 +62,7 @@
   </p>
 </noscript>
 
-<nav>
+<nav class="on-stage">
   <div class="nav-inner">
     <a class="logo" href="#top"><span class="dot"></span><span data-site="name">Robert Karzijn</span></a>
     <div class="nav-links">
@@ -79,7 +79,24 @@
   </div>
 </nav>
 
-<header class="hero" id="top">
+<!-- Pinned intro video; the page sheet below slides up over it. The logo's "#top" link (no such id) scrolls to the very top, here. -->
+<div class="hero-stage" id="heroStage">
+  <!-- Decorative intro: the name and field it shows are repeated as text right below -->
+  <video id="heroVideo" muted playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-hidden="true"
+         poster="assets/img/hero-start.webp" data-poster-end="assets/img/hero-end.webp">
+    <source src="assets/video/hero-intro-av1.mp4" type='video/mp4; codecs="av01.0.08M.08"'>
+    <source src="assets/video/hero-intro.mp4" type='video/mp4; codecs="avc1.640028"'>
+  </video>
+  <button class="stage-btn" id="heroVideoBtn" type="button">
+    <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
+    <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    <svg class="i-replay" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>
+  </button>
+</div>
+
+<div class="page-sheet" id="pageSheet">
+
+<header class="hero">
   <div class="wrap">
     <span class="eyebrow" data-t="hero.eyebrow"></span>
     <h1 data-t-html="hero.title"></h1>
@@ -197,6 +214,8 @@
     <div class="foot-note" data-t="footer.note"></div>
   </div>
 </footer>
+
+</div><!-- /.page-sheet -->
 
 </body>
 </html>

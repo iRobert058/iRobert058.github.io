@@ -28,7 +28,21 @@ nav {
   background: color-mix(in srgb, var(--bg) 82%, transparent);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
+  transition: background .3s, border-color .3s, color .3s;
 }
+/* While the nav floats over the intro video (set by app.js) */
+nav.on-stage {
+  background: transparent; border-bottom-color: transparent; color: var(--stage-ink);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+nav.on-stage .logo .dot { background: var(--stage-accent); }
+nav.on-stage .nav-links a { color: color-mix(in srgb, var(--stage-ink) 72%, transparent); }
+nav.on-stage .nav-links a:hover { color: var(--stage-ink); }
+nav.on-stage .pill {
+  color: var(--stage-ink); background: color-mix(in srgb, var(--stage-ink) 8%, transparent);
+  border-color: color-mix(in srgb, var(--stage-ink) 22%, transparent);
+}
+nav.on-stage .pill:hover { border-color: var(--stage-accent); }
 .nav-inner { max-width: var(--maxw); margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 20px; }
 .logo { font-family: var(--font-display); font-weight: 700; font-size: 19px; text-decoration: none; display: flex; align-items: center; gap: 10px; }
 .logo .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
@@ -39,14 +53,64 @@ nav {
 .pill {
   font-family: var(--font-mono); font-size: 13px; border: 1px solid var(--line);
   background: var(--surface); color: var(--ink); border-radius: 99px;
-  padding: 6px 14px; cursor: pointer; transition: border-color .2s, transform .15s;
+  padding: 6px 14px; cursor: pointer; transition: border-color .2s, background .3s, color .3s, transform .15s;
 }
 .pill:hover { border-color: var(--accent); }
 .pill:active { transform: scale(.96); }
 @media (max-width: 760px) { .nav-links { display: none; } }
 
 /* ---------- Hero ---------- */
-.hero { padding: 190px 0 110px; }
+/* The intro video is pinned to the top of the page and the rest of the page (.page-sheet) slides up
+   over it. app.js sets --p from 0 to 1 while the sheet travels up, and the video recedes with it. */
+:root { --sheet-peek: 40px; } /* how far the sheet's edge shows on the first screen, as a cue to scroll */
+.hero-stage {
+  position: sticky; top: 0; overflow: hidden; background: var(--stage-bg);
+  /* Full screen, but never narrower than square: the title sits in the middle half of the video,
+     so cover only ever trims empty edges */
+  height: min(100svh, 100vw); min-height: 320px;
+  transform-origin: 50% 0;
+}
+.hero-stage.covered { visibility: hidden; } /* fully under the sheet: skip painting it, and its button leaves the tab order */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-stage {
+    --p2: calc(var(--p, 0) * var(--p, 0));
+    transform: scale(calc(1 - .08 * var(--p, 0)));
+    border-radius: calc(36px * var(--p, 0));
+    /* Stays crisp while the sheet covers it, then dissolves into the page over the last stretch (p⁴) */
+    opacity: calc(1 - .9 * var(--p2) * var(--p2));
+  }
+}
+@media (prefers-reduced-motion: reduce) { .hero-stage { position: relative; } } /* no pinning: everything scrolls together */
+.hero-stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.stage-btn {
+  position: absolute; right: 20px; bottom: calc(var(--sheet-peek) + 20px); width: 40px; height: 40px;
+  display: grid; place-items: center; cursor: pointer; border-radius: 50%;
+  color: var(--stage-ink); background: color-mix(in srgb, var(--stage-bg) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--stage-ink) 18%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  opacity: .7; transition: opacity .2s, border-color .2s, transform .15s;
+}
+.stage-btn:hover, .stage-btn:focus-visible { opacity: 1; border-color: var(--stage-accent); }
+.stage-btn:focus-visible { outline: 2px solid var(--stage-accent); outline-offset: 3px; }
+.stage-btn:active { transform: scale(.94); }
+.stage-btn svg { width: 16px; height: 16px; fill: currentColor; display: none; }
+.hero-stage:not([data-state]) .stage-btn { visibility: hidden; } /* until app.js knows the state */
+.hero-stage[data-state="playing"] .i-pause,
+.hero-stage[data-state="paused"] .i-play,
+.hero-stage[data-state="ended"] .i-replay { display: block; }
+
+.page-sheet {
+  position: relative; z-index: 1; margin-top: calc(-1 * var(--sheet-peek));
+  background: var(--bg); border-radius: 32px 32px 0 0; transition: background .3s;
+  box-shadow: 0 -1px 0 var(--line), 0 -24px 64px rgba(0, 0, 0, .28);
+}
+@media (max-width: 700px) {
+  :root { --sheet-peek: 28px; }
+  .page-sheet { border-radius: 24px 24px 0 0; }
+  .stage-btn { right: 12px; bottom: calc(var(--sheet-peek) + 12px); width: 36px; height: 36px; }
+}
+
+.hero { padding: 104px 0 110px; }
 .hero h1 {
   font-family: var(--font-display); font-weight: 700; letter-spacing: -.02em;
   font-size: clamp(44px, 8vw, 84px); line-height: 1.04; margin-bottom: 26px;
@@ -55,8 +119,9 @@ nav {
 .hero h1 em::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: .04em; height: .09em;
   background: var(--accent); border-radius: 99px; transform: scaleX(0); transform-origin: left;
-  animation: drawline 1s .6s var(--ease) forwards;
 }
+/* The headline now sits below the video, so the underline draws once it scrolls into view */
+.hero h1 em.in::after { animation: drawline 1s .3s var(--ease) forwards; }
 @keyframes drawline { to { transform: scaleX(1); } }
 .hero .sub { font-size: 19px; color: var(--muted); max-width: 620px; margin-bottom: 40px; }
 .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
@@ -225,4 +290,5 @@ footer .foot-note { font-family: var(--font-mono); font-size: 12.5px; margin-top
   *, *::before, *::after { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; }
+  .hero h1 em::after { transform: none; }
 }
