@@ -4,11 +4,11 @@ Branch `redesign/v2`, cut from `main` at `813bcf4` (V1.13). Nothing here touches
 
 ## Progress
 
-_Last update: 2026-10-05 00:51 CEST_
+_Last update: 2026-10-05 01:40 CEST_
 
 - [x] 1. Study the repo and the reference, write this brief
-- [ ] 2a. Tokens, self-hosted fonts, base styles
-- [ ] 2b. Nav (sticky, mobile menu) and hero (specimen demo, honest banner)
+- [x] 2a. Tokens, self-hosted fonts, base styles
+- [x] 2b. Nav (sticky, mobile menu) and hero (specimen demo, honest banner)
 - [ ] 2c. Highlights, About (facts), pillars
 - [ ] 2d. Projects (ink band) and interludes
 - [ ] 2e. Experience timeline (groups, "Nu", details)
@@ -18,7 +18,7 @@ _Last update: 2026-10-05 00:51 CEST_
 - [ ] 4. Verification (matrix, keyboard, Lighthouse/axe, originality script), README
 - [ ] 5. Stretch: project detail pages
 
-**Next:** 2a.
+**Next:** 2c (highlights, About facts, pillars). Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
 **Half-finished:** nothing.
 
 ---
@@ -107,10 +107,42 @@ Reference: jopmors.com (studied 2026-10-05 via screenshots at 1440 and 390, plus
 | 3 | Replaced `localStorage` with a `?lang=en` URL parameter | Runtime rule: nothing stored. Language still survives reloads and links to the privacy page. |
 | 4 | Pillars section titled "Werkwijze" / "How I work", not "Wat ik doe" | "Wat ik doe" translates the reference's "What I do" label, which the originality rule forbids. It's a working label. |
 | 5 | Kept README in English | V1.10 translated it on purpose. See "Read this first". |
+| 6 | Three reds instead of one: `--accent` #E23C46 for graphics, `--accent-ink` #BD2C37 for small red text, `--accent-fill` #D02F3A for buttons. Dark mode keeps #FF5C63, with dark text on its buttons. | The live site fails AA here. White on #E23C46 is 4.23:1, and the red 13px eyebrows on the old background are 4.12:1 (4.5 needed). The new shades pass at 5.06:1 (button) and 5.25:1 (eyebrow on paper). Dark-mode button text is 6.26:1. |
+| 7 | Theme set by a 2-line inline script in `<head>`, before first paint | The old page painted light first and switched after the JSON loaded, a flash for dark-mode visitors. It still follows the system live (a `change` listener) until the visitor clicks the toggle. That choice lasts for the visit only. |
+| 8 | Language and theme toggles: NL/EN as a segmented pair of `aria-pressed` buttons, theme as one `aria-pressed` "Donkere modus" button | A single "EN" button that flips to "NL" can't carry `aria-pressed` honestly, because its name would change with its state. |
+| 9 | The compact nav (Menu disclosure) kicks in at **860px**, not 760px | At 761–860px the Dutch links, the Contact pill and both toggles don't fit on one line. Below 760px is covered as asked. |
+| 10 | Menu follows the WAI-ARIA disclosure pattern | Focus stays on the button and Tab moves into the menu. Esc closes and returns focus; a link, a click outside or focus leaving the bar also closes it. |
+| 11 | The headline spans the full width, with the copy and Fig. 1 side by side below it | The existing headline needs about 900px at display size. At 1440×900 the full demo, control included, stays in the first screen. On phones the forced `<br>` is ignored so the line wraps naturally. |
+| 12 | "Bekijk mijn GitHub ↗" styled as a text link, not a third button | Three buttons wrapped awkwardly; the CV and projects buttons stay primary and secondary. |
+| 13 | Specimen product: a drawn instant camera at "€ 89,95" on `shop.example` (a reserved example domain) | Neutral and recognisably a shop, with the brand red as the camera stripe. It's a nod to the photography without claiming anything. |
 
 ## Copy to review (NL + EN)
 
-_Filled in as sections land._
+All new strings are in `content/nl.json` / `content/en.json` unless noted. They're drafts; change freely.
+
+**Nav** (`nav.*`)
+
+| Key | NL | EN |
+|---|---|---|
+| `skip` | Naar de inhoud | Skip to content |
+| `menu` | Menu | Menu |
+| `label` (aria-label of the nav) | Hoofdnavigatie | Main navigation |
+| `language` (aria-label of NL/EN) | Taal | Language |
+| `theme` (aria-label of the toggle) | Donkere modus | Dark mode |
+
+**Hero demo, Fig. 1** (`hero.demo.*`)
+
+| Key | NL | EN |
+|---|---|---|
+| `button` | Simuleer een volgend bezoek | Simulate a return visit |
+| `caption` | Gewoonte laat je klikken waar de knop stond: dat is wat mijn scriptie onderzoekt. | Habit makes you click where the button used to be: that's what my thesis studies. |
+| `moved` (screen readers only, announced) | Bezoek {n}: de knop staat ergens anders. | Visit {n}: the button has moved. |
+| `visit` (pill in the address bar) | bezoek {n} | visit {n} |
+| `ghost` (dashed outline) | hier stond hij | it was here |
+| `cart` / `save` | In winkelmand / Bewaar | Add to cart / Save |
+| `product` / `price` | Instant camera / € 89,95 | Instant camera / €89.95 |
+| `fig` | Fig. 1 | Fig. 1 |
+| `alt` (aria-label of the window) | Productpagina van een nagemaakte webshop, met een knop ‘In winkelmand’. | Product page of a mock web shop, with an ‘Add to cart’ button. |
 
 ## TODOs for Robert
 

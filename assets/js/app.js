@@ -2,46 +2,17 @@
    app.js — loads content (content/*.json) and data (data/*.json)
    and renders the site. Changing content = changing JSON;
    this code does not need to be touched for that.
+   Nothing is stored: the language lives in the URL (?lang=en),
+   the theme follows the system until the visitor picks one.
    ============================================================= */
 
 (async function () {
   "use strict";
 
   const state = {
-    lang: localStorage.getItem("site-lang") === "en" ? "en" : "nl",
-    theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
+    lang: new URLSearchParams(location.search).get("lang") === "en" ? "en" : "nl",
   };
-
-  /* ---------- Hero video ---------- */
-  // Started before the content loads, so the intro never waits on the JSON
-  const heroVideo = document.getElementById("heroVideo");
-  const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches || navigator.connection?.saveData;
-  if (calm) heroVideo.poster = heroVideo.dataset.posterEnd; // rest on the finished title; the button still plays it
-  else heroVideo.play().catch(() => {}); // autoplay can be refused (e.g. Low Power Mode); the button then offers play
-
-  /* ---------- Hero scroll ---------- */
-  // The page sheet slides up over the pinned video. --p runs from 0 to 1 until the sheet covers it;
-  // the CSS lets the video recede with it, and the nav stays transparent while it floats over the video.
-  const heroStage = document.getElementById("heroStage");
-  const pageSheet = document.getElementById("pageSheet");
-  const nav = document.querySelector("nav");
-  let scrollQueued = false;
-  function updateHeroScroll() {
-    scrollQueued = false;
-    // The sheet starts at offsetTop, so it has covered the video once the page has scrolled that far
-    const p = Math.min(Math.max(scrollY / pageSheet.offsetTop, 0), 1);
-    heroStage.style.setProperty("--p", p.toFixed(3));
-    heroStage.classList.toggle("covered", p === 1);
-    nav.classList.toggle("on-stage", p < 0.5); // past halfway the faded video is too light for white nav text
-  }
-  const queueHeroScroll = () => {
-    if (scrollQueued) return;
-    scrollQueued = true;
-    requestAnimationFrame(updateHeroScroll);
-  };
-  addEventListener("scroll", queueHeroScroll, { passive: true });
-  addEventListener("resize", queueHeroScroll);
-  updateHeroScroll();
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   /* ---------- Load data ---------- */
   async function loadJSON(path) {
@@ -95,8 +66,17 @@
       const v = uiText(el.dataset.tHtml);
       if (v !== undefined) el.innerHTML = v;
     });
+    document.querySelectorAll("[data-t-aria]").forEach((el) => {
+      const v = uiText(el.dataset.tAria);
+      if (v !== undefined) el.setAttribute("aria-label", v);
+    });
     document.querySelectorAll("[data-site]").forEach((el) => {
       el.textContent = site[el.dataset.site] ?? el.textContent;
+    });
+    document.querySelectorAll(".seg-btn").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === state.lang)));
+    // The language travels along to the privacy page
+    document.querySelectorAll('a[href^="privacy.html"]').forEach((a) => {
+      a.href = state.lang === "en" ? "privacy.html?lang=en" : "privacy.html";
     });
   }
 
@@ -200,19 +180,32 @@
       .join("");
   }
 
-  function renderVideoButton() {
-    const s = heroVideo.ended ? "ended" : heroVideo.paused ? "paused" : "playing";
-    const label = uiText({ playing: "hero.video_pause", paused: "hero.video_play", ended: "hero.video_replay" }[s]);
-    heroStage.dataset.state = s;
-    videoBtn.setAttribute("aria-label", label);
-    videoBtn.title = label;
-  }
-
   function renderSocials() {
     $("#socialLinks").innerHTML = (site.socials || [])
       .map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`)
       .join("");
   }
+
+  /* ---------- Hero demo (Fig. 1) ---------- */
+  // Each "return visit" moves the add-to-cart button to the next spot; a dashed ghost marks where it was.
+  // The caption is a polite live region, so the change is announced; with reduced motion the move is instant (CSS).
+  const demo = { visit: 1, spot: 0, spots: 3 };
+  const specimenPage = $("#specimenPage");
+
+  function renderDemo() {
+    const L = ui[state.lang].hero.demo;
+    $("#specimenVisit").textContent = L.visit.replace("{n}", demo.visit);
+    const moved = demo.visit > 1 ? `<span class="sr-only">${esc(L.moved.replace("{n}", demo.visit))} </span>` : "";
+    $("#specimenCaption").innerHTML = moved + esc(L.caption);
+  }
+
+  $("#specimenBtn").addEventListener("click", () => {
+    specimenPage.dataset.prev = demo.spot;
+    demo.spot = (demo.spot + 1) % demo.spots;
+    demo.visit += 1;
+    specimenPage.dataset.spot = demo.spot;
+    renderDemo();
+  });
 
   /* ---------- Reveal animations ---------- */
   const io = new IntersectionObserver(
@@ -240,39 +233,81 @@
     renderSkills();
     renderCertificates();
     renderSocials();
-    renderVideoButton();
+    renderDemo();
     observeReveals();
   }
 
-  /* ---------- Language & theme ---------- */
-  const langBtn = $("#langBtn");
-  langBtn.textContent = state.lang === "nl" ? "EN" : "NL";
-  langBtn.addEventListener("click", () => {
-    state.lang = state.lang === "nl" ? "en" : "nl";
-    langBtn.textContent = state.lang === "nl" ? "EN" : "NL";
-    localStorage.setItem("site-lang", state.lang);
-    renderAll();
-  });
+  /* ---------- Language ---------- */
+  // Kept in the URL instead of storage: shareable, survives a reload, stores nothing
+  document.querySelectorAll(".seg-btn").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      if (btn.dataset.lang === state.lang) return;
+      state.lang = btn.dataset.lang;
+      const url = new URL(location.href);
+      if (state.lang === "en") url.searchParams.set("lang", "en");
+      else url.searchParams.delete("lang");
+      history.replaceState(null, "", url);
+      renderAll();
+    })
+  );
 
+  /* ---------- Theme ---------- */
+  // index.html sets the system theme before first paint; a click overrides it for this visit only
   const themeBtn = $("#themeBtn");
-  const applyTheme = () => {
-    document.documentElement.dataset.theme = state.theme;
-    themeBtn.textContent = state.theme === "dark" ? "☀" : "☾";
+  const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+  let themePicked = false;
+  const applyTheme = (theme) => {
+    document.documentElement.dataset.theme = theme;
+    themeBtn.setAttribute("aria-pressed", String(theme === "dark"));
   };
   themeBtn.addEventListener("click", () => {
-    state.theme = state.theme === "dark" ? "light" : "dark";
-    applyTheme();
+    themePicked = true;
+    applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+  });
+  systemDark.addEventListener("change", (e) => {
+    if (!themePicked) applyTheme(e.matches ? "dark" : "light");
   });
 
-  /* ---------- Hero video controls ---------- */
-  // Pause/play/replay: the intro moves for longer than 5 seconds, so it must be stoppable (WCAG 2.2.2)
-  const videoBtn = $("#heroVideoBtn");
-  ["play", "pause", "ended"].forEach((type) => heroVideo.addEventListener(type, renderVideoButton));
-  // play() on an ended video starts it from the beginning, which covers replay
-  videoBtn.addEventListener("click", () => (heroVideo.paused ? heroVideo.play().catch(() => {}) : heroVideo.pause()));
+  /* ---------- Compact nav menu ---------- */
+  // Disclosure pattern: focus stays on the button and Tab continues into the menu (it follows in the DOM).
+  // Esc closes and returns focus; a link, a click outside or focus leaving the bar closes it too.
+  const topbar = $(".topbar");
+  const menuBtn = $("#menuBtn");
+  const navMenu = $("#navMenu");
+  const isMenuOpen = () => menuBtn.getAttribute("aria-expanded") === "true";
+  const setMenu = (open) => {
+    menuBtn.setAttribute("aria-expanded", String(open));
+    navMenu.classList.toggle("open", open);
+  };
+  menuBtn.addEventListener("click", () => setMenu(!isMenuOpen()));
+  navMenu.addEventListener("click", (e) => {
+    if (e.target.closest("a")) setMenu(false);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isMenuOpen()) {
+      setMenu(false);
+      menuBtn.focus();
+    }
+  });
+  document.addEventListener("click", (e) => {
+    if (isMenuOpen() && !topbar.contains(e.target)) setMenu(false);
+  });
+  topbar.addEventListener("focusout", (e) => {
+    if (isMenuOpen() && e.relatedTarget && !topbar.contains(e.relatedTarget)) setMenu(false);
+  });
+  window.matchMedia("(max-width: 860px)").addEventListener("change", () => setMenu(false));
 
   /* ---------- Honest banner ---------- */
-  $("#honestBtn").addEventListener("click", () => $("#honest").classList.add("gone"));
+  // Dismissing removes it from the page; keyboard focus moves on to whatever came next
+  $("#honestBtn").addEventListener("click", () => {
+    const honest = $("#honest");
+    const next = [...document.querySelectorAll("a[href], button, input, textarea, summary")].find(
+      (el) => honest.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING && !honest.contains(el)
+    );
+    honest.classList.add("gone");
+    setTimeout(() => (honest.hidden = true), reducedMotion.matches ? 0 : 450);
+    next?.focus();
+  });
 
   /* ---------- Contact form ---------- */
   const form = $("#contactForm");
@@ -317,6 +352,6 @@
   if (github) $("#githubBtn").href = github.url;
   else $("#githubBtn").remove();
   $("#year").textContent = new Date().getFullYear();
-  applyTheme();
+  applyTheme(document.documentElement.dataset.theme);
   renderAll();
 })();

@@ -6,8 +6,8 @@
 <title>Robert Karzijn - Human-Computer Interaction & UX-onderzoek</title>
 <meta name="description" content="Portfolio van Robert Karzijn: masterstudent Human-Computer Interaction met een bachelor Information Sciences (Universiteit Utrecht). Onderzoek naar deceptive patterns, interactieontwerp en operationeel leiderschap.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#FCFCFB" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121316" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F6F2EA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12110F" media="(prefers-color-scheme: dark)">
 <meta property="og:site_name" content="Robert Karzijn">
 <meta property="og:locale" content="nl_NL">
 <meta property="og:locale:alternate" content="en_GB">
@@ -31,6 +31,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/bricolage-grotesque-latin-opsz.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/hanken-grotesk-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<script>/* Theme before first paint: follow the system until the visitor picks one (app.js) */
+document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";</script>
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/main.css">
 <script src="assets/js/app.js" defer></script>
@@ -50,6 +52,7 @@
 </script>
 </head>
 <body>
+<a class="skip-link" href="#main" data-t="nav.skip"></a>
 <noscript>
   <p style="padding:120px 24px 0;text-align:center;font-family:sans-serif">
     Deze pagina heeft JavaScript nodig om de content te tonen. Je kunt me ondertussen vinden op
@@ -61,56 +64,100 @@
   </p>
 </noscript>
 
-<nav class="on-stage">
-  <div class="nav-inner">
-    <a class="logo" href="#top"><span class="dot"></span><span data-site="name">Robert Karzijn</span></a>
-    <div class="nav-links">
-      <a href="#over" data-t="nav.about"></a>
-      <a href="#projecten" data-t="nav.projects"></a>
-      <a href="#ervaring" data-t="nav.experience"></a>
-      <a href="#vaardigheden" data-t="nav.skills"></a>
-      <a href="#contact" data-t="nav.contact"></a>
+<header class="topbar">
+  <nav class="topbar-inner" data-t-aria="nav.label">
+    <a class="logo" href="#top"><span class="dot" aria-hidden="true"></span><span data-site="name">Robert Karzijn</span></a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navMenu">
+      <span class="menu-icon" aria-hidden="true"><i></i><i></i></span><span data-t="nav.menu">Menu</span>
+    </button>
+    <div class="nav-menu" id="navMenu">
+      <ul class="nav-links">
+        <li><a href="#over" data-t="nav.about"></a></li>
+        <li><a href="#projecten" data-t="nav.projects"></a></li>
+        <li><a href="#ervaring" data-t="nav.experience"></a></li>
+        <li><a href="#vaardigheden" data-t="nav.skills"></a></li>
+      </ul>
+      <a class="nav-cta" href="#contact" data-t="nav.contact"></a>
+      <div class="nav-ctrl">
+        <div class="seg" role="group" data-t-aria="nav.language">
+          <button class="seg-btn" type="button" data-lang="nl" lang="nl" aria-pressed="true">NL</button>
+          <button class="seg-btn" type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
+        </div>
+        <button class="icon-btn" id="themeBtn" type="button" aria-pressed="false" data-t-aria="nav.theme">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1z"/></svg>
+        </button>
+      </div>
     </div>
-    <div class="nav-ctrl">
-      <button class="pill" id="langBtn" aria-label="Switch language">EN</button>
-      <button class="pill" id="themeBtn" aria-label="Toggle dark mode">☾</button>
-    </div>
-  </div>
-</nav>
-
-<!-- Pinned intro video; the page sheet below slides up over it. The logo's "#top" link (no such id) scrolls to the very top, here. -->
-<div class="hero-stage" id="heroStage">
-  <!-- Decorative intro: the name and field it shows are repeated as text right below -->
-  <video id="heroVideo" muted playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-hidden="true"
-         poster="assets/img/hero-start.webp" data-poster-end="assets/img/hero-end.webp">
-    <source src="assets/video/hero-intro-av1.mp4" type='video/mp4; codecs="av01.0.08M.08"'>
-    <source src="assets/video/hero-intro.mp4" type='video/mp4; codecs="avc1.640028"'>
-  </video>
-  <button class="stage-btn" id="heroVideoBtn" type="button">
-    <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
-    <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-    <svg class="i-replay" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>
-  </button>
-</div>
-
-<div class="page-sheet" id="pageSheet">
-
-<header class="hero">
-  <div class="wrap">
-    <span class="eyebrow" data-t="hero.eyebrow"></span>
-    <h1 data-t-html="hero.title"></h1>
-    <p class="sub" data-t="hero.sub"></p>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="#projecten" data-t="hero.cta_projects"></a>
-      <a class="btn btn-ghost" id="cvBtn" download data-t="hero.cta_cv"></a>
-      <a class="btn btn-ghost" id="githubBtn" target="_blank" rel="noopener" data-t="hero.cta_github"></a>
-    </div>
-    <div class="honest" id="honest">
-      <p data-t="hero.honest"></p>
-      <button id="honestBtn" data-t="hero.honest_btn"></button>
-    </div>
-  </div>
+  </nav>
 </header>
+
+<main id="main">
+
+<section class="hero" aria-labelledby="heroTitle">
+  <div class="wrap">
+    <p class="eyebrow" data-t="hero.eyebrow"></p>
+    <h1 id="heroTitle" data-t-html="hero.title"></h1>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="hero-sub" data-t="hero.sub"></p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#projecten" data-t="hero.cta_projects"></a>
+          <a class="btn btn-ghost" id="cvBtn" download data-t="hero.cta_cv"></a>
+          <a class="btn btn-link" id="githubBtn" target="_blank" rel="noopener" data-t="hero.cta_github"></a>
+        </div>
+      </div>
+
+      <!-- Fig. 1: an honest, explained demo of what the thesis studies. Nothing moves until the visitor asks. -->
+      <figure class="specimen" id="specimen">
+        <div class="specimen-window" role="img" data-t-aria="hero.demo.alt">
+          <div class="specimen-bar">
+            <span class="sb-arrows"><i></i><i></i></span>
+            <span class="sb-url"><svg viewBox="0 0 16 16"><path d="M5 7V5a3 3 0 0 1 6 0v2h.5A1.5 1.5 0 0 1 13 8.5v4a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 3 12.5v-4A1.5 1.5 0 0 1 4.5 7H5zm1.5 0h3V5a1.5 1.5 0 0 0-3 0v2z"/></svg>shop.example/instant-camera</span>
+            <span class="sb-visit" id="specimenVisit"></span>
+          </div>
+          <div class="specimen-page" id="specimenPage" data-spot="0">
+            <div class="sp-photo">
+              <svg viewBox="0 0 120 100">
+                <rect class="cam-body" x="12" y="24" width="96" height="64" rx="12"/>
+                <rect class="cam-top" x="22" y="14" width="30" height="14" rx="4"/>
+                <rect class="cam-stripe" x="12" y="62" width="96" height="7"/>
+                <circle class="cam-lens" cx="60" cy="52" r="21"/>
+                <circle class="cam-glass" cx="60" cy="52" r="11"/>
+                <circle class="cam-shine" cx="55" cy="47" r="3"/>
+                <rect class="cam-finder" x="84" y="32" width="14" height="10" rx="2.5"/>
+                <circle class="cam-shutter" cx="96" cy="20" r="5"/>
+              </svg>
+            </div>
+            <div class="sp-info">
+              <span class="sp-name" data-t="hero.demo.product"></span>
+              <span class="sp-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+              <span class="sp-price" data-t="hero.demo.price"></span>
+            </div>
+            <span class="sp-save">&#9825; <span data-t="hero.demo.save"></span></span>
+            <span class="sp-ghost"><span data-t="hero.demo.ghost"></span></span>
+            <span class="sp-cart" data-t="hero.demo.cart"></span>
+          </div>
+        </div>
+        <div class="specimen-foot">
+          <button class="btn btn-ghost btn-sm" id="specimenBtn" type="button" aria-controls="specimenPage">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>
+            <span data-t="hero.demo.button"></span>
+          </button>
+        </div>
+        <figcaption>
+          <span class="fig-label" data-t="hero.demo.fig"></span>
+          <span id="specimenCaption" aria-live="polite" aria-atomic="true"></span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="honest" id="honest">
+      <span class="honest-mark" aria-hidden="true"></span>
+      <p data-t="hero.honest"></p>
+      <button class="honest-btn" id="honestBtn" type="button" data-t="hero.honest_btn"></button>
+    </div>
+  </div>
+</section>
 
 <section id="hoogtepunten">
   <div class="wrap">
@@ -207,6 +254,8 @@
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap">
     <div>© <span id="year"></span> <span data-site="name">Robert Karzijn</span> · <span data-t="footer.location"></span> · <a href="privacy.html">Privacy</a></div>
@@ -214,7 +263,6 @@
   </div>
 </footer>
 
-</div><!-- /.page-sheet -->
 
 </body>
 </html>

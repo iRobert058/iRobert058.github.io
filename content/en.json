@@ -4,7 +4,12 @@
     "projects": "Projects",
     "experience": "Experience",
     "skills": "Skills",
-    "contact": "Contact"
+    "contact": "Contact",
+    "skip": "Skip to content",
+    "menu": "Menu",
+    "label": "Main navigation",
+    "language": "Language",
+    "theme": "Dark mode"
   },
   "hero": {
     "eyebrow": "Human-Computer Interaction · UX Research",
@@ -17,7 +22,20 @@
     "honest_btn": "Got it",
     "video_pause": "Pause intro",
     "video_play": "Play intro",
-    "video_replay": "Replay intro"
+    "video_replay": "Replay intro",
+    "demo": {
+      "alt": "Product page of a mock web shop, with an ‘Add to cart’ button.",
+      "product": "Instant camera",
+      "price": "€89.95",
+      "save": "Save",
+      "cart": "Add to cart",
+      "ghost": "it was here",
+      "button": "Simulate a return visit",
+      "fig": "Fig. 1",
+      "visit": "visit {n}",
+      "moved": "Visit {n}: the button has moved.",
+      "caption": "Habit makes you click where the button used to be: that's what my thesis studies."
+    }
   },
   "highlights": {
     "eyebrow": "Highlights",

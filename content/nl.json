@@ -4,7 +4,12 @@
     "projects": "Projecten",
     "experience": "Ervaring",
     "skills": "Vaardigheden",
-    "contact": "Contact"
+    "contact": "Contact",
+    "skip": "Naar de inhoud",
+    "menu": "Menu",
+    "label": "Hoofdnavigatie",
+    "language": "Taal",
+    "theme": "Donkere modus"
   },
   "hero": {
     "eyebrow": "Human-Computer Interaction · UX-onderzoek",
@@ -17,7 +22,20 @@
     "honest_btn": "Duidelijk",
     "video_pause": "Intro pauzeren",
     "video_play": "Intro afspelen",
-    "video_replay": "Intro opnieuw afspelen"
+    "video_replay": "Intro opnieuw afspelen",
+    "demo": {
+      "alt": "Productpagina van een nagemaakte webshop, met een knop ‘In winkelmand’.",
+      "product": "Instant camera",
+      "price": "€ 89,95",
+      "save": "Bewaar",
+      "cart": "In winkelmand",
+      "ghost": "hier stond hij",
+      "button": "Simuleer een volgend bezoek",
+      "fig": "Fig. 1",
+      "visit": "bezoek {n}",
+      "moved": "Bezoek {n}: de knop staat ergens anders.",
+      "caption": "Gewoonte laat je klikken waar de knop stond: dat is wat mijn scriptie onderzoekt."
+    }
   },
   "highlights": {
     "eyebrow": "Hoogtepunten",

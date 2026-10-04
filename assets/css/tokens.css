@@ -83,11 +83,11 @@
   --fs-lead: 19px;
   --fs-h3: clamp(21px, 2.1vw, 26px);
   --fs-h2: clamp(34px, 5.2vw, 60px);
-  --fs-hero: clamp(42px, 6.6vw, 86px);
+  --fs-hero: clamp(42px, 6.4vw, 84px);
   --fs-statement: clamp(44px, 7vw, 92px);     /* the closing contact line */
   --lh-body: 1.65;
   --lh-tight: 1.04;
-  --tracking-display: -.025em;
+  --tracking-display: -.02em;
   --tracking-mono: .08em;
 
   /* Motion */
