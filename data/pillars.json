@@ -1,0 +1,41 @@
+[
+  {
+    "id": "research",
+    "title": { "nl": "Onderzoeken", "en": "Research" },
+    "promise": {
+      "nl": "Uitzoeken hoe mensen een interface echt gebruiken.",
+      "en": "Finding out how people actually use an interface."
+    },
+    "text": {
+      "nl": "Met literatuur, een zorgvuldig experimenteel ontwerp en statistiek. Voor mijn bachelorthesis bouwde ik een studieomgeving en testte ik met 40 deelnemers wat er met gewoontegedrag gebeurt als een webshop zijn knoppen verplaatst.",
+      "en": "With literature, a careful experimental design and statistics. For my bachelor's thesis I built a study environment and tested with 40 participants what happens to habits when a web shop moves its buttons."
+    },
+    "project": "thesis"
+  },
+  {
+    "id": "design",
+    "title": { "nl": "Ontwerpen", "en": "Design" },
+    "promise": {
+      "nl": "Van eisen naar een werkend ontwerp.",
+      "en": "From requirements to a working design."
+    },
+    "text": {
+      "nl": "Requirements, architectuur, interface en code, en daarna testen op echte hardware. MobiPad ontwierp en bouwde ik zelf: een iPhone-app met drie controller-layouts, een Mac-menubalkapp en een versleuteld netwerkprotocol.",
+      "en": "Requirements, architecture, interface and code, then testing on real hardware. I designed and built MobiPad on my own: an iPhone app with three controller layouts, a Mac menu bar app and an encrypted network protocol."
+    },
+    "project": "mobipad"
+  },
+  {
+    "id": "organise",
+    "title": { "nl": "Organiseren", "en": "Organise" },
+    "promise": {
+      "nl": "Mensen meenemen, ook als de deadline dichtbij komt.",
+      "en": "Bringing people along, even when the deadline gets close."
+    },
+    "text": {
+      "nl": "Bij exec(ut) werfde en begeleidde ik de sprekers van de studenten-techconferentie, van eerste mail tot podium. Bij Amac ben ik als Daily Operations Lead het aanspreekpunt voor het team.",
+      "en": "At exec(ut) I recruited and supported the speakers of the student tech conference, from first email to stage. At Amac, as Daily Operations Lead, I'm the point of contact for the team."
+    },
+    "project": "execut"
+  }
+]

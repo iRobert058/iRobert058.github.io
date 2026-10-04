@@ -159,23 +159,40 @@ document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark
   </div>
 </section>
 
-<section id="hoogtepunten">
+<section id="hoogtepunten" class="sec">
   <div class="wrap">
-    <span class="eyebrow" data-t="highlights.eyebrow"></span>
-    <h2 data-t="highlights.title"></h2>
-    <p class="lead" data-t="highlights.lead"></p>
-    <div class="highlights-grid" id="highlightsGrid"></div>
+    <header class="sec-head">
+      <p class="eyebrow"><span class="sec-no" aria-hidden="true"></span><span data-t="highlights.eyebrow"></span></p>
+      <h2 data-t="highlights.title"></h2>
+      <p class="lead" data-t="highlights.lead"></p>
+    </header>
+    <ul class="moments" id="highlightsGrid"></ul>
   </div>
 </section>
 
-<section id="over">
+<section id="over" class="sec">
   <div class="wrap">
-    <span class="eyebrow" data-t="about.eyebrow"></span>
-    <h2 data-t="about.title"></h2>
+    <header class="sec-head">
+      <p class="eyebrow"><span class="sec-no" aria-hidden="true"></span><span data-t="about.eyebrow"></span></p>
+      <h2 data-t="about.title"></h2>
+    </header>
     <div class="about-grid">
       <div class="about-text reveal" id="aboutText"></div>
-      <div class="portrait reveal"><img id="portraitImg" alt="Portretfoto van Robert Karzijn" loading="lazy" decoding="async"></div>
+      <div class="datasheet reveal">
+        <img class="datasheet-photo" id="portraitImg" width="960" height="1044" alt="Portretfoto van Robert Karzijn" data-t-alt="about.portrait_alt" loading="lazy" decoding="async">
+        <dl class="facts" id="aboutFacts"></dl>
+      </div>
     </div>
+  </div>
+</section>
+
+<section id="werkwijze" class="sec">
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="eyebrow"><span class="sec-no" aria-hidden="true"></span><span data-t="pillars.eyebrow"></span></p>
+      <h2 data-t="pillars.title"></h2>
+    </header>
+    <ol class="pillars" id="pillarList"></ol>
   </div>
 </section>
 

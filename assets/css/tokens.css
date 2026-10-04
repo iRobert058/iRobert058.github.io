@@ -62,7 +62,7 @@
   --maxw: 1200px;
   --gutter: clamp(20px, 4vw, 40px);
   --nav-h: 64px;
-  --section-gap: clamp(80px, 11vw, 136px);
+  --section-gap: clamp(72px, 9vw, 120px);
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;

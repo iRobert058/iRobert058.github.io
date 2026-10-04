@@ -23,12 +23,13 @@
     return res.json();
   }
 
-  let ui, site, highlights, projects, timeline, skills, certificates;
+  let ui, site, highlights, pillars, projects, timeline, skills, certificates;
   try {
     let nl, en;
-    [site, highlights, projects, timeline, skills, certificates, nl, en] = await Promise.all([
+    [site, highlights, pillars, projects, timeline, skills, certificates, nl, en] = await Promise.all([
       loadJSON("data/site.json"),
       loadJSON("data/highlights.json"),
+      loadJSON("data/pillars.json"),
       loadJSON("data/projects.json"),
       loadJSON("data/timeline.json"),
       loadJSON("data/skills.json"),
@@ -70,6 +71,10 @@
       const v = uiText(el.dataset.tAria);
       if (v !== undefined) el.setAttribute("aria-label", v);
     });
+    document.querySelectorAll("[data-t-alt]").forEach((el) => {
+      const v = uiText(el.dataset.tAlt);
+      if (v !== undefined) el.alt = v;
+    });
     document.querySelectorAll("[data-site]").forEach((el) => {
       el.textContent = site[el.dataset.site] ?? el.textContent;
     });
@@ -85,22 +90,45 @@
     $("#highlightsGrid").innerHTML = highlights
       .map((h) => {
         const external = h.link && h.link.startsWith("http");
-        const tagOpen = h.link
-          ? `<a class="highlight reveal" href="${esc(h.link)}"${external ? ' target="_blank" rel="noopener"' : ""}>`
-          : '<div class="highlight reveal">';
-        const tagClose = h.link ? "</a>" : "</div>";
-        return `${tagOpen}
-          <span class="hl-year">${esc(h.year)}</span>
+        const inner = `<span class="moment-year">${esc(h.year)}</span>
           <h3>${esc(t(h.title))}</h3>
-          <p>${esc(t(h.text))}</p>
-        ${tagClose}`;
+          <p>${esc(t(h.text))}</p>`;
+        return h.link
+          ? `<li class="moment reveal"><a href="${esc(h.link)}"${external ? ' target="_blank" rel="noopener"' : ""}>${inner}
+              <span class="moment-go" aria-hidden="true">${external ? "↗" : "→"}</span></a></li>`
+          : `<li class="moment reveal"><div>${inner}</div></li>`;
       })
       .join("");
   }
 
   function renderAbout() {
-    $("#aboutText").innerHTML = ui[state.lang].about.paragraphs.map((p) => `<p>${esc(p)}</p>`).join("");
+    const L = ui[state.lang].about;
+    $("#aboutText").innerHTML = L.paragraphs.map((p) => `<p>${esc(p)}</p>`).join("");
+    $("#aboutFacts").innerHTML = (L.facts || [])
+      .map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`)
+      .join("");
     $("#portraitImg").src = site.portraitImage;
+  }
+
+  // "Werkwijze": each pillar points at the project that shows it in practice
+  function renderPillars() {
+    const L = ui[state.lang].pillars;
+    $("#pillarList").innerHTML = pillars
+      .map((p, i) => {
+        const project = projects.find((x) => x.id === p.project);
+        const proof = project
+          ? `<a class="pillar-proof" href="#project-${esc(project.id)}"><span class="pillar-proof-label">${esc(L.proof)}</span>
+              <span>${esc(t(project.title))} <span aria-hidden="true">→</span></span></a>`
+          : "";
+        return `<li class="pillar reveal">
+          <span class="pillar-no" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span>
+          <h3>${esc(t(p.title))}</h3>
+          <p class="pillar-promise">${esc(t(p.promise))}</p>
+          <p class="pillar-text">${esc(t(p.text))}</p>
+          ${proof}
+        </li>`;
+      })
+      .join("");
   }
 
   function renderProjects() {
@@ -120,7 +148,7 @@
             : `<div class="pimg">${imgTag}</div>`;
         const chips = p.tech.map((c) => `<span class="chip">${esc(t(c))}</span>`).join("");
         const external = p.cta.url.startsWith("http");
-        return `<article class="project reveal">
+        return `<article class="project reveal" id="project-${esc(p.id)}">
           <span class="tag">${esc(t(p.tag))}</span>
           <h3>${esc(t(p.title))}</h3>
           <p class="intro">${esc(t(p.intro))}</p>
@@ -228,6 +256,7 @@
     applyUIStrings();
     renderHighlights();
     renderAbout();
+    renderPillars();
     renderProjects();
     renderTimeline();
     renderSkills();

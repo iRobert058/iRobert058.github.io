@@ -49,7 +49,31 @@
       "I'm Robert Karzijn. My interest lies at the intersection of people and technology: how people use interfaces, which habits form along the way, and how design (deliberately or not) plays into that. In my bachelor's thesis I experimentally investigated how web shops can disrupt procedural memory by relocating interface elements.",
       "Alongside my studies I work at Amac in Apeldoorn, where I progressed from Junior Sales Associate to Daily Operations Lead in two years and worked across several branches to share knowledge and experience. That combination keeps me sharp: theory on user behaviour in the lecture hall, and real users in front of me on the shop floor every day.",
       "I'm currently pursuing a master's in Human-Computer Interaction, focusing on cognitive UX and ethical interface design. Outside study and work: photography, audio and the occasional evening of gaming."
+    ],
+    "portrait_alt": "Portrait photo of Robert Karzijn",
+    "facts": [
+      {
+        "label": "Study",
+        "value": "MSc Human-Computer Interaction, Utrecht University"
+      },
+      {
+        "label": "Work",
+        "value": "Daily Operations Lead at Amac in Apeldoorn"
+      },
+      {
+        "label": "Languages",
+        "value": "Dutch, English, German"
+      },
+      {
+        "label": "Off duty",
+        "value": "Photography, audio and the occasional evening of gaming"
+      }
     ]
+  },
+  "pillars": {
+    "eyebrow": "How I work",
+    "title": "Research, design, organise",
+    "proof": "In practice"
   },
   "projects": {
     "eyebrow": "Featured projects",
