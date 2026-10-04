@@ -132,7 +132,7 @@ nav.on-stage .pill:hover { border-color: var(--stage-accent); }
   transition: transform .15s, box-shadow .2s, background .2s;
 }
 .btn:active { transform: scale(.97); }
-.btn-primary { background: var(--accent); color: var(--accent-contrast); }
+.btn-primary { background: var(--accent-fill); color: var(--on-accent); }
 .btn-primary:hover { box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 35%, transparent); transform: translateY(-2px); }
 .btn-ghost { border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
 .btn-ghost:hover { border-color: var(--accent); transform: translateY(-2px); }

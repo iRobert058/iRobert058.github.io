@@ -1,52 +1,148 @@
 /* =============================================================
    DESIGN TOKENS — change the entire visual identity here.
-   Colours, fonts, radius and spacing are defined only in this file.
+   Fonts, colours, type and spacing scales, radii and motion are
+   defined only in this file.
    ============================================================= */
 
-:root {
-  /* Colours — light theme */
-  --bg: #FCFCFB;
-  --surface: #FFFFFF;
-  --ink: #17181C;
-  --muted: #5A5E66;
-  --line: #E8E7E3;
-  --accent: #E23C46;
-  --accent-contrast: #FFFFFF;
-  --accent-soft: #FCEDEE;
+/* Fonts: self-hosted variable WOFF2 (latin subset), so no visitor request goes to a font CDN.
+   Licences (SIL OFL 1.1) sit next to the files in assets/fonts/. */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("../fonts/bricolage-grotesque-latin-opsz.woff2") format("woff2"); /* wght + opsz axes */
+  font-weight: 200 800; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("../fonts/hanken-grotesk-latin-wght.woff2") format("woff2");
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Spline Sans Mono";
+  src: url("../fonts/spline-sans-mono-latin-wght.woff2") format("woff2");
+  font-weight: 300 700; font-style: normal; font-display: swap;
+}
 
-  /* Hero video stage — always dark, matched to the intro video in both themes */
-  --stage-bg: #0D0F10;
-  --stage-ink: #ECECEA;
-  --stage-accent: #FF5C63;
+:root {
+  color-scheme: light;
+
+  /* Colours — light theme: warm paper, ink and one red pen */
+  --bg: #F6F2EA;            /* paper */
+  --surface: #FFFDF8;       /* cards and fields, a sheet lighter than the paper */
+  --ink: #17181C;
+  --muted: #5B5852;
+  --line: #E2DACC;          /* hairlines and dividers */
+  --line-strong: #8C877D;   /* borders that have to stay visible (fields, frames): 3:1 on paper */
+  --accent: #E23C46;        /* brand red: dots, underline, graphics */
+  --accent-ink: #BD2C37;    /* the brand red, deepened so small text passes AA on paper */
+  --accent-fill: #D02F3A;   /* button fill: white text on it passes AA, which #E23C46 doesn't */
+  --on-accent: #FFFFFF;
+  --accent-soft: #FBE7E4;
+
+  /* Ink band: the dark sections (projects, contact). .band below re-maps the colours above to these. */
+  --band-bg: #17181C;
+  --band-surface: #212227;
+  --band-ink: #F3EFE6;
+  --band-muted: #A8A399;
+  --band-line: #34353B;
+  --band-line-strong: #74757C;
+  --band-accent: #FF5C63;
+  --band-accent-soft: #3A2124;
 
   /* Effects */
-  --shadow: 0 2px 8px rgba(23, 24, 28, .05), 0 12px 32px rgba(23, 24, 28, .06);
+  --shadow: 0 1px 2px rgba(23, 24, 28, .06), 0 10px 30px rgba(23, 24, 28, .07);
+  --shadow-lg: 0 2px 6px rgba(23, 24, 28, .06), 0 28px 60px -12px rgba(23, 24, 28, .22);
 
-  /* Shape & size */
-  --radius: 16px;
-  --radius-sm: 10px;
-  --maxw: 1080px;
-  --section-gap: 104px;
+  /* Shape */
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* Layout and spacing scale */
+  --maxw: 1200px;
+  --gutter: clamp(20px, 4vw, 40px);
+  --nav-h: 64px;
+  --section-gap: clamp(80px, 11vw, 136px);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
 
   /* Typography */
   --font-display: "Bricolage Grotesque", system-ui, sans-serif;
   --font-body: "Hanken Grotesk", system-ui, sans-serif;
   --font-mono: "Spline Sans Mono", ui-monospace, monospace;
+  --fs-mono: 12.5px;                          /* section marks, labels, captions */
+  --fs-sm: 14.5px;
   --fs-body: 17px;
+  --fs-lead: 19px;
+  --fs-h3: clamp(21px, 2.1vw, 26px);
+  --fs-h2: clamp(34px, 5.2vw, 60px);
+  --fs-hero: clamp(42px, 6.6vw, 86px);
+  --fs-statement: clamp(44px, 7vw, 92px);     /* the closing contact line */
   --lh-body: 1.65;
+  --lh-tight: 1.04;
+  --tracking-display: -.025em;
+  --tracking-mono: .08em;
 
   /* Motion */
   --ease: cubic-bezier(.6, 0, .2, 1);
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --dur-fast: .2s;
+  --dur: .45s;
+  --dur-move: .65s;                           /* the hero demo's button relocation */
   --reveal-duration: .7s;
+
+  /* Legacy (V1 intro video and old names), removed once main.css is rebuilt */
+  --stage-bg: #0D0F10;
+  --stage-ink: #ECECEA;
+  --stage-accent: #FF5C63;
+  --accent-contrast: var(--on-accent);
 }
 
 [data-theme="dark"] {
-  --bg: #121316;
-  --surface: #1A1C20;
-  --ink: #ECECEA;
-  --muted: #9CA0A8;
-  --line: #2A2D33;
+  color-scheme: dark;
+
+  --bg: #12110F;
+  --surface: #1B1A17;
+  --ink: #ECE8DF;
+  --muted: #A29D93;
+  --line: #2B2925;
+  --line-strong: #6E6A62;
   --accent: #FF5C63;
-  --accent-soft: #2A1D1F;
-  --shadow: 0 2px 8px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .35);
+  --accent-ink: #FF5C63;
+  --accent-fill: #FF5C63;
+  --on-accent: #12110F;                       /* dark text on the light coral passes AA, white doesn't */
+  --accent-soft: #2A1D1C;
+
+  /* In dark mode the band goes deeper than the page, framed by hairlines, so it still reads as a band */
+  --band-bg: #0A0A09;
+  --band-surface: #161513;
+  --band-ink: #ECE8DF;
+  --band-muted: #A29D93;
+  --band-line: #292722;
+  --band-line-strong: #66625A;
+  --band-accent: #FF5C63;
+  --band-accent-soft: #2A1D1C;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .35);
+  --shadow-lg: 0 2px 6px rgba(0, 0, 0, .3), 0 28px 60px -12px rgba(0, 0, 0, .6);
+}
+
+/* Inside an ink band the semantic colours point at the band palette, so components need no band variants */
+.band {
+  --bg: var(--band-bg);
+  --surface: var(--band-surface);
+  --ink: var(--band-ink);
+  --muted: var(--band-muted);
+  --line: var(--band-line);
+  --line-strong: var(--band-line-strong);
+  --accent-ink: var(--band-accent);
+  --accent-soft: var(--band-accent-soft);
+  color-scheme: dark;
 }
