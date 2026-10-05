@@ -413,61 +413,61 @@ main { counter-reset: sec; }
 
 /* ---------- Experience: one ruled timeline; grouped roles become a growth staircase ---------- */
 .timeline { border-top: 1px solid var(--line); }
-.tl-row {
+.route-row {
   display: grid; grid-template-columns: minmax(0, 12.5rem) minmax(0, 1fr); gap: var(--space-3) clamp(24px, 4vw, 64px);
   padding: var(--space-6) 0; border-bottom: 1px solid var(--line);
 }
-.tl-when {
+.route-when {
   display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); padding-top: 3px;
   font-family: var(--font-mono); font-size: 13.5px; color: var(--muted);
 }
-.tl-now {
+.route-now {
   display: inline-flex; align-items: center; gap: 7px; color: var(--accent-ink);
   font-size: 11.5px; letter-spacing: var(--tracking-mono); text-transform: uppercase;
 }
-.tl-now::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
-.tl-kind {
+.route-now::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.route-kind {
   font-family: var(--font-mono); font-size: 11.5px; letter-spacing: var(--tracking-mono);
   text-transform: uppercase; color: var(--muted); margin-bottom: var(--space-2);
 }
-.tl-body h3 { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 650; line-height: 1.2; letter-spacing: -.01em; }
-.tl-org { color: var(--muted); font-size: 15.5px; margin-top: 2px; }
-.tl-more { margin-top: var(--space-3); }
-.tl-more summary {
+.route-body h3 { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 650; line-height: 1.2; letter-spacing: -.01em; }
+.route-org { color: var(--muted); font-size: 15.5px; margin-top: 2px; }
+.route-more { margin-top: var(--space-3); }
+.route-more summary {
   display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; list-style: none;
   font-family: var(--font-mono); font-size: var(--fs-mono); letter-spacing: .04em;
   padding: 2px 0; border-bottom: 1px solid var(--line-strong); transition: border-color var(--dur-fast);
 }
-.tl-more summary::-webkit-details-marker { display: none; }
-.tl-more summary::after { content: "+"; font-size: 16px; line-height: 1; color: var(--accent-ink); transition: transform var(--dur-fast); }
-.tl-more summary:hover { border-color: var(--ink); }
-.tl-more[open] summary::after { transform: rotate(45deg); }
-.tl-more p { margin-top: var(--space-3); color: var(--muted); font-size: 15.5px; max-width: 40em; }
+.route-more summary::-webkit-details-marker { display: none; }
+.route-more summary::after { content: "+"; font-size: 16px; line-height: 1; color: var(--accent-ink); transition: transform var(--dur-fast); }
+.route-more summary:hover { border-color: var(--ink); }
+.route-more[open] summary::after { transform: rotate(45deg); }
+.route-more p { margin-top: var(--space-3); color: var(--muted); font-size: 15.5px; max-width: 40em; }
 
 /* The growth card: each later role sits one riser higher, like a staircase */
-.tl-steps {
+.route-steps {
   --rise: 30px;
   display: grid; grid-template-columns: repeat(var(--steps), minmax(0, 1fr)); align-items: start; margin-top: var(--space-5);
 }
-.tl-step {
+.route-step {
   position: relative; margin-top: calc(var(--rise) * (var(--steps) - 1 - var(--step)));
   padding: var(--space-3) var(--space-5) 0 0; border-top: 2px solid var(--line-strong);
 }
-.tl-step + .tl-step::before { /* the riser from the previous tread */
+.route-step + .route-step::before { /* the riser from the previous tread */
   content: ""; position: absolute; left: 0; top: -2px; width: 2px; height: calc(var(--rise) + 4px); background: var(--line-strong);
 }
-.tl-step.is-now { border-top-color: var(--accent); }
-.tl-step.is-now::before { background: var(--accent); }
-.tl-step-when { display: block; font-family: var(--font-mono); font-size: var(--fs-mono); color: var(--muted); }
-.tl-step-title { display: block; margin-top: var(--space-1); font-weight: 600; font-size: 16.5px; line-height: 1.35; }
-.tl-step + .tl-step { padding-left: var(--space-4); }
+.route-step.is-now { border-top-color: var(--accent); }
+.route-step.is-now::before { background: var(--accent); }
+.route-step-when { display: block; font-family: var(--font-mono); font-size: var(--fs-mono); color: var(--muted); }
+.route-step-title { display: block; margin-top: var(--space-1); font-weight: 600; font-size: 16.5px; line-height: 1.35; }
+.route-step + .route-step { padding-left: var(--space-4); }
 @media (max-width: 760px) {
-  .tl-row { grid-template-columns: minmax(0, 1fr); }
-  .tl-when { flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
-  .tl-steps { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
-  .tl-step, .tl-step + .tl-step { margin-top: 0; padding: 0 0 0 var(--space-4); border-top: 0; border-left: 2px solid var(--line-strong); }
-  .tl-step + .tl-step::before { display: none; }
-  .tl-step.is-now { border-left-color: var(--accent); }
+  .route-row { grid-template-columns: minmax(0, 1fr); }
+  .route-when { flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .route-steps { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+  .route-step, .route-step + .route-step { margin-top: 0; padding: 0 0 0 var(--space-4); border-top: 0; border-left: 2px solid var(--line-strong); }
+  .route-step + .route-step::before { display: none; }
+  .route-step.is-now { border-left-color: var(--accent); }
 }
 
 /* ---------- Skills: methods & tools under the three pillars, soft skills, languages ---------- */

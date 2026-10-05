@@ -191,21 +191,21 @@
   function renderTimeline() {
     const L = ui[state.lang].experience;
     const when = (p) => (p.from === p.to ? p.from : `${p.from} — ${p.to === "present" ? L.present : p.to}`);
-    const now = (p) => (p.to === "present" ? `<span class="tl-now">${esc(L.now)}</span>` : "");
+    const now = (p) => (p.to === "present" ? `<span class="route-now">${esc(L.now)}</span>` : "");
     const more = (item) =>
-      `<details class="tl-more"><summary>${esc(L.details)}<span class="sr-only">: ${esc(t(item.title))}</span></summary>
+      `<details class="route-more"><summary>${esc(L.details)}<span class="sr-only">: ${esc(t(item.title))}</span></summary>
         <p>${esc(t(item.description))}</p></details>`;
     const kind = (item) => esc(L.kinds[item.kind] ?? item.kind);
     const done = new Set();
     $("#timelineList").innerHTML = timeline
       .map((item) => {
         if (!item.group) {
-          return `<li class="tl-row reveal">
-            <p class="tl-when">${esc(when(item.period))}${now(item.period)}</p>
-            <div class="tl-body">
-              <p class="tl-kind">${kind(item)}</p>
+          return `<li class="route-row reveal">
+            <p class="route-when">${esc(when(item.period))}${now(item.period)}</p>
+            <div class="route-body">
+              <p class="route-kind">${kind(item)}</p>
               <h3>${esc(t(item.title))}</h3>
-              <p class="tl-org">${esc(item.org)}</p>
+              <p class="route-org">${esc(item.org)}</p>
               ${more(item)}
             </div>
           </li>`;
@@ -217,17 +217,17 @@
           from: steps[0].period.from,
           to: steps.some((x) => x.period.to === "present") ? "present" : steps[steps.length - 1].period.to,
         };
-        return `<li class="tl-row tl-group reveal">
-          <p class="tl-when">${esc(when(span))}${now(span)}</p>
-          <div class="tl-body">
-            <p class="tl-kind">${kind(item)} · ${esc(L.growth)}</p>
+        return `<li class="route-row route-group reveal">
+          <p class="route-when">${esc(when(span))}${now(span)}</p>
+          <div class="route-body">
+            <p class="route-kind">${kind(item)} · ${esc(L.growth)}</p>
             <h3>${esc(item.org)}</h3>
-            <ol class="tl-steps" style="--steps: ${steps.length}">
+            <ol class="route-steps" style="--steps: ${steps.length}">
               ${steps
                 .map(
-                  (x, i) => `<li class="tl-step${x.period.to === "present" ? " is-now" : ""}" style="--step: ${i}">
-                    <span class="tl-step-when">${esc(when(x.period))}</span>
-                    <span class="tl-step-title">${esc(t(x.title))}</span>
+                  (x, i) => `<li class="route-step${x.period.to === "present" ? " is-now" : ""}" style="--step: ${i}">
+                    <span class="route-step-when">${esc(when(x.period))}</span>
+                    <span class="route-step-title">${esc(t(x.title))}</span>
                     ${more(x)}
                   </li>`
                 )
