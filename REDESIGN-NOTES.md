@@ -4,7 +4,7 @@ Branch `redesign/v2`, cut from `main` at `813bcf4` (V1.13). Nothing here touches
 
 ## Progress
 
-_Last update: 2026-10-05 05:20 CEST_
+_Last update: 2026-10-05 09:45 CEST (run complete)_
 
 - [x] 1. Study the repo and the reference, write this brief
 - [x] 2a. Tokens, self-hosted fonts, base styles
@@ -18,7 +18,7 @@ _Last update: 2026-10-05 05:20 CEST_
 - [x] 4. Verification (matrix, keyboard, Lighthouse/axe, originality script), README. Deleting the reference clone is left for the very end, after a final originality run.
 - [x] 5. Stretch: project detail pages (`/projecten/<id>/`)
 
-**Next:** final originality run, deleting the reference clone, closing summary. Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
+**Next:** nothing left in the brief. Everything is committed and pushed to `origin/redesign/v2`. What remains is yours: see "TODOs for Robert", starting with opening the draft PR (no `gh` CLI here).
 **Half-finished:** nothing.
 
 ---
@@ -60,7 +60,7 @@ Reference: jopmors.com (studied 2026-10-05 via screenshots at 1440 and 390, plus
 | Capabilities grouped, not flat | Design/Application/Data glass cards over a city photo, plus a strip of technology logos. | Methods & tools grouped under **my three pillars** as plain typographic lists on paper, soft skills as a plain list, languages kept. No logos, no photo, no glass. |
 | A richer timeline | Centred spine with alternating sides, giant faded year numerals, monogram badges, a Work/Now/Study filter and "More +" buttons. | A single left-aligned list with periods in a mono gutter, a kind tag, a **"Nu" marker** and native `<details>`. The three Amac roles become **one card that shows Junior → Medior → Senior as steps**. No monograms, big years, filter or alternating sides. |
 | Sticky nav with a prominent contact CTA | Floating centred glass capsule that hides while you scroll down, with a white "Say hello" pill and scroll-spy. | Full-width **solid paper bar** that stays put, a **red filled "Contact" pill** (existing label), an NL/EN segmented toggle and a theme toggle. An accessible "Menu" disclosure below 760px. No glass, no hide-on-scroll. |
-| Strong closing contact | "Let's build something." over a dark photo, with a glass form and an e-mail pill. | Ink band using **my existing contact copy** as the closing statement, the form on a paper card, socials as links. No photo, no e-mail address. |
+| Strong closing contact | "Let's build something." over a dark photo, with a glass form and an e-mail pill. | Ink band using **my existing contact copy** as the closing statement, the form on a card inside the band, socials as links. No photo, no e-mail address. |
 
 ## What I'm deliberately not copying
 
@@ -118,8 +118,8 @@ Run against a local server with headless Chrome (Playwright), with throwaway too
 | Certificates | Hidden with the real (empty) data. It appears as §07 when a certificate is served temporarily (injected in the browser, so the repo was never edited). |
 | Interludes | Render nothing while empty. With a temporary entry: full-bleed 21:9 (desktop) / 4:3 (phone), with `alt`, `width`/`height`, lazy loading and the caption. |
 | axe-core 4.13 (WCAG 2.0/2.1/2.2 A+AA + best practices) | **0 violations** on home, 404 and privacy, light/dark, NL/EN, phone/desktop, with the menu open and the demo and details expanded. The "incomplete" items are decorative glyphs inside `role="img"` / `aria-hidden`. |
-| Lighthouse 12 (home, served with gzip like GitHub Pages) | Mobile **98 / 100 / 100 / 100**, desktop **100 / 100 / 100 / 100** (performance / a11y / best practices / SEO). CLS 0, TBT 0. Privacy page 99/100/100/100. The 404 gets SEO 54 only because of its `noindex`, which is correct for an error page. |
-| JavaScript size | `app.js` ≈ 20 KB unminified (≈ 6.6 KB gzipped), under the 30 KB budget. |
+| Lighthouse 12 (served with gzip like GitHub Pages; final run after the stretch) | Home: mobile **98 / 100 / 100 / 100**, desktop **100 / 100 / 100 / 100** (performance / a11y / best practices / SEO). Project pages: mobile 96/100/100/100, desktop 100 ×4. CLS 0, TBT 0 everywhere. Privacy page 99/100/100/100. The 404 gets SEO 54 only because of its `noindex`, which is correct for an error page. |
+| JavaScript size | `app.js` ≈ 23 KB unminified (≈ 7.5 KB gzipped) including the project pages, under the 30 KB budget. |
 | No-JS | A styled bilingual note under the brand bar, with no empty links. |
 
 **Originality check (scripted).** The script compares this repo with the reference clone on class names, IDs, data attributes, CSS custom properties, keyframe names and every identical stretch of 40+ characters, in both visible text and whitespace-normalised source.
@@ -130,6 +130,32 @@ Run against a local server with headless Chrome (Playwright), with throwaway too
 - ⚠️ **Not mine to change:** the English text of your existing `privacy.html` (1 Sep 2026) shares several sentences word for word with the reference's privacy page. Examples: "the only place personal data is processed is the contact form", "…your name, email address and message are sent to Formspree…", "…processes these messages for me and forwards them to my email. I use this…". I didn't touch it, because the brief says not to write policy text. Since that site has no licence, consider rewriting those paragraphs in your own words (see TODOs).
 
 ---
+
+## Summary of what changed
+
+14 commits on `redesign/v2`. Each one renders without errors and can be reverted on its own.
+
+- **Look:** warm paper with deep ink and one red pen. Thesis-style § numbering and captioned figures. Two dark "ink" bands (projects, contact). Bricolage / Hanken / Spline Mono, now **self-hosted**. Tokens extended with an ink-band palette, AA-safe accent shades, success colour, and type, spacing and motion scales, all in `tokens.css`.
+- **Nav:** full-width sticky paper bar with a red **Contact** pill, an NL/EN segmented toggle and a dark-mode toggle (both `aria-pressed`). An accessible **Menu** disclosure below 860px, where the V1 links used to just disappear.
+- **Hero:** your current headline at full width, with **Fig. 1**, a mock web-shop page beside it. "Simuleer een volgend bezoek" moves the add-to-cart button and leaves a dashed "hier stond hij" ghost. The caption is a live region, it works with the keyboard, and it's instant with reduced motion. The honest banner is restyled as a dashed strip. The V1 video intro is no longer shown (files kept).
+- **Sections:**
+  - **Highlights:** a ruled four-up strip.
+  - **About:** the narrative beside a datasheet card (portrait + four facts).
+  - **Werkwijze** (new): three pillars with proof links.
+  - **Projects:** case studies with a sticky title column and problem / role / result.
+  - **Photo interludes:** slots that stay empty until you add photos.
+  - **Experience:** one timeline with "Nu" markers, `<details>`, and the Amac roles as a Junior → Medior → Senior staircase.
+  - **Skills:** methods & tools under the three pillars, soft skills and languages, with no more percentage bars.
+  - **Contact:** the closing band, with the `_gotcha` honeypot and better error handling.
+- **Behaviour and privacy:**
+  - No `localStorage` anywhere any more: the language is in the URL.
+  - No third-party requests (Google Fonts are gone).
+  - The theme is set before first paint.
+  - Content shows only once rendered (CLS 0).
+  - Deep links land in the right place.
+- **Hardening:** meta/og descriptions synced to the hero, a richer JSON-LD `Person`, a styled no-JS fallback, a new 404, the privacy page restyled (text untouched).
+- **Stretch:** `/projecten/thesis/`, `/projecten/mobipad/` and `/projecten/execut/`, with a "Projectpagina" link on each card. They're in the sitemap.
+- **Data:** only additive fields: `pillars.json` (new), `projects.imageWidth/imageHeight/story`, `timeline.group`, `skills.capabilities/soft`, `site.interludes`, plus new strings. Nothing was deleted, and `bars`, `tools` and the video strings remain.
 
 ## Decisions log
 
@@ -147,37 +173,37 @@ Run against a local server with headless Chrome (Playwright), with throwaway too
 | 10 | Menu follows the WAI-ARIA disclosure pattern | Focus stays on the button and Tab moves into the menu. Esc closes and returns focus; a link, a click outside or focus leaving the bar also closes it. |
 | 11 | The headline spans the full width, with the copy and Fig. 1 side by side below it | The existing headline needs about 900px at display size. At 1440×900 the full demo, control included, stays in the first screen. On phones the forced `<br>` is ignored so the line wraps naturally. |
 | 12 | "Bekijk mijn GitHub ↗" styled as a text link, not a third button | Three buttons wrapped awkwardly; the CV and projects buttons stay primary and secondary. |
-| 14 | Section numbers are thesis-style "§01, §02 …", generated by a CSS counter on `.sec` and hidden from screen readers | Sections need no hand-kept numbers; the hidden certificates section doesn't take a number. |
-| 15 | New `data/pillars.json` (`id`, `title`, `promise`, `text`, `project`) instead of strings in `content/*.json` | Pillars are structured, bilingual content like projects. `project` links each pillar to the case study that shows it ("In de praktijk"). The skills section reuses the pillars for its groups. |
-| 16 | About facts in `content/*.json` → `about.facts: [{label, value}]` | Only the four facts the brief named, all taken from existing copy. Possible additions are under TODOs. |
-| 17 | The portrait `alt` is now translated (`about.portrait_alt`, via a new `data-t-alt` attribute) | It was hardcoded Dutch. The Dutch text is unchanged. |
-| 18 | Highlights restyled as a ruled four-up strip of "moments" with an arrow (→ in-page, ↗ external) | Copy and data unchanged. Still four columns, matching the "four moments" lead. |
-| 19 | Project meta line = the existing `tag` ("Bachelorthesis · 2026"), prefixed with the case number | The tag already is a type · year line. Splitting it into new `year` / `type` fields would duplicate data you'd have to keep in sync. |
-| 20 | Optional `imageWidth` / `imageHeight` in `projects.json` (set for all three) | Gives every project image width/height attributes (no layout shift). Projects without them still render. |
-| 21 | Projects keep linking out to the trailer (no embed); the play pill now says "Bekijk de trailer ↗" | No third-party embeds. The ↗ signals it leaves the site. |
-| 22 | `site.json` → `"interludes": []` with three fixed slots (before Projecten, between Ervaring and Vaardigheden, before Contact), filled in order | Predictable placement without a positioning field. Empty slots take no space. Tested by serving a modified `site.json` in the browser, so the repo was never touched. |
-| 23 | Ink band in dark mode is *deeper* than the page (#0A0A09 vs #12110F) with hairlines (`--band-edge`) | A slightly lighter band read as a card; the deeper one keeps the letterbox feel. |
-| 24 | `timeline.json` gains an optional `group` (set to `"amac"` on the three Amac roles). Grouped entries render as **one card at the position of the newest one**, with the roles oldest → newest as a staircase. | It turns the Junior → Medior → Senior growth into one visual feature. Any future group (e.g. two roles at the UU) works the same way, with no code change. |
-| 25 | Descriptions sit in native `<details>`, closed by default. Each summary reads "Details" plus a screen-reader-only ": <role title>". | The list stays scannable. Nine identical "Details" buttons would be ambiguous for screen-reader users without the title. |
-| 26 | "Nu" marker = any entry (or group) whose `to` is `"present"` | Derived from data, so nothing to maintain. |
-| 27 | `skills.json`: `bars` and `tools` untouched but no longer rendered. New additive `capabilities` (`[{pillar, items}]`, keyed to `pillars.json` ids) and `soft`. | As briefed: percentage bars imply a precision nobody can measure. Every former tool is in a pillar group. The other items come from existing copy (thesis role, MobiPad tech, exec(ut) tags, the Amac and Sticky descriptions). |
-| 28 | Soft skills = the bar labels minus "IT-vaardigheden" | That one isn't a soft skill, and the methods & tools cover it. |
-| 29 | Honeypot is now `_gotcha` (replacing the hidden `company` field). The JS still drops a filled honeypot before sending. | Formspree discards `_gotcha` submissions server-side too. Browsers can autofill a field named "company" (organisation), which risked silently swallowing real messages. |
-| 30 | A failed submit marks invalid fields with `aria-invalid="true"` and moves focus to the first one | The message alone left keyboard and screen-reader users to hunt for the problem. |
-| 31 | Form success colour tokenised (`--success`, `--band-success`) | It was the one hardcoded colour in `main.css` (CLAUDE.md flagged it). |
-| 32 | The contact form sits on a band-coloured card, not a paper card | A paper card inside the dark band needed a second palette remap. The band card keeps every field border ≥ 3:1. |
-| 33 | Footer continues the closing band | The page ends on one dark block instead of a thin paper strip. |
-| 34 | Reveals are CSS scroll-driven (`animation-timeline: view()`) over a **fixed 160px** of entry. The IntersectionObserver only runs where that's unsupported (it still draws the hero underline everywhere). | No JS work while scrolling in modern browsers. A percentage range kept tall case studies half-transparent while you read their top; a fixed distance doesn't. Checked by scrolling with motion on: every block sitting 220px+ inside the viewport is fully opaque. |
-| 35 | Motion inventory, all off or instant under `prefers-reduced-motion`: content settling in (fade + 18px rise), the underline drawing once, the demo button moving and its ghost fading in (only on click), the menu dropping in, 1–2px hover lifts. With reduced motion nothing starts hidden. | No scroll-jacking, parallax, custom cursor or smooth-scroll library. Native anchor scrolling, smooth only when motion is allowed. |
-| 36 | Hardening, per item: `og:url`, `og:image` (the existing 1200×630 `og-image.png`), the canonical link and `robots.txt` already existed and are correct, so they're kept. The meta/og/twitter descriptions are rewritten from the current hero copy. The JSON-LD `Person` gains only on-site facts: UU as alma mater and affiliation, Amac, nl/en/de, the fields. | No duplicates. Nothing claimed that the page doesn't say. |
-| 37 | No-JS: a `<noscript><style>` in `<head>` hides the parts only JavaScript fills (the links would be empty). The existing bilingual note is restyled under the brand bar. | Before, the page showed empty nav links and a large blank area without JS. |
-| 38 | `404.html` rebuilt in the new style: the "Fig. 404" window shows the address that was asked for, with a dashed ghost where the page should be. The existing copy is unchanged, the button is now a real link, and the language comes from `?lang=`. | It reuses the hero's "it was here" idea. Absolute paths keep it working at any depth on GitHub Pages. |
-| 39 | `privacy.html`: same text (all 30 strings verified identical). New top bar with the NL/EN toggle, theme set before paint, links in the AA-safe red, `?lang=` instead of `localStorage`. | No policy text was written or changed, as asked. |
-| 40 | Project pages are static skeletons in `projecten/<id>/` with `data-project`, filled by the same `app.js` from `projects.json`. A `data-root="../../"` attribute lets one script serve both depths. | As briefed: no build step and no duplicated copy. A new project needs one copied folder (see the README). |
-| 41 | The card link says **"Projectpagina"** for now, not "Lees meer". It switches to "Lees meer" automatically once a project has the new optional `story` field (extra paragraphs, shown only on its page). | Today the page holds the same text as the card, plus a larger visual, its own URL and prev/next. A "Read more" that leads to nothing more would be a small deceptive pattern, on this site of all sites. |
-| 42 | Links between pages carry the language (`?lang=en`): home ↔ project pages ↔ privacy, the nav, back links, prev/next and internal CTAs | Switching pages never drops you back into Dutch, and nothing is stored. |
-| 43 | After rendering, the page re-scrolls to `location.hash` | The browser jumps to `/#projecten` before the JSON content above it exists, so deep links landed in the wrong place. That was true in V1 too. |
-| 13 | Specimen product: a drawn instant camera at "€ 89,95" on `shop.example` (a reserved example domain) | Neutral and recognisably a shop, with the brand red as the camera stripe. It's a nod to the photography without claiming anything. |
+| 13 | Section numbers are thesis-style "§01, §02 …", generated by a CSS counter on `.sec` and hidden from screen readers | Sections need no hand-kept numbers; the hidden certificates section doesn't take a number. |
+| 14 | New `data/pillars.json` (`id`, `title`, `promise`, `text`, `project`) instead of strings in `content/*.json` | Pillars are structured, bilingual content like projects. `project` links each pillar to the case study that shows it ("In de praktijk"). The skills section reuses the pillars for its groups. |
+| 15 | About facts in `content/*.json` → `about.facts: [{label, value}]` | Only the four facts the brief named, all taken from existing copy. Possible additions are under TODOs. |
+| 16 | The portrait `alt` is now translated (`about.portrait_alt`, via a new `data-t-alt` attribute) | It was hardcoded Dutch. The Dutch text is unchanged. |
+| 17 | Highlights restyled as a ruled four-up strip of "moments" with an arrow (→ in-page, ↗ external) | Copy and data unchanged. Still four columns, matching the "four moments" lead. |
+| 18 | Project meta line = the existing `tag` ("Bachelorthesis · 2026"), prefixed with the case number | The tag already is a type · year line. Splitting it into new `year` / `type` fields would duplicate data you'd have to keep in sync. |
+| 19 | Optional `imageWidth` / `imageHeight` in `projects.json` (set for all three) | Gives every project image width/height attributes (no layout shift). Projects without them still render. |
+| 20 | Projects keep linking out to the trailer (no embed); the play pill now says "Bekijk de trailer ↗" | No third-party embeds. The ↗ signals it leaves the site. |
+| 21 | `site.json` → `"interludes": []` with three fixed slots (before Projecten, between Ervaring and Vaardigheden, before Contact), filled in order | Predictable placement without a positioning field. Empty slots take no space. Tested by serving a modified `site.json` in the browser, so the repo was never touched. |
+| 22 | Ink band in dark mode is *deeper* than the page (#0A0A09 vs #12110F) with hairlines (`--band-edge`) | A slightly lighter band read as a card; the deeper one keeps the letterbox feel. |
+| 23 | `timeline.json` gains an optional `group` (set to `"amac"` on the three Amac roles). Grouped entries render as **one card at the position of the newest one**, with the roles oldest → newest as a staircase. | It turns the Junior → Medior → Senior growth into one visual feature. Any future group (e.g. two roles at the UU) works the same way, with no code change. |
+| 24 | Descriptions sit in native `<details>`, closed by default. Each summary reads "Details" plus a screen-reader-only ": <role title>". | The list stays scannable. Nine identical "Details" buttons would be ambiguous for screen-reader users without the title. |
+| 25 | "Nu" marker = any entry (or group) whose `to` is `"present"` | Derived from data, so nothing to maintain. |
+| 26 | `skills.json`: `bars` and `tools` untouched but no longer rendered. New additive `capabilities` (`[{pillar, items}]`, keyed to `pillars.json` ids) and `soft`. | As briefed: percentage bars imply a precision nobody can measure. Every former tool is in a pillar group. The other items come from existing copy (thesis role, MobiPad tech, exec(ut) tags, the Amac and Sticky descriptions). |
+| 27 | Soft skills = the bar labels minus "IT-vaardigheden" | That one isn't a soft skill, and the methods & tools cover it. |
+| 28 | Honeypot is now `_gotcha` (replacing the hidden `company` field). The JS still drops a filled honeypot before sending. | Formspree discards `_gotcha` submissions server-side too. Browsers can autofill a field named "company" (organisation), which risked silently swallowing real messages. |
+| 29 | A failed submit marks invalid fields with `aria-invalid="true"` and moves focus to the first one | The message alone left keyboard and screen-reader users to hunt for the problem. |
+| 30 | Form success colour tokenised (`--success`, `--band-success`) | It was the one hardcoded colour in `main.css` (CLAUDE.md flagged it). |
+| 31 | The contact form sits on a band-coloured card, not a paper card | A paper card inside the dark band needed a second palette remap. The band card keeps every field border ≥ 3:1. |
+| 32 | Footer continues the closing band | The page ends on one dark block instead of a thin paper strip. |
+| 33 | Reveals are CSS scroll-driven (`animation-timeline: view()`) over a **fixed 160px** of entry. The IntersectionObserver only runs where that's unsupported (it still draws the hero underline everywhere). | No JS work while scrolling in modern browsers. A percentage range kept tall case studies half-transparent while you read their top; a fixed distance doesn't. Checked by scrolling with motion on: every block sitting 220px+ inside the viewport is fully opaque. |
+| 34 | Motion inventory, all off or instant under `prefers-reduced-motion`: content settling in (fade + 18px rise), the underline drawing once, the demo button moving and its ghost fading in (only on click), the menu dropping in, 1–2px hover lifts. With reduced motion nothing starts hidden. | No scroll-jacking, parallax, custom cursor or smooth-scroll library. Native anchor scrolling, smooth only when motion is allowed. |
+| 35 | Hardening, per item: `og:url`, `og:image` (the existing 1200×630 `og-image.png`), the canonical link and `robots.txt` already existed and are correct, so they're kept. The meta/og/twitter descriptions are rewritten from the current hero copy. The JSON-LD `Person` gains only on-site facts: UU as alma mater and affiliation, Amac, nl/en/de, the fields. | No duplicates. Nothing claimed that the page doesn't say. |
+| 36 | No-JS: a `<noscript><style>` in `<head>` hides the parts only JavaScript fills (the links would be empty). The existing bilingual note is restyled under the brand bar. | Before, the page showed empty nav links and a large blank area without JS. |
+| 37 | `404.html` rebuilt in the new style: the "Fig. 404" window shows the address that was asked for, with a dashed ghost where the page should be. The existing copy is unchanged, the button is now a real link, and the language comes from `?lang=`. | It reuses the hero's "it was here" idea. Absolute paths keep it working at any depth on GitHub Pages. |
+| 38 | `privacy.html`: same text (all 30 strings verified identical). New top bar with the NL/EN toggle, theme set before paint, links in the AA-safe red, `?lang=` instead of `localStorage`. | No policy text was written or changed, as asked. |
+| 39 | Project pages are static skeletons in `projecten/<id>/` with `data-project`, filled by the same `app.js` from `projects.json`. A `data-root="../../"` attribute lets one script serve both depths. | As briefed: no build step and no duplicated copy. A new project needs one copied folder (see the README). |
+| 40 | The card link says **"Projectpagina"** for now, not "Lees meer". It switches to "Lees meer" automatically once a project has the new optional `story` field (extra paragraphs, shown only on its page). | Today the page holds the same text as the card, plus a larger visual, its own URL and prev/next. A "Read more" that leads to nothing more would be a small deceptive pattern, on this site of all sites. |
+| 41 | Links between pages carry the language (`?lang=en`): home ↔ project pages ↔ privacy, the nav, back links, prev/next and internal CTAs | Switching pages never drops you back into Dutch, and nothing is stored. |
+| 42 | After rendering, the page re-scrolls to `location.hash` | The browser jumps to `/#projecten` before the JSON content above it exists, so deep links landed in the wrong place. That was true in V1 too. |
+| 43 | Specimen product: a drawn instant camera at "€ 89,95" on `shop.example` (a reserved example domain) | Neutral and recognisably a shop, with the brand red as the camera stripe. It's a nod to the photography without claiming anything. |
 
 ## Copy to review (NL + EN)
 
@@ -280,6 +306,17 @@ Every claim in the pillar texts is lifted from `projects.json` / `timeline.json`
 
 ## TODOs for Robert
 
+- **Open the draft PR.** The `gh` CLI isn't installed here, so I couldn't. Create it as a **draft** from https://github.com/iRobert058/iRobert058.github.io/pull/new/redesign/v2. Merging into `main` puts it live, so check it on your phone first.
+- **Check "Read this first"**: the headline, the README language and the dropped intro video are the three judgement calls most likely to need a flip.
+- **Review every row in "Copy to review"**, especially the pillar texts and the hero demo caption. They're drafts in your voice, not your words.
+- **og-image** (optional): `assets/img/og-image.png` still has the V1 look (system font, white). A 1200×630 export in the new palette would match better. The `og:image` tags can stay as they are if you keep the path.
+- **CLAUDE.md** (local and git-ignored, so I left it alone) is now out of date:
+  - the content model is missing `pillars.json` and the new fields
+  - most backlog items are done (og/canonical, JSON-LD, noscript, honeypot, 404, robots, self-hosted fonts, mobile nav)
+  - the privacy page exists
+  - `projecten/` and `_review/` are new.
+- **sitemap.xml:** bump the home page's `lastmod` when you merge.
+- **Unused but kept** (per "nothing gets deleted"): the V1 video files (including the 4.2 MB source render `assets/robert-portfolio-intro.mp4`), `hero.video_*` strings, `skills.bars`, `skills.tools`, and the stray `contact.footer_location` key in `en.json`. Delete them whenever you like.
 - **Privacy page wording:** rewrite the English (and check the Dutch) paragraphs that match the reference's privacy page word for word (see "Originality check"). Separately, the page shows your e-mail address twice (`mailto:`), which conflicts with the "no e-mail address anywhere" rule in CLAUDE.md. Decide whether the AVG/GDPR contact route should be the form or LinkedIn instead. Its "Laatst bijgewerkt" date will need a bump after any change.
 - **Interlude photos** (`data/site.json` → `interludes`). Add up to three entries; they fill these slots in order:
   1. between *Werkwijze* and *Projecten* (leads into the dark band)
@@ -300,4 +337,16 @@ Every claim in the pillar texts is lifted from `projects.json` / `timeline.json`
 
 ## Known issues
 
-_Filled in as sections land._
+- **No draft PR**: `gh` isn't installed, so the PR wasn't opened (link above). The branch is pushed; every push succeeded.
+- **Pre-existing key mismatch:** `content/en.json` has a stray `contact.footer_location` that `nl.json` lacks. It's unused; I left it because nothing may be deleted.
+- **The theme choice lasts one page.** Picking dark mode and then opening a project page or the privacy page falls back to the system theme. That's the cost of storing nothing. The language survives because it rides in the URL; a `?theme=` parameter could do the same if you want it.
+- **The 404 page scores Lighthouse SEO 54** because of its intentional `noindex`.
+- **Older browsers degrade gracefully:**
+  - Without `:has()`, headings without a lead stay in the narrower column.
+  - Without subgrid, the pillar rows don't line up across columns.
+  - Without `animation-timeline`, reveals use the IntersectionObserver.
+  - Without container-query units (Safari < 16, Chrome < 105), the Fig. 1 demo's internal text sizes fall back to defaults. Those browsers are from 2022 and earlier.
+- **A filled honeypot** leaves the status line as it was. Only bots see that.
+- **The live Formspree endpoint was deliberately not tested.** All form states were checked against a local fake endpoint with outside requests blocked.
+- **The privacy statement** still overlaps word for word with the reference site's, and it shows an e-mail address (see TODOs).
+- **The scratch tooling** (Playwright, axe, Lighthouse, `serve`) lived in a temporary folder outside the repo. Nothing was installed in the repo, and the reference clone and my screenshots of his site are deleted. Your screenshots are in `_review/` (git-ignored, local only).
