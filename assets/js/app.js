@@ -40,6 +40,7 @@
     ui = { nl, en };
   } catch (err) {
     console.error(err);
+    document.documentElement.classList.remove("is-loading");
     document.body.insertAdjacentHTML(
       "afterbegin",
       '<p style="padding:120px 24px;text-align:center;font-family:sans-serif">' +
@@ -67,7 +68,8 @@
     });
     document.querySelectorAll("[data-t-html]").forEach((el) => {
       const v = uiText(el.dataset.tHtml);
-      if (v !== undefined) el.innerHTML = v;
+      // A space before each <br> keeps the words apart where CSS hides the break (the hero on phones)
+      if (v !== undefined) el.innerHTML = v.replace(/<br\s*\/?>/g, " <br>");
     });
     document.querySelectorAll("[data-t-aria]").forEach((el) => {
       const v = uiText(el.dataset.tAria);
@@ -449,4 +451,7 @@
   $("#year").textContent = new Date().getFullYear();
   applyTheme(document.documentElement.dataset.theme);
   renderAll();
+  // Show the page once it's rendered; give the (preloaded) fonts a brief moment so text doesn't reflow after
+  await Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 500))]);
+  document.documentElement.classList.remove("is-loading");
 })();

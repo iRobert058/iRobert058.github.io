@@ -28,6 +28,9 @@ section { padding: var(--section-gap) 0; }
   border-radius: var(--radius-sm); font-weight: 600; text-decoration: none;
 }
 .skip-link:focus { top: var(--space-3); }
+/* Set in <head> while app.js renders the JSON content (removed right after): invisible, but laid out */
+.is-loading main, .is-loading .nav-menu, .is-loading .site-foot { visibility: hidden; }
+main:focus { outline: none; } /* the skip link's target; the region itself needs no ring */
 
 /* Without JavaScript the content can't render; a short note points to the socials instead */
 .noscript-note { max-width: 40rem; margin: 0 auto; padding: var(--space-9) var(--gutter); display: grid; gap: var(--space-5); font-size: var(--fs-lead); }
