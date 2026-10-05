@@ -82,7 +82,13 @@
     "label_problem": "Problem",
     "label_role": "My role",
     "label_result": "Outcome",
-    "watch_trailer": "Watch the trailer"
+    "watch_trailer": "Watch the trailer",
+    "project_page": "Project page",
+    "read_more": "Read more",
+    "all_projects": "All projects",
+    "more_projects": "More projects",
+    "prev": "Previous",
+    "next": "Next"
   },
   "experience": {
     "eyebrow": "Experience & education",

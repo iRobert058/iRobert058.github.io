@@ -38,6 +38,7 @@ Deliberately **without frameworks or a build step**: vanilla HTML, CSS and JavaS
 ├── index.html                 # Structure (skeleton without content)
 ├── privacy.html               # Privacy statement (NL/EN)
 ├── 404.html                   # Custom 404 page (NL/EN)
+├── projecten/<id>/index.html  # One page per project, rendered from data/projects.json
 ├── REDESIGN-NOTES.md          # Decisions, copy to review and TODOs from the v2 redesign
 ├── docs/setup-overview.svg    # Diagram of the hosting setup
 ├── assets/
@@ -76,6 +77,7 @@ Fields added in v2 (all optional or additive; older entries keep working):
 | File | Field | What it does |
 |---|---|---|
 | `data/projects.json` | `imageWidth`, `imageHeight` | Intrinsic size of `image`, so the page doesn't shift while it loads |
+| `data/projects.json` | `story` | Optional extra paragraphs, shown only on the project page |
 | `data/pillars.json` | `id`, `title`, `promise`, `text`, `project` | One pillar each. `project` is a project `id`, shown as the "In de praktijk" link |
 | `data/timeline.json` | `group` | Entries with the same `group` become one card that shows the roles oldest → newest as steps (used for the three Amac roles). Placed where the newest entry sits |
 | `data/skills.json` | `capabilities: [{ pillar, items }]`, `soft` | Methods & tools per pillar (`pillar` is a pillar `id`), and the soft-skills list. `bars` and `tools` are kept but no longer shown |
@@ -83,6 +85,17 @@ Fields added in v2 (all optional or additive; older entries keep working):
 | `content/*.json` | `about.facts`, `about.portrait_alt`, `pillars.*`, `hero.demo.*`, `experience.now/details/growth`, `skills.soft`, `nav.*` | Text for the new elements |
 
 Timeline entries whose `to` is `"present"` get the "Nu" / "Current" marker automatically. Keep the file newest first.
+
+### Project pages
+
+Every project also has its own page at `/projecten/<id>/` (for example [/projecten/thesis/](https://robertkarzijn.nl/projecten/thesis/)), linked from its card. The page is an empty skeleton that `app.js` fills from `data/projects.json`, so the text lives in one place. It also renders an optional `"story": { "nl": ["paragraph", …], "en": [ … ] }` for extra paragraphs that only appear there. The card link reads "Projectpagina" and switches to "Lees meer" automatically once a project has a `story`.
+
+**For a new project:**
+
+1. Add it to `projects.json`.
+2. Copy one of the `projecten/<id>/` folders and rename it to the new `id`.
+3. In its `index.html`, change `data-project`, `<title>`, the description and the URL tags (`og:url`, `canonical`).
+4. Add the URL to `sitemap.xml`.
 
 ### Adding images
 

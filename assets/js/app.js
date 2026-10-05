@@ -4,6 +4,8 @@
    this code does not need to be touched for that.
    Nothing is stored: the language lives in the URL (?lang=en),
    the theme follows the system until the visitor picks one.
+   One script for every page: index.html, and the project pages in
+   projecten/<id>/ (marked with data-project on <body>).
    ============================================================= */
 
 (async function () {
@@ -13,12 +15,15 @@
     lang: new URLSearchParams(location.search).get("lang") === "en" ? "en" : "nl",
   };
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  // Pages below the site root (projecten/<id>/) set data-root="../../" on <html>; paths from the JSON get it prefixed
+  const root = document.documentElement.dataset.root || "";
+  const projectId = document.body.dataset.project;
 
   /* ---------- Load data ---------- */
   async function loadJSON(path) {
     // "no-cache" makes the browser always revalidate (ETag), so content changes show up
     // immediately while unchanged JSON is not downloaded again
-    const res = await fetch(path, { cache: "no-cache" });
+    const res = await fetch(root + path, { cache: "no-cache" });
     if (!res.ok) throw new Error(`Could not load ${path} (${res.status})`);
     return res.json();
   }
@@ -58,6 +63,12 @@
   const keepDash = (s) => String(s ?? "").replace(/ ([-–—]) /g, "\u00A0$1 ");
   const esc = (s) =>
     String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  // Links to the site's other pages carry the language along: "privacy.html" → "privacy.html?lang=en"
+  const withLang = (href) => {
+    if (state.lang !== "en") return href;
+    const [path, hash] = href.split("#");
+    return `${path}${path.includes("?") ? "&" : "?"}lang=en${hash !== undefined ? "#" + hash : ""}`;
+  };
 
   /* ---------- Static UI strings ---------- */
   function applyUIStrings() {
@@ -83,9 +94,9 @@
       el.textContent = site[el.dataset.site] ?? el.textContent;
     });
     document.querySelectorAll(".seg-btn").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === state.lang)));
-    // The language travels along to the privacy page
-    document.querySelectorAll('a[href^="privacy.html"]').forEach((a) => {
-      a.href = state.lang === "en" ? "privacy.html?lang=en" : "privacy.html";
+    // Links to other pages of the site keep the language (data-keep-lang holds the plain href)
+    document.querySelectorAll("a[data-keep-lang]").forEach((a) => {
+      a.href = withLang(a.dataset.keepLang);
     });
   }
 
@@ -111,7 +122,7 @@
     $("#aboutFacts").innerHTML = (L.facts || [])
       .map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`)
       .join("");
-    $("#portraitImg").src = site.portraitImage;
+    $("#portraitImg").src = root + site.portraitImage;
   }
 
   // "Werkwijze": each pillar points at the project that shows it in practice
@@ -135,43 +146,82 @@
       .join("");
   }
 
-  // Each project is a small case study: a (sticky) title column beside the visual and problem / role / result
+  // A project's visual, problem / role / result and tags: shared by the home page and the project pages
+  function caseParts(p, { eager = false } = {}) {
+    const L = ui[state.lang].projects;
+    const size = p.imageWidth && p.imageHeight ? ` width="${Number(p.imageWidth)}" height="${Number(p.imageHeight)}"` : "";
+    const img = p.image
+      ? `<img src="${esc(root + p.image)}" alt="${esc(t(p.imageAlt))}"${size}${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`
+      : "";
+    // A video links out instead of embedding, so the page stays free of third-party cookies
+    const visual = !img
+      ? ""
+      : p.video
+        ? `<a class="case-visual case-video" href="${esc(p.video)}" target="_blank" rel="noopener">${img}
+            <span class="case-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>${esc(L.watch_trailer)} ↗</span></a>`
+        : `<div class="case-visual">${img}</div>`;
+    const facts = `<dl class="case-facts">
+        <div><dt>${esc(L.label_problem)}</dt><dd>${esc(t(p.problem))}</dd></div>
+        <div><dt>${esc(L.label_role)}</dt><dd>${esc(t(p.role))}</dd></div>
+        <div><dt>${esc(L.label_result)}</dt><dd>${esc(t(p.result))}</dd></div>
+      </dl>`;
+    const tags = `<ul class="tags">${p.tech.map((c) => `<li>${esc(t(c))}</li>`).join("")}</ul>`;
+    const external = p.cta.url.startsWith("http");
+    const cta = `<a class="case-cta" href="${esc(external ? p.cta.url : withLang(root + p.cta.url))}"${external ? ' target="_blank" rel="noopener"' : ""}>${esc(t(p.cta.label))}</a>`;
+    return { visual, facts, tags, cta };
+  }
+
+  // Each project is a small case study: a (sticky) title column beside the visual and problem / role / result.
+  // The project page link says "Lees meer" only once a project has extra text ("story") to read there.
   function renderProjects() {
     const L = ui[state.lang].projects;
-    const size = (p) => (p.imageWidth && p.imageHeight ? ` width="${Number(p.imageWidth)}" height="${Number(p.imageHeight)}"` : "");
     $("#projectsList").innerHTML = projects
       .map((p, i) => {
-        const img = p.image
-          ? `<img src="${esc(p.image)}" alt="${esc(t(p.imageAlt))}"${size(p)} loading="lazy" decoding="async">`
-          : "";
-        // A video links out instead of embedding, so the page stays free of third-party cookies
-        const visual = !img
-          ? ""
-          : p.video
-            ? `<a class="case-visual case-video" href="${esc(p.video)}" target="_blank" rel="noopener">${img}
-                <span class="case-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>${esc(L.watch_trailer)} ↗</span></a>`
-            : `<div class="case-visual">${img}</div>`;
-        const external = p.cta.url.startsWith("http");
-        const tags = p.tech.map((c) => `<li>${esc(t(c))}</li>`).join("");
+        const { visual, facts, tags, cta } = caseParts(p);
         return `<article class="case reveal" id="project-${esc(p.id)}">
           <div class="case-side">
             <p class="case-meta"><span class="case-no">${String(i + 1).padStart(2, "0")}</span>${esc(t(p.tag))}</p>
             <h3>${esc(keepDash(t(p.title)))}</h3>
             <p class="case-intro">${esc(t(p.intro))}</p>
-            <a class="case-cta" href="${esc(p.cta.url)}"${external ? ' target="_blank" rel="noopener"' : ""}>${esc(t(p.cta.label))}</a>
+            <div class="case-links">${cta}
+              <a class="case-page" href="${esc(withLang(`${root}projecten/${p.id}/`))}">${esc(t(p.story) ? L.read_more : L.project_page)} <span aria-hidden="true">→</span></a>
+            </div>
           </div>
           <div class="case-main">
             ${visual}
-            <dl class="case-facts">
-              <div><dt>${esc(L.label_problem)}</dt><dd>${esc(t(p.problem))}</dd></div>
-              <div><dt>${esc(L.label_role)}</dt><dd>${esc(t(p.role))}</dd></div>
-              <div><dt>${esc(L.label_result)}</dt><dd>${esc(t(p.result))}</dd></div>
-            </dl>
-            <ul class="tags">${tags}</ul>
+            ${facts}
+            ${tags}
           </div>
         </article>`;
       })
       .join("");
+  }
+
+  // projecten/<id>/: the same case study on its own page, with room for an optional "story" and links to the others
+  function renderProjectPage() {
+    const L = ui[state.lang].projects;
+    const i = projects.findIndex((x) => x.id === projectId);
+    const p = projects[i];
+    if (!p) return;
+    const { visual, facts, tags, cta } = caseParts(p, { eager: true });
+    const story = [].concat(t(p.story) || []).map((para) => `<p>${esc(para)}</p>`).join("");
+    const link = (x, label, rel) =>
+      `<a class="pp-${rel}" href="${esc(withLang(`${root}projecten/${x.id}/`))}" rel="${rel}"><span class="pp-dir">${esc(label)}</span>${esc(keepDash(t(x.title)))}</a>`;
+    const n = projects.length;
+    document.title = `${t(p.title)} — ${site.name}`;
+    $("#projectPage").innerHTML = `
+      <a class="pp-back" href="${esc(withLang(root + "#projecten"))}"><span aria-hidden="true">←</span> ${esc(L.all_projects)}</a>
+      <header class="pp-head">
+        <p class="case-meta"><span class="case-no">${String(i + 1).padStart(2, "0")}</span>${esc(t(p.tag))}</p>
+        <h1>${esc(keepDash(t(p.title)))}</h1>
+        <p class="pp-intro">${esc(t(p.intro))}</p>
+      </header>
+      ${visual}
+      <div class="pp-body">
+        <div>${facts}${story ? `<div class="pp-story">${story}</div>` : ""}</div>
+        <aside class="pp-aside">${tags}${cta}</aside>
+      </div>
+      ${n > 1 ? `<nav class="pp-pager" aria-label="${esc(L.more_projects)}">${link(projects[(i - 1 + n) % n], L.prev, "prev")}${link(projects[(i + 1) % n], L.next, "next")}</nav>` : ""}`;
   }
 
   // Full-bleed photo interludes (data/site.json → interludes), filled into the slots in order.
@@ -181,7 +231,7 @@
     document.querySelectorAll(".interlude-slot").forEach((slot, i) => {
       const it = photos[i];
       slot.innerHTML = it
-        ? `<figure class="interlude"><img src="${esc(it.src)}" alt="${esc(t(it.alt) ?? "")}" width="${Number(it.width) || 2400}" height="${Number(it.height) || 1350}"${it.position ? ` style="object-position:${esc(it.position)}"` : ""} loading="lazy" decoding="async">${it.caption ? `<figcaption>${esc(t(it.caption))}</figcaption>` : ""}</figure>`
+        ? `<figure class="interlude"><img src="${esc(root + it.src)}" alt="${esc(t(it.alt) ?? "")}" width="${Number(it.width) || 2400}" height="${Number(it.height) || 1350}"${it.position ? ` style="object-position:${esc(it.position)}"` : ""} loading="lazy" decoding="async">${it.caption ? `<figcaption>${esc(t(it.caption))}</figcaption>` : ""}</figure>`
         : "";
     });
   }
@@ -280,6 +330,7 @@
   // The caption is a polite live region, so the change is announced; with reduced motion the move is instant (CSS).
   const demo = { visit: 1, spot: 0, spots: 3 };
   const specimenPage = $("#specimenPage");
+  const specimenBtn = $("#specimenBtn");
 
   function renderDemo() {
     const L = ui[state.lang].hero.demo;
@@ -288,7 +339,7 @@
     $("#specimenCaption").innerHTML = moved + esc(L.caption);
   }
 
-  $("#specimenBtn").addEventListener("click", () => {
+  specimenBtn?.addEventListener("click", () => {
     specimenPage.dataset.prev = demo.spot;
     demo.spot = (demo.spot + 1) % demo.spots;
     demo.visit += 1;
@@ -316,16 +367,20 @@
 
   function renderAll() {
     applyUIStrings();
-    renderHighlights();
-    renderAbout();
-    renderPillars();
-    renderProjects();
-    renderInterludes();
-    renderTimeline();
-    renderSkills();
-    renderCertificates();
-    renderSocials();
-    renderDemo();
+    if (projectId) {
+      renderProjectPage();
+    } else {
+      renderHighlights();
+      renderAbout();
+      renderPillars();
+      renderProjects();
+      renderInterludes();
+      renderTimeline();
+      renderSkills();
+      renderCertificates();
+      renderSocials();
+      renderDemo();
+    }
     observeReveals();
   }
 
@@ -391,7 +446,7 @@
 
   /* ---------- Honest banner ---------- */
   // Dismissing removes it from the page; keyboard focus moves on to whatever came next
-  $("#honestBtn").addEventListener("click", () => {
+  $("#honestBtn")?.addEventListener("click", () => {
     const honest = $("#honest");
     const next = [...document.querySelectorAll("a[href], button, input, textarea, summary")].find(
       (el) => honest.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING && !honest.contains(el)
@@ -404,9 +459,9 @@
   /* ---------- Contact form ---------- */
   const form = $("#contactForm");
   const status = $("#formStatus");
-  const fields = [...form.querySelectorAll(".field input, .field textarea")];
+  const fields = form ? [...form.querySelectorAll(".field input, .field textarea")] : [];
   fields.forEach((f) => f.addEventListener("input", () => f.validity.valid && f.removeAttribute("aria-invalid")));
-  form.addEventListener("submit", async (e) => {
+  form?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const L = ui[state.lang].contact;
     status.className = "form-status";
@@ -444,14 +499,20 @@
   });
 
   /* ---------- Init ---------- */
-  $("#cvBtn").href = site.cvFile;
+  if ($("#cvBtn")) $("#cvBtn").href = root + site.cvFile;
   const github = (site.socials || []).find((s) => s.label === "GitHub");
-  if (github) $("#githubBtn").href = github.url;
-  else $("#githubBtn").remove();
+  if (github) $("#githubBtn")?.setAttribute("href", github.url);
+  else $("#githubBtn")?.remove();
   $("#year").textContent = new Date().getFullYear();
   applyTheme(document.documentElement.dataset.theme);
   renderAll();
   // Show the page once it's rendered; give the (preloaded) fonts a brief moment so text doesn't reflow after
   await Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 500))]);
   document.documentElement.classList.remove("is-loading");
+  // The browser jumped to #anchor before the content above it existed; go there again now that it's rendered
+  if (location.hash.length > 1) {
+    let id = location.hash.slice(1);
+    try { id = decodeURIComponent(id); } catch { /* keep as is */ }
+    document.getElementById(id)?.scrollIntoView({ behavior: "instant" });
+  }
 })();

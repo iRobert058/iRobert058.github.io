@@ -82,7 +82,13 @@
     "label_problem": "Probleem",
     "label_role": "Mijn rol",
     "label_result": "Resultaat",
-    "watch_trailer": "Bekijk de trailer"
+    "watch_trailer": "Bekijk de trailer",
+    "project_page": "Projectpagina",
+    "read_more": "Lees meer",
+    "all_projects": "Alle projecten",
+    "more_projects": "Meer projecten",
+    "prev": "Vorige",
+    "next": "Volgende"
   },
   "experience": {
     "eyebrow": "Ervaring & opleiding",

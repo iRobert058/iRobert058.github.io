@@ -4,7 +4,7 @@ Branch `redesign/v2`, cut from `main` at `813bcf4` (V1.13). Nothing here touches
 
 ## Progress
 
-_Last update: 2026-10-05 04:40 CEST_
+_Last update: 2026-10-05 05:20 CEST_
 
 - [x] 1. Study the repo and the reference, write this brief
 - [x] 2a. Tokens, self-hosted fonts, base styles
@@ -16,9 +16,9 @@ _Last update: 2026-10-05 04:40 CEST_
 - [x] 2g. Motion pass (scroll-driven reveals + fallback)
 - [x] 3. Hardening (meta, JSON-LD, noscript, robots, 404, privacy page fonts)
 - [x] 4. Verification (matrix, keyboard, Lighthouse/axe, originality script), README. Deleting the reference clone is left for the very end, after a final originality run.
-- [ ] 5. Stretch: project detail pages
+- [x] 5. Stretch: project detail pages (`/projecten/<id>/`)
 
-**Next:** 5 (stretch: project detail pages), then the final originality run, deleting the reference clone and the closing summary. Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
+**Next:** final originality run, deleting the reference clone, closing summary. Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
 **Half-finished:** nothing.
 
 ---
@@ -173,6 +173,10 @@ Run against a local server with headless Chrome (Playwright), with throwaway too
 | 37 | No-JS: a `<noscript><style>` in `<head>` hides the parts only JavaScript fills (the links would be empty). The existing bilingual note is restyled under the brand bar. | Before, the page showed empty nav links and a large blank area without JS. |
 | 38 | `404.html` rebuilt in the new style: the "Fig. 404" window shows the address that was asked for, with a dashed ghost where the page should be. The existing copy is unchanged, the button is now a real link, and the language comes from `?lang=`. | It reuses the hero's "it was here" idea. Absolute paths keep it working at any depth on GitHub Pages. |
 | 39 | `privacy.html`: same text (all 30 strings verified identical). New top bar with the NL/EN toggle, theme set before paint, links in the AA-safe red, `?lang=` instead of `localStorage`. | No policy text was written or changed, as asked. |
+| 40 | Project pages are static skeletons in `projecten/<id>/` with `data-project`, filled by the same `app.js` from `projects.json`. A `data-root="../../"` attribute lets one script serve both depths. | As briefed: no build step and no duplicated copy. A new project needs one copied folder (see the README). |
+| 41 | The card link says **"Projectpagina"** for now, not "Lees meer". It switches to "Lees meer" automatically once a project has the new optional `story` field (extra paragraphs, shown only on its page). | Today the page holds the same text as the card, plus a larger visual, its own URL and prev/next. A "Read more" that leads to nothing more would be a small deceptive pattern, on this site of all sites. |
+| 42 | Links between pages carry the language (`?lang=en`): home ↔ project pages ↔ privacy, the nav, back links, prev/next and internal CTAs | Switching pages never drops you back into Dutch, and nothing is stored. |
+| 43 | After rendering, the page re-scrolls to `location.hash` | The browser jumps to `/#projecten` before the JSON content above it exists, so deep links landed in the wrong place. That was true in V1 too. |
 | 13 | Specimen product: a drawn instant camera at "€ 89,95" on `shop.example` (a reserved example domain) | Neutral and recognisably a shop, with the brand red as the camera stripe. It's a nod to the photography without claiming anything. |
 
 ## Copy to review (NL + EN)
@@ -230,6 +234,18 @@ All new strings are in `content/nl.json` / `content/en.json` unless noted. They'
 | 03 promise | Mensen meenemen, ook als de deadline dichtbij komt. | Bringing people along, even when the deadline gets close. |
 | 03 text | Bij exec(ut) werfde en begeleidde ik de sprekers van de studenten-techconferentie, van eerste mail tot podium. Bij Amac ben ik als Daily Operations Lead het aanspreekpunt voor het team. | At exec(ut) I recruited and supported the speakers of the student tech conference, from first email to stage. At Amac, as Daily Operations Lead, I'm the point of contact for the team. |
 
+**Project pages** (`projects.*`)
+
+| Key | NL | EN |
+|---|---|---|
+| `project_page` (card link, until a `story` exists) | Projectpagina | Project page |
+| `read_more` (card link, once a `story` exists) | Lees meer | Read more |
+| `all_projects` (back link) | Alle projecten | All projects |
+| `more_projects` (aria-label of the pager) | Meer projecten | More projects |
+| `prev` / `next` | Vorige / Volgende | Previous / Next |
+
+The project pages' static `<title>` and description are the Dutch title and intro from `projects.json`. JavaScript switches the title with the language.
+
 **Meta** (`index.html`, hardcoded Dutch like before)
 
 | Tag | New text |
@@ -279,6 +295,7 @@ Every claim in the pillar texts is lifted from `projects.json` / `timeline.json`
   ```
 
   Desktop shows a 21:9 crop, which loses about 12% at the top and bottom. Phones show 4:3, which crops the sides. Keep the subject near the centre, or set `position`.
+- **Project pages:** if you want "Lees meer" on the cards, give a project a `story` in `projects.json`, for example process, screenshots or what you'd do differently. Then the page really has more to read.
 - **About facts:** the list has only the four facts the brief named. Possible additions if you want them: where you're based (city), what you're open to (internship, part-time role, thesis project) and since when, or your research focus in one line.
 
 ## Known issues
