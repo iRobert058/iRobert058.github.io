@@ -29,6 +29,10 @@ section { padding: var(--section-gap) 0; }
 }
 .skip-link:focus { top: var(--space-3); }
 
+/* Without JavaScript the content can't render; a short note points to the socials instead */
+.noscript-note { max-width: 40rem; margin: 0 auto; padding: var(--space-9) var(--gutter); display: grid; gap: var(--space-5); font-size: var(--fs-lead); }
+.noscript-note a { color: var(--accent-ink); }
+
 /* ---------- Section heads ---------- */
 .eyebrow {
   font-family: var(--font-mono); font-size: var(--fs-mono); letter-spacing: var(--tracking-mono);
