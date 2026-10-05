@@ -4,7 +4,7 @@ Branch `redesign/v2`, cut from `main` at `813bcf4` (V1.13). Nothing here touches
 
 ## Progress
 
-_Last update: 2026-10-05 04:00 CEST_
+_Last update: 2026-10-05 04:40 CEST_
 
 - [x] 1. Study the repo and the reference, write this brief
 - [x] 2a. Tokens, self-hosted fonts, base styles
@@ -15,10 +15,10 @@ _Last update: 2026-10-05 04:00 CEST_
 - [x] 2f. Skills (capabilities by pillar), certificates, contact (ink band, `_gotcha`)
 - [x] 2g. Motion pass (scroll-driven reveals + fallback)
 - [x] 3. Hardening (meta, JSON-LD, noscript, robots, 404, privacy page fonts)
-- [ ] 4. Verification (matrix, keyboard, Lighthouse/axe, originality script), README
+- [x] 4. Verification (matrix, keyboard, Lighthouse/axe, originality script), README. Deleting the reference clone is left for the very end, after a final originality run.
 - [ ] 5. Stretch: project detail pages
 
-**Next:** 4 (verification matrix into `_review/`, keyboard pass, Lighthouse + axe, originality script, README). Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
+**Next:** 5 (stretch: project detail pages), then the final originality run, deleting the reference clone and the closing summary. Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
 **Half-finished:** nothing.
 
 ---
@@ -95,6 +95,39 @@ Reference: jopmors.com (studied 2026-10-05 via screenshots at 1440 and 390, plus
   - no cookies, storage, trackers or third-party requests (the Formspree POST is the only exception)
   - fonts are self-hosted
   - the honest banner stays as the signature.
+
+---
+
+## Verification (step 4)
+
+Run against a local server with headless Chrome (Playwright), with throwaway tools in a scratch folder and nothing installed in the repo. Screenshots are in `_review/` (git-ignored):
+
+- light and dark, NL and EN, at 390 and 1440 wide
+- plus 768 light NL and 1280 dark EN.
+
+| Check | Result |
+|---|---|
+| Console errors, failed or third-party requests, storage, cookies | None, on every page in every configuration. The only external request the code can make is the Formspree POST. |
+| JSON | All files in `data/` and `content/` parse. `nl.json` / `en.json` have identical keys, apart from the existing stray `contact.footer_location` in EN (see Known issues). |
+| NL ↔ EN | Every new element switches, including the demo caption, `aria-label`s, the portrait `alt` and `<html lang>`. A scan of the English page finds no Dutch UI words. The language survives a reload and carries over to the privacy page via `?lang=`. |
+| Light and dark | Checked by screenshot, including both ink bands. AA contrast for every text/background pair in the palette was computed (script): all pass. |
+| Layout at 390, 768, 1280 and 1440 | No horizontal scroll at any width. The compact menu is used up to 860px. |
+| Reduced motion | No animations or transitions run, nothing starts hidden, smooth scrolling is off, and the demo button jumps instantly. |
+| Keyboard | 44 Tab stops in reading order, each with a visible focus ring. The skip link is first and moves focus to `<main>`. The Menu disclosure opens with Enter, Tab moves into it, and Esc closes it and returns focus. The demo works with Enter and Space. Every `<details>` toggles with Enter and Space. |
+| Contact form | Tested against a fake local endpoint, with every non-local request blocked, so **nothing was sent to Formspree**. Empty or invalid input gives the error message, marks the field with `aria-invalid` and focuses it. A server error shows the failure text. Success shows the thanks and clears the form. A filled `_gotcha` sends nothing. |
+| Certificates | Hidden with the real (empty) data. It appears as §07 when a certificate is served temporarily (injected in the browser, so the repo was never edited). |
+| Interludes | Render nothing while empty. With a temporary entry: full-bleed 21:9 (desktop) / 4:3 (phone), with `alt`, `width`/`height`, lazy loading and the caption. |
+| axe-core 4.13 (WCAG 2.0/2.1/2.2 A+AA + best practices) | **0 violations** on home, 404 and privacy, light/dark, NL/EN, phone/desktop, with the menu open and the demo and details expanded. The "incomplete" items are decorative glyphs inside `role="img"` / `aria-hidden`. |
+| Lighthouse 12 (home, served with gzip like GitHub Pages) | Mobile **98 / 100 / 100 / 100**, desktop **100 / 100 / 100 / 100** (performance / a11y / best practices / SEO). CLS 0, TBT 0. Privacy page 99/100/100/100. The 404 gets SEO 54 only because of its `noindex`, which is correct for an error page. |
+| JavaScript size | `app.js` ≈ 20 KB unminified (≈ 6.6 KB gzipped), under the 30 KB budget. |
+| No-JS | A styled bilingual note under the brand bar, with no empty links. |
+
+**Originality check (scripted).** The script compares this repo with the reference clone on class names, IDs, data attributes, CSS custom properties, keyframe names and every identical stretch of 40+ characters, in both visible text and whitespace-normalised source.
+
+- **Fixed:** my timeline classes used a `tl-` prefix, and `tl-body` was identical to his, so the whole family was renamed to `route-*`.
+- **Shared identifiers left:** `hidden`, `contact` and `js` (a false positive from "app.js" in CSS comments). `--ease` and `--font-mono` both existed in the V1 tokens, before this redesign. No data attributes or keyframes are shared.
+- **Identical stretches left:** HTML `<head>` boilerplate (meta/og/icon/preload tags), generic CSS declarations (`font-family: var(--font-mono); font-size:`, `display: grid; grid-template-columns: minmax(`), standard browser APIs, and one phrase from your own V1 hero copy ("a bachelor's degree in Information Science…").
+- ⚠️ **Not mine to change:** the English text of your existing `privacy.html` (1 Sep 2026) shares several sentences word for word with the reference's privacy page. Examples: "the only place personal data is processed is the contact form", "…your name, email address and message are sent to Formspree…", "…processes these messages for me and forwards them to my email. I use this…". I didn't touch it, because the brief says not to write policy text. Since that site has no licence, consider rewriting those paragraphs in your own words (see TODOs).
 
 ---
 
@@ -231,6 +264,7 @@ Every claim in the pillar texts is lifted from `projects.json` / `timeline.json`
 
 ## TODOs for Robert
 
+- **Privacy page wording:** rewrite the English (and check the Dutch) paragraphs that match the reference's privacy page word for word (see "Originality check"). Separately, the page shows your e-mail address twice (`mailto:`), which conflicts with the "no e-mail address anywhere" rule in CLAUDE.md. Decide whether the AVG/GDPR contact route should be the form or LinkedIn instead. Its "Laatst bijgewerkt" date will need a bump after any change.
 - **Interlude photos** (`data/site.json` → `interludes`). Add up to three entries; they fill these slots in order:
   1. between *Werkwijze* and *Projecten* (leads into the dark band)
   2. between *Ervaring* and *Vaardigheden*
