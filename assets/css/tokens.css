@@ -37,6 +37,7 @@
   --accent-fill: #D02F3A;   /* button fill: white text on it passes AA, which #E23C46 doesn't */
   --on-accent: #FFFFFF;
   --accent-soft: #FBE7E4;
+  --success: #1F7A4A;        /* form confirmation */
 
   /* Ink band: the dark sections (projects, contact). .band below re-maps the colours above to these. */
   --band-bg: #17181C;
@@ -47,6 +48,7 @@
   --band-line-strong: #74757C;
   --band-accent: #FF5C63;
   --band-accent-soft: #3A2124;
+  --band-success: #6FCF97;
   --band-edge: transparent;    /* hairline above/below a band: only needed in dark mode */
 
   /* Effects */
@@ -98,12 +100,6 @@
   --dur: .45s;
   --dur-move: .65s;                           /* the hero demo's button relocation */
   --reveal-duration: .7s;
-
-  /* Legacy (V1 intro video and old names), removed once main.css is rebuilt */
-  --stage-bg: #0D0F10;
-  --stage-ink: #ECECEA;
-  --stage-accent: #FF5C63;
-  --accent-contrast: var(--on-accent);
 }
 
 [data-theme="dark"] {
@@ -120,6 +116,7 @@
   --accent-fill: #FF5C63;
   --on-accent: #12110F;                       /* dark text on the light coral passes AA, white doesn't */
   --accent-soft: #2A1D1C;
+  --success: #6FCF97;
 
   /* In dark mode the band goes deeper than the page, framed by hairlines, so it still reads as a band */
   --band-bg: #0A0A09;
@@ -127,9 +124,10 @@
   --band-ink: #ECE8DF;
   --band-muted: #A29D93;
   --band-line: #292722;
-  --band-line-strong: #66625A;
+  --band-line-strong: #7A766D;
   --band-accent: #FF5C63;
   --band-accent-soft: #2A1D1C;
+  --band-success: #6FCF97;
   --band-edge: #2B2925;
 
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .35);
@@ -146,5 +144,6 @@
   --line-strong: var(--band-line-strong);
   --accent-ink: var(--band-accent);
   --accent-soft: var(--band-accent-soft);
+  --success: var(--band-success);
   color-scheme: dark;
 }

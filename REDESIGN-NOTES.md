@@ -4,7 +4,7 @@ Branch `redesign/v2`, cut from `main` at `813bcf4` (V1.13). Nothing here touches
 
 ## Progress
 
-_Last update: 2026-10-05 02:50 CEST_
+_Last update: 2026-10-05 03:20 CEST_
 
 - [x] 1. Study the repo and the reference, write this brief
 - [x] 2a. Tokens, self-hosted fonts, base styles
@@ -12,13 +12,13 @@ _Last update: 2026-10-05 02:50 CEST_
 - [x] 2c. Highlights, About (facts), pillars
 - [x] 2d. Projects (ink band) and interludes
 - [x] 2e. Experience timeline (groups, "Nu", details)
-- [ ] 2f. Skills (capabilities by pillar), certificates, contact (ink band, `_gotcha`)
+- [x] 2f. Skills (capabilities by pillar), certificates, contact (ink band, `_gotcha`)
 - [ ] 2g. Motion pass (scroll-driven reveals + fallback)
 - [ ] 3. Hardening (meta, JSON-LD, noscript, robots, 404, privacy page fonts)
 - [ ] 4. Verification (matrix, keyboard, Lighthouse/axe, originality script), README
 - [ ] 5. Stretch: project detail pages
 
-**Next:** 2f (skills grouped by pillar, certificates, contact band with `_gotcha`, footer). Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
+**Next:** 2g (motion pass: CSS scroll-driven reveals with IntersectionObserver fallback). The legacy CSS/JS is now gone; every section runs on the new styles. Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
 **Half-finished:** nothing.
 
 ---
@@ -127,6 +127,13 @@ Reference: jopmors.com (studied 2026-10-05 via screenshots at 1440 and 390, plus
 | 24 | `timeline.json` gains an optional `group` (set to `"amac"` on the three Amac roles). Grouped entries render as **one card at the position of the newest one**, with the roles oldest → newest as a staircase. | It turns the Junior → Medior → Senior growth into one visual feature. Any future group (e.g. two roles at the UU) works the same way, with no code change. |
 | 25 | Descriptions sit in native `<details>`, closed by default. Each summary reads "Details" plus a screen-reader-only ": <role title>". | The list stays scannable. Nine identical "Details" buttons would be ambiguous for screen-reader users without the title. |
 | 26 | "Nu" marker = any entry (or group) whose `to` is `"present"` | Derived from data, so nothing to maintain. |
+| 27 | `skills.json`: `bars` and `tools` untouched but no longer rendered. New additive `capabilities` (`[{pillar, items}]`, keyed to `pillars.json` ids) and `soft`. | As briefed: percentage bars imply a precision nobody can measure. Every former tool is in a pillar group. The other items come from existing copy (thesis role, MobiPad tech, exec(ut) tags, the Amac and Sticky descriptions). |
+| 28 | Soft skills = the bar labels minus "IT-vaardigheden" | That one isn't a soft skill, and the methods & tools cover it. |
+| 29 | Honeypot is now `_gotcha` (replacing the hidden `company` field). The JS still drops a filled honeypot before sending. | Formspree discards `_gotcha` submissions server-side too. Browsers can autofill a field named "company" (organisation), which risked silently swallowing real messages. |
+| 30 | A failed submit marks invalid fields with `aria-invalid="true"` and moves focus to the first one | The message alone left keyboard and screen-reader users to hunt for the problem. |
+| 31 | Form success colour tokenised (`--success`, `--band-success`) | It was the one hardcoded colour in `main.css` (CLAUDE.md flagged it). |
+| 32 | The contact form sits on a band-coloured card, not a paper card | A paper card inside the dark band needed a second palette remap. The band card keeps every field border ≥ 3:1. |
+| 33 | Footer continues the closing band | The page ends on one dark block instead of a thin paper strip. |
 | 13 | Specimen product: a drawn instant camera at "€ 89,95" on `shop.example` (a reserved example domain) | Neutral and recognisably a shop, with the brand red as the camera stripe. It's a nod to the photography without claiming anything. |
 
 ## Copy to review (NL + EN)
@@ -191,6 +198,20 @@ All new strings are in `content/nl.json` / `content/en.json` unless noted. They'
 | `now` (marker) | Nu | Current |
 | `details` (disclosure) | Details | Details |
 | `growth` (label on the Amac card) | Doorgroei | Growth |
+
+**Skills** (`skills.soft` in content, the rest in `data/skills.json`)
+
+| Item | NL | EN |
+|---|---|---|
+| label | Soft skills | Soft skills |
+| new capability | Literatuurstudie | Literature review |
+| new capability | Requirements | Requirements |
+| new capability | Swift / SwiftUI | Swift / SwiftUI |
+| new capability | Sprekersacquisitie | Speaker acquisition |
+| new capability | Relatiebeheer · Planning | Relationship management · Planning |
+| new capability | Dagelijkse operatie | Daily operations |
+| new capability | Notulen & administratie | Minutes & administration |
+| honeypot label (hidden from everyone) | Laat dit veld leeg | Leave this field empty |
 
 Every claim in the pillar texts is lifted from `projects.json` / `timeline.json`. Note that the research text describes the experiment and doesn't state a finding.
 

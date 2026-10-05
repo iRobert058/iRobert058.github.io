@@ -463,59 +463,72 @@ main { counter-reset: sec; }
   .tl-step.is-now { border-left-color: var(--accent); }
 }
 
-/* ==================================================================
-   Legacy V1 section styles below, replaced section by section.
-   ================================================================== */
-
-/* legacy chips (skills, until 2f) */
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
-.chip { font-family: var(--font-mono); font-size: 13px; border: 1px solid var(--line); border-radius: 99px; padding: 5px 13px; color: var(--muted); }
-
-/* ---------- Skills & certificates ---------- */
-.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
-.bar-item { margin-bottom: 24px; }
-.bar-item .bar-head { font-weight: 600; font-size: 15.5px; margin-bottom: 8px; }
-.bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
-.bar i { display: block; height: 100%; border-radius: 99px; background: var(--accent); width: 0; transition: width 1.2s var(--ease); }
-.skills-side h4 {
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--muted); margin: 0 0 12px;
+/* ---------- Skills: methods & tools under the three pillars, soft skills, languages ---------- */
+.skills { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 96px); }
+.skills-label {
+  font-family: var(--font-mono); font-size: var(--fs-mono); font-weight: 400; letter-spacing: var(--tracking-mono);
+  text-transform: uppercase; color: var(--muted); margin-bottom: var(--space-5);
 }
-.skills-side .chips { margin-bottom: 36px; }
-.lang-row { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding: 12px 2px; font-size: 15.5px; }
-.lang-row span:last-child { color: var(--muted); font-size: 14px; }
-.cert-row { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--line); padding: 14px 2px; font-size: 15.5px; }
-.cert-row span:last-child { font-family: var(--font-mono); font-size: 13px; color: var(--muted); white-space: nowrap; }
-@media (max-width: 760px) { .skills-grid { grid-template-columns: 1fr; gap: 48px; } }
-
-/* ---------- Contact ---------- */
-.contact-card { border: 1px solid var(--line); border-radius: 24px; background: var(--surface); padding: 64px 48px; }
-.contact-inner { max-width: 560px; margin: 0 auto; text-align: center; }
-.contact-form { text-align: left; margin-top: 8px; }
-.hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-.field { margin-bottom: 18px; }
-.field label { display: block; font-weight: 600; font-size: 14.5px; margin-bottom: 6px; }
-.field input, .field textarea {
-  width: 100%; font-family: var(--font-body); font-size: 15.5px; color: var(--ink);
-  background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-sm);
-  padding: 12px 14px; transition: border-color .2s;
+.cap-groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
+.cap-group h4 {
+  display: flex; align-items: baseline; gap: var(--space-2); padding-bottom: var(--space-3); margin-bottom: var(--space-2);
+  font-family: var(--font-display); font-size: 21px; font-weight: 650; border-bottom: 2px solid var(--ink);
 }
-.field textarea { min-height: 140px; resize: vertical; }
-.field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
-.form-status { margin-top: 14px; font-size: 14.5px; color: var(--muted); min-height: 1.4em; }
-.form-status.ok { color: #2E9E5B; }
-.form-status.err { color: var(--accent); }
-.contact-socials { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+.cap-no { font-family: var(--font-mono); font-size: var(--fs-mono); font-weight: 400; color: var(--accent-ink); }
+.cap-group li, .plain-list li { padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 15.5px; }
+.skills-side { display: grid; gap: var(--space-7); align-content: start; }
+.lang-list div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4); padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 15.5px; }
+.lang-list dd { color: var(--muted); font-size: var(--fs-sm); text-align: right; }
+@media (max-width: 1000px) {
+  .skills { grid-template-columns: minmax(0, 1fr); }
+  .skills-side { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); }
+}
+@media (max-width: 640px) { .cap-groups, .skills-side { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Certificates (hidden while the data is empty) ---------- */
+.cert-list li {
+  display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4);
+  padding: var(--space-4) 0; border-bottom: 1px solid var(--line);
+}
+.cert-list li:first-child { border-top: 1px solid var(--line); }
+.cert-issuer { color: var(--muted); }
+.cert-year { font-family: var(--font-mono); font-size: var(--fs-mono); color: var(--muted); white-space: nowrap; }
+
+/* ---------- Contact: the closing band ---------- */
+.contact-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 96px); align-items: start; }
+.contact-title { font-size: var(--fs-statement); line-height: .98; margin-bottom: var(--space-5); }
+.contact-intro .lead { margin-bottom: var(--space-6); }
+.contact-socials { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .contact-socials a {
-  text-decoration: none; border: 1px solid var(--line); border-radius: 12px;
-  padding: 10px 18px; font-weight: 600; font-size: 14.5px; background: var(--bg);
-  transition: border-color .2s, transform .15s;
+  display: inline-flex; gap: 6px; text-decoration: none; font-weight: 600; font-size: 15.5px;
+  border: 1px solid var(--line-strong); border-radius: var(--radius-pill); padding: 9px 16px; transition: border-color var(--dur-fast);
 }
-.contact-socials a:hover { border-color: var(--accent); transform: translateY(-2px); }
-@media (max-width: 600px) { .contact-card { padding: 44px 22px; } }
+.contact-socials a:hover { border-color: var(--ink); }
+.contact-form { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: clamp(24px, 3vw, 40px); }
+.hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.field { margin-bottom: var(--space-5); }
+.field label { display: block; font-weight: 600; font-size: var(--fs-sm); margin-bottom: var(--space-2); }
+.field input, .field textarea {
+  width: 100%; font-family: var(--font-body); font-size: 16px; color: var(--ink);
+  background: var(--bg); border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+  padding: 12px 14px; transition: border-color var(--dur-fast);
+}
+.field input:hover, .field textarea:hover { border-color: var(--ink); }
+.field input:focus-visible, .field textarea:focus-visible { outline-offset: 1px; }
+.field textarea { min-height: 150px; resize: vertical; }
+.field [aria-invalid="true"] { border-color: var(--accent-ink); }
+.form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); }
+.form-status { flex: 1; min-width: 200px; font-size: var(--fs-sm); color: var(--muted); }
+.form-status:empty { display: none; }
+.form-status.ok { color: var(--success); }
+.form-status.err { color: var(--accent-ink); }
+@media (max-width: 900px) { .contact-grid { grid-template-columns: minmax(0, 1fr); } }
 
-footer { padding: 44px 0 56px; text-align: center; color: var(--muted); font-size: 14px; }
-footer .foot-note { font-family: var(--font-mono); font-size: 12.5px; margin-top: 6px; }
+/* ---------- Footer (continues the closing band) ---------- */
+.site-foot { padding: var(--space-6) 0 var(--space-8); border-top: 1px solid var(--line); font-size: var(--fs-sm); color: var(--muted); }
+.site-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-5); }
+.site-foot a { color: var(--ink); text-underline-offset: 3px; }
+.foot-note { font-family: var(--font-mono); font-size: var(--fs-mono); }
 
 /* ---------- Reveal ---------- */
 .reveal { opacity: 0; transform: translateY(22px); transition: opacity var(--reveal-duration) ease, transform var(--reveal-duration) ease; }

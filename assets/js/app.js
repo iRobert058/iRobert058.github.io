@@ -237,36 +237,39 @@
       .join("");
   }
 
+  // Methods & tools grouped under the three pillars, soft skills as a plain list, languages.
+  // (skills.json → "bars" and "tools" stay in the data but are no longer shown.)
   function renderSkills() {
-    $("#skillBars").innerHTML = skills.bars
-      .map(
-        (b) => `<div class="bar-item">
-          <div class="bar-head"><span>${esc(t(b.label))}</span></div>
-          <div class="bar"><i data-w="${Number(b.level) || 0}"></i></div>
-        </div>`
-      )
+    $("#capGroups").innerHTML = pillars
+      .map((p, i) => {
+        const group = (skills.capabilities || []).find((c) => c.pillar === p.id);
+        if (!group) return "";
+        return `<div class="cap-group">
+          <h4><span class="cap-no" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span>${esc(t(p.title))}</h4>
+          <ul>${group.items.map((c) => `<li>${esc(t(c))}</li>`).join("")}</ul>
+        </div>`;
+      })
       .join("");
-    $("#toolChips").innerHTML = skills.tools.map((c) => `<span class="chip">${esc(t(c))}</span>`).join("");
+    $("#softSkills").innerHTML = (skills.soft || []).map((s) => `<li>${esc(t(s))}</li>`).join("");
     $("#languageList").innerHTML = skills.languages
-      .map((l) => `<div class="lang-row"><span>${esc(t(l.name))}</span><span>${esc(t(l.level))}</span></div>`)
+      .map((l) => `<div><dt>${esc(t(l.name))}</dt><dd>${esc(t(l.level))}</dd></div>`)
       .join("");
   }
 
   function renderCertificates() {
     const section = $("#certificaten");
-    if (!certificates.length) {
-      section.classList.add("hidden");
-      return;
-    }
-    section.classList.remove("hidden");
+    section.classList.toggle("hidden", !certificates.length);
     $("#certList").innerHTML = certificates
-      .map((c) => `<div class="cert-row"><span>${esc(t(c.title))}${c.issuer ? ` — ${esc(c.issuer)}` : ""}</span><span>${esc(c.year ?? "")}</span></div>`)
+      .map(
+        (c) => `<li><span>${esc(t(c.title))}${c.issuer ? ` <span class="cert-issuer">— ${esc(c.issuer)}</span>` : ""}</span>
+          <span class="cert-year">${esc(c.year ?? "")}</span></li>`
+      )
       .join("");
   }
 
   function renderSocials() {
     $("#socialLinks").innerHTML = (site.socials || [])
-      .map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`)
+      .map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)} <span aria-hidden="true">↗</span></a></li>`)
       .join("");
   }
 
@@ -297,7 +300,6 @@
       entries.forEach((e) => {
         if (!e.isIntersecting) return;
         e.target.classList.add("in");
-        e.target.querySelectorAll(".bar i").forEach((bar) => (bar.style.width = bar.dataset.w + "%"));
         io.unobserve(e.target);
       });
     },
@@ -305,7 +307,7 @@
   );
 
   function observeReveals() {
-    document.querySelectorAll(".reveal, .skills-grid, .hero h1 em").forEach((el) => io.observe(el));
+    document.querySelectorAll(".reveal, .hero h1 em").forEach((el) => io.observe(el));
   }
 
   function renderAll() {
@@ -398,16 +400,21 @@
   /* ---------- Contact form ---------- */
   const form = $("#contactForm");
   const status = $("#formStatus");
+  const fields = [...form.querySelectorAll(".field input, .field textarea")];
+  fields.forEach((f) => f.addEventListener("input", () => f.validity.valid && f.removeAttribute("aria-invalid")));
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const L = ui[state.lang].contact;
     status.className = "form-status";
 
-    if (form.company.value) return; // honeypot: bots fill this hidden field, humans never do
+    if (form.elements._gotcha.value) return; // honeypot: bots fill this hidden field, humans never do
 
+    // Mark what's wrong and take keyboard users straight to the first problem
+    fields.forEach((f) => (f.validity.valid ? f.removeAttribute("aria-invalid") : f.setAttribute("aria-invalid", "true")));
     if (!form.checkValidity()) {
       status.textContent = L.status_invalid;
       status.classList.add("err");
+      form.querySelector("[aria-invalid]")?.focus();
       return;
     }
     if (!site.formEndpoint) {

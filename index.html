@@ -223,74 +223,86 @@ document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark
 
 <div class="interlude-slot"></div>
 
-<section id="vaardigheden">
+<section id="vaardigheden" class="sec">
   <div class="wrap">
-    <span class="eyebrow" data-t="skills.eyebrow"></span>
-    <h2 data-t="skills.title"></h2>
-    <div class="skills-grid">
-      <div id="skillBars"></div>
+    <header class="sec-head">
+      <p class="eyebrow"><span class="sec-no" aria-hidden="true"></span><span data-t="skills.eyebrow"></span></p>
+      <h2 data-t="skills.title"></h2>
+    </header>
+    <div class="skills">
+      <div class="skills-methods">
+        <h3 class="skills-label" data-t="skills.tools"></h3>
+        <div class="cap-groups" id="capGroups"></div>
+      </div>
       <div class="skills-side">
-        <h4 data-t="skills.tools"></h4>
-        <div class="chips" id="toolChips"></div>
-        <h4 data-t="skills.languages"></h4>
-        <div id="languageList"></div>
+        <div>
+          <h3 class="skills-label" data-t="skills.soft"></h3>
+          <ul class="plain-list" id="softSkills"></ul>
+        </div>
+        <div>
+          <h3 class="skills-label" data-t="skills.languages"></h3>
+          <dl class="lang-list" id="languageList"></dl>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="certificaten" class="hidden">
+<!-- Appears automatically as soon as data/certificates.json has entries -->
+<section id="certificaten" class="sec hidden">
   <div class="wrap">
-    <span class="eyebrow" data-t="certificates.eyebrow"></span>
-    <h2 data-t="certificates.title"></h2>
-    <div id="certList"></div>
+    <header class="sec-head">
+      <p class="eyebrow"><span class="sec-no" aria-hidden="true"></span><span data-t="certificates.eyebrow"></span></p>
+      <h2 data-t="certificates.title"></h2>
+    </header>
+    <ul class="cert-list" id="certList"></ul>
   </div>
 </section>
 
 <div class="interlude-slot"></div>
 
-<section id="contact">
-  <div class="wrap">
-    <div class="contact-card reveal">
-      <div class="contact-inner">
-        <span class="eyebrow" data-t="contact.eyebrow"></span>
-        <h2 data-t="contact.title"></h2>
-        <p class="lead" data-t="contact.lead"></p>
-        <form class="contact-form" id="contactForm" novalidate>
-          <div class="hp-field" aria-hidden="true">
-            <label for="cf-company">Company</label>
-            <input id="cf-company" name="company" type="text" tabindex="-1" autocomplete="off">
-          </div>
-          <div class="field">
-            <label for="cf-name" data-t="contact.name"></label>
-            <input id="cf-name" name="name" type="text" required autocomplete="name">
-          </div>
-          <div class="field">
-            <label for="cf-email" data-t="contact.email"></label>
-            <input id="cf-email" name="email" type="email" required autocomplete="email">
-          </div>
-          <div class="field">
-            <label for="cf-message" data-t="contact.message"></label>
-            <textarea id="cf-message" name="message" required></textarea>
-          </div>
-          <button class="btn btn-primary" type="submit" data-t="contact.send"></button>
-          <p class="form-status" id="formStatus" role="status"></p>
-        </form>
-        <div class="contact-socials" id="socialLinks"></div>
-      </div>
+<section id="contact" class="sec band">
+  <div class="wrap contact-grid">
+    <div class="contact-intro">
+      <p class="eyebrow"><span class="sec-no" aria-hidden="true"></span><span data-t="contact.eyebrow"></span></p>
+      <h2 class="contact-title" data-t="contact.title"></h2>
+      <p class="lead" data-t="contact.lead"></p>
+      <ul class="contact-socials" id="socialLinks"></ul>
     </div>
+    <form class="contact-form" id="contactForm" novalidate>
+      <!-- Honeypot: Formspree drops any submission that fills _gotcha; humans never see or reach it -->
+      <div class="hp-field" aria-hidden="true">
+        <label for="cf-gotcha">Laat dit veld leeg / Leave this field empty</label>
+        <input id="cf-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="cf-name" data-t="contact.name"></label>
+        <input id="cf-name" name="name" type="text" required autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="cf-email" data-t="contact.email"></label>
+        <input id="cf-email" name="email" type="email" required autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="cf-message" data-t="contact.message"></label>
+        <textarea id="cf-message" name="message" required rows="6"></textarea>
+      </div>
+      <div class="form-foot">
+        <button class="btn btn-primary" type="submit" data-t="contact.send"></button>
+        <p class="form-status" id="formStatus" role="status"></p>
+      </div>
+    </form>
   </div>
 </section>
 
 </main>
 
-<footer>
+<footer class="site-foot band">
   <div class="wrap">
-    <div>© <span id="year"></span> <span data-site="name">Robert Karzijn</span> · <span data-t="footer.location"></span> · <a href="privacy.html">Privacy</a></div>
-    <div class="foot-note" data-t="footer.note"></div>
+    <p>© <span id="year"></span> <span data-site="name">Robert Karzijn</span> · <span data-t="footer.location"></span> · <a href="privacy.html">Privacy</a></p>
+    <p class="foot-note" data-t="footer.note"></p>
   </div>
 </footer>
-
 
 </body>
 </html>
