@@ -9,27 +9,38 @@
 <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
 <link rel="preload" href="assets/fonts/bricolage-grotesque-latin-opsz.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/hanken-grotesk-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="color-scheme" content="light dark">
+<script>/* Theme before first paint: follow the system */
+document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";</script>
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/main.css">
 <style>
-  .pv-topbar { display: flex; justify-content: flex-end; padding: 24px 24px 0; max-width: 680px; margin: 0 auto; }
-  .pv-wrap { max-width: 680px; margin: 0 auto; padding: 24px 24px 120px; }
-  .pv-back { font-family: var(--font-mono); font-size: 13px; color: var(--accent); text-decoration: none; }
-  .pv-wrap h1 { font-family: var(--font-display); font-size: clamp(28px, 5vw, 40px); margin: 20px 0 8px; }
-  .pv-updated { color: var(--muted); font-size: 14px; margin-bottom: 40px; }
-  .pv-wrap h2 { font-family: var(--font-display); font-size: 20px; margin: 36px 0 12px; }
+  .pv-wrap { max-width: 720px; margin: 0 auto; padding: var(--space-7) var(--gutter) var(--space-9); }
+  .pv-back { font-family: var(--font-mono); font-size: var(--fs-mono); color: var(--accent-ink); text-decoration: none; }
+  .pv-back:hover { text-decoration: underline; }
+  .pv-wrap h1 { font-family: var(--font-display); font-size: clamp(34px, 5vw, 52px); line-height: 1.05; letter-spacing: var(--tracking-display); margin: var(--space-5) 0 var(--space-2); }
+  .pv-wrap .pv-updated { font-family: var(--font-mono); font-size: var(--fs-mono); color: var(--muted); margin-bottom: var(--space-7); }
+  .pv-wrap h2 { font-family: var(--font-display); font-size: 22px; letter-spacing: -.01em; margin: var(--space-6) 0 var(--space-3); padding-top: var(--space-5); border-top: 1px solid var(--line); }
   .pv-wrap p, .pv-wrap li { color: var(--ink); margin-bottom: 12px; }
-  .pv-wrap ul { padding-left: 20px; }
-  .pv-wrap a { color: var(--accent); }
+  .pv-wrap ul { padding-left: 20px; list-style: disc; }
+  .pv-wrap a { color: var(--accent-ink); }
 </style>
 </head>
 <body>
 
-<div class="pv-topbar">
-  <button class="pill" id="langBtn" aria-label="Switch language">EN</button>
-</div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="./" id="logoLink"><span class="dot" aria-hidden="true"></span>Robert Karzijn</a>
+    <div class="nav-ctrl" style="margin-left: auto">
+      <div class="seg" role="group" aria-label="Taal / Language">
+        <button class="seg-btn" type="button" data-lang="nl" lang="nl" aria-pressed="true">NL</button>
+        <button class="seg-btn" type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</header>
 
-<div class="pv-wrap">
+<main class="pv-wrap">
   <a class="pv-back" href="./" data-t="back">← Terug naar home</a>
   <h1 data-t="title">Privacyverklaring</h1>
   <p class="pv-updated" data-t="updated">Laatst bijgewerkt: 1 september 2026</p>
@@ -50,12 +61,10 @@
 
   <h2 data-t="h_questions">Vragen</h2>
   <p data-t-html="p_questions">Heb je vragen over deze verklaring? Stuur gerust een bericht via <a href="mailto:robertkarzijn@icloud.com">e-mail</a> of <a href="https://www.linkedin.com/in/robert-karzijn-260696279" target="_blank" rel="noopener">LinkedIn</a>.</p>
-</div>
+</main>
 
 <script>
   (function () {
-    document.documentElement.dataset.theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-
     var dict = {
       nl: {
         back: "← Terug naar home",
@@ -93,12 +102,16 @@
       }
     };
 
-    var langBtn = document.getElementById("langBtn");
-
+    // Nothing is stored: the language comes from ?lang=en and travels back to the home page
     function applyLang(lang) {
       document.documentElement.lang = lang;
       document.title = dict[lang].pageTitle;
-      langBtn.textContent = lang === "nl" ? "EN" : "NL";
+      document.querySelectorAll(".seg-btn").forEach(function (b) {
+        b.setAttribute("aria-pressed", String(b.dataset.lang === lang));
+      });
+      document.querySelectorAll('a[href^="./"]').forEach(function (a) {
+        a.setAttribute("href", lang === "en" ? "./?lang=en" : "./");
+      });
       document.querySelectorAll("[data-t]").forEach(function (el) {
         el.textContent = dict[lang][el.dataset.t];
       });
@@ -107,14 +120,16 @@
       });
     }
 
-    var lang = localStorage.getItem("site-lang") === "en" ? "en" : "nl";
-    applyLang(lang);
-
-    langBtn.addEventListener("click", function () {
-      lang = lang === "nl" ? "en" : "nl";
-      localStorage.setItem("site-lang", lang);
-      applyLang(lang);
+    document.querySelectorAll(".seg-btn").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var url = new URL(location.href);
+        if (b.dataset.lang === "en") url.searchParams.set("lang", "en");
+        else url.searchParams.delete("lang");
+        history.replaceState(null, "", url);
+        applyLang(b.dataset.lang);
+      });
     });
+    applyLang(new URLSearchParams(location.search).get("lang") === "en" ? "en" : "nl");
   })();
 </script>
 

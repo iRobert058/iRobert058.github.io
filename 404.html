@@ -5,45 +5,70 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>404 - Robert Karzijn</title>
 <meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/img/favicon-48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="shortcut icon" href="/favicon.ico">
 <link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-opsz.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/hanken-grotesk-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<script>/* Theme before first paint: follow the system */
+document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";</script>
+<!-- Absolute paths: GitHub Pages serves this page for any missing URL, at any depth -->
 <link rel="stylesheet" href="/assets/css/tokens.css">
 <link rel="stylesheet" href="/assets/css/main.css">
 <style>
-  .nf-topbar { display: flex; justify-content: flex-end; padding: 24px; }
-  .nf-wrap {
-    min-height: calc(100vh - 72px); display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 24px;
+  .nf { min-height: calc(100svh - var(--nav-h)); display: grid; align-items: center; padding: var(--space-8) 0; }
+  .nf-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 96px); align-items: center; }
+  .nf-code { font-family: var(--font-mono); font-size: var(--fs-mono); letter-spacing: var(--tracking-mono); text-transform: uppercase; color: var(--accent-ink); margin-bottom: var(--space-4); }
+  .nf h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(36px, 5.4vw, 64px); line-height: 1.04; letter-spacing: var(--tracking-display); margin-bottom: var(--space-5); text-wrap: balance; }
+  .nf-lead { color: var(--muted); font-size: var(--fs-lead); max-width: 30em; margin-bottom: var(--space-6); }
+  .nf-page { aspect-ratio: 5 / 3; display: grid; place-items: center; padding: 8%; }
+  .nf-ghost {
+    width: 100%; height: 100%; display: grid; place-items: center; border-radius: 2.4cqi;
+    border: 2px dashed var(--accent); color: var(--accent-ink); font-family: var(--font-mono); font-size: 7cqi;
   }
-  .nf-code {
-    font-family: var(--font-mono); font-size: 15px; color: var(--accent);
-    letter-spacing: .08em; text-transform: uppercase; margin-bottom: 18px;
-  }
-  .nf-wrap h1 {
-    font-family: var(--font-display); font-weight: 700; letter-spacing: -.02em;
-    font-size: clamp(32px, 6vw, 52px); margin-bottom: 16px;
-  }
-  .nf-wrap p { color: var(--muted); max-width: 480px; margin-bottom: 40px; }
+  .nf-fig { margin-top: var(--space-3); font-family: var(--font-mono); font-size: var(--fs-mono); color: var(--muted); }
+  @media (max-width: 800px) { .nf-grid { grid-template-columns: minmax(0, 1fr); } }
 </style>
 </head>
 <body>
 
-<div class="nf-topbar">
-  <button class="pill" id="langBtn" aria-label="Switch language">EN</button>
-</div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="/"><span class="dot" aria-hidden="true"></span>Robert Karzijn</a>
+    <div class="nav-ctrl" style="margin-left: auto">
+      <div class="seg" role="group" aria-label="Taal / Language">
+        <button class="seg-btn" type="button" data-lang="nl" lang="nl" aria-pressed="true">NL</button>
+        <button class="seg-btn" type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</header>
 
-<div class="nf-wrap">
-  <span class="nf-code" data-t="code">Foutcode 404</span>
-  <h1 data-t="title">Deze pagina bestaat niet.</h1>
-  <p data-t="lead">Een interface-element dat zich niet gedraagt zoals verwacht - toevallig mijn onderzoeksgebied.</p>
-  <button class="btn btn-primary" id="nfBtn" data-t="btn">Terug naar home</button>
-</div>
+<main class="nf">
+  <div class="wrap nf-grid">
+    <div>
+      <p class="nf-code" data-t="code">Foutcode 404</p>
+      <h1 data-t="title">Deze pagina bestaat niet.</h1>
+      <p class="nf-lead" data-t="lead">Een interface-element dat zich niet gedraagt zoals verwacht - toevallig mijn onderzoeksgebied.</p>
+      <a class="btn btn-primary" href="/" id="nfHome" data-t="btn">Terug naar home</a>
+    </div>
+    <figure aria-hidden="true">
+      <div class="specimen-window">
+        <div class="specimen-bar">
+          <span class="sb-arrows"><i></i><i></i></span>
+          <span class="sb-url" id="nfUrl">robertkarzijn.nl</span>
+        </div>
+        <div class="nf-page"><div class="nf-ghost">404</div></div>
+      </div>
+      <figcaption class="nf-fig">Fig. 404</figcaption>
+    </figure>
+  </div>
+</main>
 
 <script>
   (function () {
-    document.documentElement.dataset.theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-
+    // Nothing is stored: the language comes from ?lang=en and the buttons switch it in place
     var dict = {
       nl: {
         code: "Foutcode 404",
@@ -61,29 +86,27 @@
       }
     };
 
-    var langBtn = document.getElementById("langBtn");
-    var lang = localStorage.getItem("site-lang") === "en" ? "en" : "nl";
+    // The address bar shows the address that was asked for
+    var path = location.pathname;
+    try { path = decodeURI(path); } catch (e) { /* keep it encoded */ }
+    document.getElementById("nfUrl").textContent = "robertkarzijn.nl" + path;
 
-    function applyLang(l) {
-      document.documentElement.lang = l;
-      document.title = dict[l].pageTitle;
-      langBtn.textContent = l === "nl" ? "EN" : "NL";
+    function applyLang(lang) {
+      document.documentElement.lang = lang;
+      document.title = dict[lang].pageTitle;
       document.querySelectorAll("[data-t]").forEach(function (el) {
-        el.textContent = dict[l][el.dataset.t];
+        el.textContent = dict[lang][el.dataset.t];
       });
+      document.querySelectorAll(".seg-btn").forEach(function (b) {
+        b.setAttribute("aria-pressed", String(b.dataset.lang === lang));
+      });
+      document.getElementById("nfHome").href = lang === "en" ? "/?lang=en" : "/";
     }
 
-    langBtn.addEventListener("click", function () {
-      lang = lang === "nl" ? "en" : "nl";
-      localStorage.setItem("site-lang", lang);
-      applyLang(lang);
+    document.querySelectorAll(".seg-btn").forEach(function (b) {
+      b.addEventListener("click", function () { applyLang(b.dataset.lang); });
     });
-
-    document.getElementById("nfBtn").addEventListener("click", function () {
-      window.location.href = "/";
-    });
-
-    applyLang(lang);
+    applyLang(new URLSearchParams(location.search).get("lang") === "en" ? "en" : "nl");
   })();
 </script>
 

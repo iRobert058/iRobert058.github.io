@@ -4,7 +4,7 @@ Branch `redesign/v2`, cut from `main` at `813bcf4` (V1.13). Nothing here touches
 
 ## Progress
 
-_Last update: 2026-10-05 03:35 CEST_
+_Last update: 2026-10-05 04:00 CEST_
 
 - [x] 1. Study the repo and the reference, write this brief
 - [x] 2a. Tokens, self-hosted fonts, base styles
@@ -14,11 +14,11 @@ _Last update: 2026-10-05 03:35 CEST_
 - [x] 2e. Experience timeline (groups, "Nu", details)
 - [x] 2f. Skills (capabilities by pillar), certificates, contact (ink band, `_gotcha`)
 - [x] 2g. Motion pass (scroll-driven reveals + fallback)
-- [ ] 3. Hardening (meta, JSON-LD, noscript, robots, 404, privacy page fonts)
+- [x] 3. Hardening (meta, JSON-LD, noscript, robots, 404, privacy page fonts)
 - [ ] 4. Verification (matrix, keyboard, Lighthouse/axe, originality script), README
 - [ ] 5. Stretch: project detail pages
 
-**Next:** 3 (hardening: meta/og sync, JSON-LD, noscript, robots, 404 in the new style, privacy page). Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
+**Next:** 4 (verification matrix into `_review/`, keyboard pass, Lighthouse + axe, originality script, README). Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
 **Half-finished:** nothing.
 
 ---
@@ -136,6 +136,10 @@ Reference: jopmors.com (studied 2026-10-05 via screenshots at 1440 and 390, plus
 | 33 | Footer continues the closing band | The page ends on one dark block instead of a thin paper strip. |
 | 34 | Reveals are CSS scroll-driven (`animation-timeline: view()`) over a **fixed 160px** of entry. The IntersectionObserver only runs where that's unsupported (it still draws the hero underline everywhere). | No JS work while scrolling in modern browsers. A percentage range kept tall case studies half-transparent while you read their top; a fixed distance doesn't. Checked by scrolling with motion on: every block sitting 220px+ inside the viewport is fully opaque. |
 | 35 | Motion inventory, all off or instant under `prefers-reduced-motion`: content settling in (fade + 18px rise), the underline drawing once, the demo button moving and its ghost fading in (only on click), the menu dropping in, 1–2px hover lifts. With reduced motion nothing starts hidden. | No scroll-jacking, parallax, custom cursor or smooth-scroll library. Native anchor scrolling, smooth only when motion is allowed. |
+| 36 | Hardening, per item: `og:url`, `og:image` (the existing 1200×630 `og-image.png`), the canonical link and `robots.txt` already existed and are correct, so they're kept. The meta/og/twitter descriptions are rewritten from the current hero copy. The JSON-LD `Person` gains only on-site facts: UU as alma mater and affiliation, Amac, nl/en/de, the fields. | No duplicates. Nothing claimed that the page doesn't say. |
+| 37 | No-JS: a `<noscript><style>` in `<head>` hides the parts only JavaScript fills (the links would be empty). The existing bilingual note is restyled under the brand bar. | Before, the page showed empty nav links and a large blank area without JS. |
+| 38 | `404.html` rebuilt in the new style: the "Fig. 404" window shows the address that was asked for, with a dashed ghost where the page should be. The existing copy is unchanged, the button is now a real link, and the language comes from `?lang=`. | It reuses the hero's "it was here" idea. Absolute paths keep it working at any depth on GitHub Pages. |
+| 39 | `privacy.html`: same text (all 30 strings verified identical). New top bar with the NL/EN toggle, theme set before paint, links in the AA-safe red, `?lang=` instead of `localStorage`. | No policy text was written or changed, as asked. |
 | 13 | Specimen product: a drawn instant camera at "€ 89,95" on `shop.example` (a reserved example domain) | Neutral and recognisably a shop, with the brand red as the camera stripe. It's a nod to the photography without claiming anything. |
 
 ## Copy to review (NL + EN)
@@ -192,6 +196,14 @@ All new strings are in `content/nl.json` / `content/en.json` unless noted. They'
 | 03 title | Organiseren | Organise |
 | 03 promise | Mensen meenemen, ook als de deadline dichtbij komt. | Bringing people along, even when the deadline gets close. |
 | 03 text | Bij exec(ut) werfde en begeleidde ik de sprekers van de studenten-techconferentie, van eerste mail tot podium. Bij Amac ben ik als Daily Operations Lead het aanspreekpunt voor het team. | At exec(ut) I recruited and supported the speakers of the student tech conference, from first email to stage. At Amac, as Daily Operations Lead, I'm the point of contact for the team. |
+
+**Meta** (`index.html`, hardcoded Dutch like before)
+
+| Tag | New text |
+|---|---|
+| `meta description` | Goede techniek begint met een goed gesprek. Portfolio van Robert Karzijn, masterstudent Human-Computer Interaction met een bachelor Informatiekunde van Universiteit Utrecht. |
+| `og:description` / `twitter:description` | Goede techniek begint met een goed gesprek. Human-Computer Interaction · UX-onderzoek. |
+| JSON-LD `description` | Masterstudent Human-Computer Interaction met een bachelor Informatiekunde van Universiteit Utrecht. |
 
 **Experience** (`experience.*`)
 
