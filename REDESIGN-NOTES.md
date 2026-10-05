@@ -4,7 +4,7 @@ Branch `redesign/v2`, cut from `main` at `813bcf4` (V1.13). Nothing here touches
 
 ## Progress
 
-_Last update: 2026-10-05 09:45 CEST (run complete)_
+_Last update: 2026-10-05 (after the run: scroll animations added on request)_
 
 - [x] 1. Study the repo and the reference, write this brief
 - [x] 2a. Tokens, self-hosted fonts, base styles
@@ -147,6 +147,7 @@ Run against a local server with headless Chrome (Playwright), with throwaway too
   - **Experience:** one timeline with "Nu" markers, `<details>`, and the Amac roles as a Junior → Medior → Senior staircase.
   - **Skills:** methods & tools under the three pillars, soft skills and languages, with no more percentage bars.
   - **Contact:** the closing band, with the `_gotcha` honeypot and better error handling.
+- **Scroll animations** (added after the run): a progress line, drawn rules, rising numerals, bands opening, a staircase that draws itself, and images settling. All are tied to scroll position in CSS and off with reduced motion (decision 44).
 - **Behaviour and privacy:**
   - No `localStorage` anywhere any more: the language is in the URL.
   - No third-party requests (Google Fonts are gone).
@@ -204,6 +205,7 @@ Run against a local server with headless Chrome (Playwright), with throwaway too
 | 41 | Links between pages carry the language (`?lang=en`): home ↔ project pages ↔ privacy, the nav, back links, prev/next and internal CTAs | Switching pages never drops you back into Dutch, and nothing is stored. |
 | 42 | After rendering, the page re-scrolls to `location.hash` | The browser jumps to `/#projecten` before the JSON content above it exists, so deep links landed in the wrong place. That was true in V1 too. |
 | 43 | Specimen product: a drawn instant camera at "€ 89,95" on `shop.example` (a reserved example domain) | Neutral and recognisably a shop, with the brand red as the camera stripe. It's a nod to the photography without claiming anything. |
+| 44 | **Scroll animations (added on request after the run):** a red reading-progress line under the nav; section heads settling in; highlight rules and skills underlines drawing themselves column by column; pillar numerals rising out of their baseline while the dividers draw downwards; the dark bands opening from a rounded inset to full width; case images and the portrait settling from a slight zoom; the Amac staircase drawing step by step, Junior → Senior; the contact statement rising into place; interlude photos opening like a curtain. | All CSS scroll-driven animations (`animation-timeline: view()` / `scroll(root)`), with no JavaScript. They are tied to the visitor's own scrolling, play backwards when scrolling up, and never change scroll speed: no scroll-jacking or parallax. The hero stays still on purpose. Browsers without scroll-driven animations get the simple fade-in. With `prefers-reduced-motion` none of it runs and everything shows in its final state (verified). Lighthouse is unchanged (98/100/100/100 mobile, CLS 0). It notes 11 clip-path animations that aren't composited, which costs nothing measurable on this page. |
 
 ## Copy to review (NL + EN)
 

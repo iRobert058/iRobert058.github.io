@@ -262,15 +262,16 @@ main { counter-reset: sec; }
 
 /* ---------- Highlights: four moments on a ruled strip ---------- */
 .moments { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-7) var(--space-5); }
-.moment > a, .moment > div {
-  display: flex; flex-direction: column; height: 100%; text-decoration: none;
-  padding-top: var(--space-5); border-top: 2px solid var(--ink); transition: border-color var(--dur-fast);
+.moment > a, .moment > div { position: relative; display: flex; flex-direction: column; height: 100%; text-decoration: none; padding-top: var(--space-5); }
+.moment > a::before, .moment > div::before { /* the rule on top; drawn in while scrolling (see Motion) */
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--ink); transform-origin: left; transition: background-color var(--dur-fast);
 }
 .moment-year { font-family: var(--font-mono); font-size: var(--fs-mono); color: var(--accent-ink); margin-bottom: var(--space-3); }
 .moment h3 { font-family: var(--font-display); font-size: 21px; font-weight: 650; line-height: 1.2; margin-bottom: var(--space-2); }
 .moment p { font-size: var(--fs-sm); color: var(--muted); }
 .moment-go { margin-top: auto; padding-top: var(--space-4); font-size: 18px; line-height: 1; color: var(--accent-ink); transition: transform var(--dur-fast); }
-.moment a:hover { border-top-color: var(--accent); }
+.moment a:hover::before { background: var(--accent); }
 .moment a:hover .moment-go { transform: translateX(4px); }
 @media (max-width: 960px) { .moments { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .moments { grid-template-columns: minmax(0, 1fr); } }
@@ -313,7 +314,7 @@ main { counter-reset: sec; }
 }
 .pillar + .pillar::before {
   content: ""; position: absolute; top: 0; bottom: 0; left: calc(var(--pillar-gap) / -2);
-  width: 1px; background: var(--line);
+  width: 1px; background: var(--line); transform-origin: top;
 }
 .pillar-no {
   font-family: var(--font-display); font-size: clamp(44px, 5vw, 64px); font-weight: 700; line-height: 1;
@@ -515,9 +516,10 @@ main { counter-reset: sec; }
 }
 .cap-groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
 .cap-group h4 {
-  display: flex; align-items: baseline; gap: var(--space-2); padding-bottom: var(--space-3); margin-bottom: var(--space-2);
-  font-family: var(--font-display); font-size: 21px; font-weight: 650; border-bottom: 2px solid var(--ink);
+  position: relative; display: flex; align-items: baseline; gap: var(--space-2); padding-bottom: var(--space-3); margin-bottom: var(--space-2);
+  font-family: var(--font-display); font-size: 21px; font-weight: 650;
 }
+.cap-group h4::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--ink); transform-origin: left; }
 .cap-no { font-family: var(--font-mono); font-size: var(--fs-mono); font-weight: 400; color: var(--accent-ink); }
 .cap-group li, .plain-list li { padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 15.5px; }
 .skills-side { display: grid; gap: var(--space-7); align-content: start; }
@@ -575,12 +577,86 @@ main { counter-reset: sec; }
 .foot-note { font-family: var(--font-mono); font-size: var(--fs-mono); }
 
 /* ---------- Motion ----------
-   Content settles in as it enters the viewport: a CSS scroll-driven animation where supported, otherwise
-   app.js adds .in through an IntersectionObserver. Nothing is hidden or animated with reduced motion. */
+   Everything here is tied to scroll position (CSS scroll-driven animations): it plays forwards and backwards with
+   the visitor's own scrolling, never on its own, and never changes how far or fast the page scrolls.
+   Without support, app.js falls back to a simple fade-in (.reveal + .in); with reduced motion nothing moves at all.
+   The hero is deliberately left still: there, only the visitor's click moves anything. */
 @keyframes settle { from { opacity: 0; transform: translateY(18px); } }
+@keyframes ink-progress { to { transform: scaleX(1); } }
+@keyframes ink-draw-x { from { transform: scaleX(0); } }
+@keyframes ink-draw-y { from { transform: scaleY(0); } }
+@keyframes ink-rise { /* type rises out of its own baseline; the end clip is wider than the glyphs, so nothing is cut */
+  from { clip-path: inset(100% -.1em -.3em -.1em); translate: 0 .4em; }
+  to { clip-path: inset(-.3em -.1em -.3em -.1em); translate: 0 0; }
+}
+@keyframes ink-develop { from { scale: 1.08; } }
+@keyframes ink-band { from { clip-path: inset(0 4vw round var(--radius-lg)); } to { clip-path: inset(0 0 round 0); } }
+@keyframes ink-step { from { clip-path: inset(-4px 100% -4px 0); } to { clip-path: inset(-4px 0 -4px 0); } }
+@keyframes ink-curtain {
+  from { clip-path: inset(10% 6% round var(--radius-lg)); scale: 1.06; }
+  to { clip-path: inset(0 0 round 0); scale: 1; }
+}
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .reveal { animation: settle linear both; animation-timeline: view(); animation-range: entry 0% entry 160px; /* a fixed distance, so tall cases are opaque while you read them */ }
+
+    /* Reading progress: a red hairline under the nav fills as you read down the page */
+    .topbar::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; pointer-events: none;
+      background: var(--accent); transform: scaleX(0); transform-origin: left;
+      animation: ink-progress linear both; animation-timeline: scroll(root);
+    }
+
+    /* Section heads: label, heading and lead settle in one after another */
+    .sec-head > *, .contact-intro > .eyebrow, .contact-intro > .lead, .contact-socials {
+      animation: settle linear both; animation-timeline: view(); animation-range: entry 0% entry 140px;
+    }
+
+    /* Column order for the staggered effects below */
+    .moments > :nth-child(2), .pillars > :nth-child(2), .cap-groups > :nth-child(2) { --i: 1; }
+    .moments > :nth-child(3), .pillars > :nth-child(3), .cap-groups > :nth-child(3) { --i: 2; }
+    .moments > :nth-child(4) { --i: 3; }
+
+    /* Highlights: each rule draws itself, column by column */
+    .moment { view-timeline-name: --moment; }
+    .moment > a::before, .moment > div::before {
+      animation: ink-draw-x linear both; animation-timeline: --moment;
+      animation-range: entry calc(8% + var(--i, 0) * 6%) cover calc(24% + var(--i, 0) * 6%);
+    }
+
+    /* Werkwijze: the numerals rise out of their baseline, the dividers draw downwards */
+    .pillar { view-timeline-name: --pillar; }
+    .pillar-no {
+      animation: ink-rise linear both; animation-timeline: --pillar;
+      animation-range: entry calc(5% + var(--i, 0) * 7%) cover calc(25% + var(--i, 0) * 7%);
+    }
+    .pillar + .pillar::before { animation: ink-draw-y linear both; animation-timeline: --pillar; animation-range: entry 10% cover 45%; }
+
+    /* The dark bands open like a screen as they arrive */
+    section.band { animation: ink-band linear both; animation-timeline: view(); animation-range: entry 0% entry 320px; }
+
+    /* Images develop: a touch zoomed in at first, settling as they come into view */
+    .case-visual img, .datasheet-photo { animation: ink-develop linear both; animation-timeline: view(); animation-range: entry 0% cover 45%; }
+
+    /* The growth card draws its staircase step by step, oldest role first */
+    .route-group { view-timeline-name: --growth; }
+    .route-step {
+      animation: ink-step linear both; animation-timeline: --growth;
+      animation-range: entry calc(20% + var(--step) * 12%) cover calc(38% + var(--step) * 12%);
+    }
+
+    /* Skills: the rule under each pillar name draws itself */
+    .cap-group { view-timeline-name: --cap; }
+    .cap-group h4::after {
+      animation: ink-draw-x linear both; animation-timeline: --cap;
+      animation-range: entry calc(8% + var(--i, 0) * 6%) cover calc(24% + var(--i, 0) * 6%);
+    }
+
+    /* The closing statement rises into place */
+    .contact-title { animation: ink-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 260px; }
+
+    /* Photo interludes open like a curtain */
+    .interlude img { animation: ink-curtain linear both; animation-timeline: view(); animation-range: entry 0% cover 50%; }
   }
   @supports not (animation-timeline: view()) {
     .reveal { opacity: 0; transform: translateY(18px); transition: opacity var(--reveal-duration) var(--ease-out), transform var(--reveal-duration) var(--ease-out); }

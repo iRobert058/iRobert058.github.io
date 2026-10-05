@@ -27,7 +27,15 @@ A single static page that serves as a digital business card for employers, clien
   - The caption is announced to screen readers.
   - With reduced motion the button moves instantly.
 - **Contact form without visible personal details**: messages go through a configurable endpoint (Formspree-compatible), with a `_gotcha` honeypot against bots. No email address or phone number is shown on the site, to protect my privacy.
-- **Subtle motion**: content settles in as it scrolls into view (CSS scroll-driven animations, with an IntersectionObserver fallback), and the accent underline in the hero is drawn once. `prefers-reduced-motion` turns all of it off.
+- **Scroll animations**: content settles in as it scrolls into view. While you read:
+  - a red progress line under the navigation fills up
+  - lines draw themselves
+  - the pillar numbers rise into place
+  - the dark bands open up to full width
+  - the growth card draws its staircase step by step
+  - images settle from a slight zoom.
+
+  All of it is pure CSS (scroll-driven animations) tied to your own scrolling, with no scroll-jacking. The hero only moves when you ask it to. Browsers without scroll-driven animations get a simple fade-in instead, and `prefers-reduced-motion` turns all of it off.
 - **No cookies, no trackers, no storage and no deceptive patterns**. This is a deliberate choice that ties in with my research field, and the wink behind the "cookie banner" on the site. Fonts are self-hosted, so a visit makes no third-party requests. The only exception is the contact form when you press send.
 
 ## How it is built
