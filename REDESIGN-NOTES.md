@@ -4,7 +4,7 @@ Branch `redesign/v2`, cut from `main` at `813bcf4` (V1.13). Nothing here touches
 
 ## Progress
 
-_Last update: 2026-10-05 03:20 CEST_
+_Last update: 2026-10-05 03:35 CEST_
 
 - [x] 1. Study the repo and the reference, write this brief
 - [x] 2a. Tokens, self-hosted fonts, base styles
@@ -13,12 +13,12 @@ _Last update: 2026-10-05 03:20 CEST_
 - [x] 2d. Projects (ink band) and interludes
 - [x] 2e. Experience timeline (groups, "Nu", details)
 - [x] 2f. Skills (capabilities by pillar), certificates, contact (ink band, `_gotcha`)
-- [ ] 2g. Motion pass (scroll-driven reveals + fallback)
+- [x] 2g. Motion pass (scroll-driven reveals + fallback)
 - [ ] 3. Hardening (meta, JSON-LD, noscript, robots, 404, privacy page fonts)
 - [ ] 4. Verification (matrix, keyboard, Lighthouse/axe, originality script), README
 - [ ] 5. Stretch: project detail pages
 
-**Next:** 2g (motion pass: CSS scroll-driven reveals with IntersectionObserver fallback). The legacy CSS/JS is now gone; every section runs on the new styles. Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
+**Next:** 3 (hardening: meta/og sync, JSON-LD, noscript, robots, 404 in the new style, privacy page). Sections not yet redesigned still use the "Legacy V1" block at the bottom of `main.css` and the old renderers in `app.js`; that is expected until 2f.
 **Half-finished:** nothing.
 
 ---
@@ -134,6 +134,8 @@ Reference: jopmors.com (studied 2026-10-05 via screenshots at 1440 and 390, plus
 | 31 | Form success colour tokenised (`--success`, `--band-success`) | It was the one hardcoded colour in `main.css` (CLAUDE.md flagged it). |
 | 32 | The contact form sits on a band-coloured card, not a paper card | A paper card inside the dark band needed a second palette remap. The band card keeps every field border ≥ 3:1. |
 | 33 | Footer continues the closing band | The page ends on one dark block instead of a thin paper strip. |
+| 34 | Reveals are CSS scroll-driven (`animation-timeline: view()`) over a **fixed 160px** of entry. The IntersectionObserver only runs where that's unsupported (it still draws the hero underline everywhere). | No JS work while scrolling in modern browsers. A percentage range kept tall case studies half-transparent while you read their top; a fixed distance doesn't. Checked by scrolling with motion on: every block sitting 220px+ inside the viewport is fully opaque. |
+| 35 | Motion inventory, all off or instant under `prefers-reduced-motion`: content settling in (fade + 18px rise), the underline drawing once, the demo button moving and its ghost fading in (only on click), the menu dropping in, 1–2px hover lifts. With reduced motion nothing starts hidden. | No scroll-jacking, parallax, custom cursor or smooth-scroll library. Native anchor scrolling, smooth only when motion is allowed. |
 | 13 | Specimen product: a drawn instant camera at "€ 89,95" on `shop.example` (a reserved example domain) | Neutral and recognisably a shop, with the brand red as the camera stripe. It's a nod to the photography without claiming anything. |
 
 ## Copy to review (NL + EN)

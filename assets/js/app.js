@@ -295,6 +295,8 @@
   });
 
   /* ---------- Reveal animations ---------- */
+  // Where CSS scroll-driven animations exist, .reveal needs no JS; the observer then only draws the hero underline
+  const cssReveal = window.CSS?.supports?.("animation-timeline: view()");
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
@@ -307,7 +309,7 @@
   );
 
   function observeReveals() {
-    document.querySelectorAll(".reveal, .hero h1 em").forEach((el) => io.observe(el));
+    document.querySelectorAll(cssReveal ? ".hero h1 em" : ".reveal, .hero h1 em").forEach((el) => io.observe(el));
   }
 
   function renderAll() {
