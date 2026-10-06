@@ -70,7 +70,8 @@
     "label_role": "My role",
     "label_result": "Outcome",
     "watch_trailer": "Watch the trailer",
-    "label_tech": "Techniques and methods"
+    "label_tech": "Techniques and methods",
+    "read_more": "Read more"
   },
   "experience": {
     "eyebrow": "Experience & education",
@@ -158,5 +159,9 @@
   },
   "interlude": {
     "credit": "Photo · Robert Karzijn"
+  },
+  "project_page": {
+    "back": "← All projects",
+    "more": "Other projects"
   }
 }

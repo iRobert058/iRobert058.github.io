@@ -76,6 +76,7 @@ Pure logic goes in `assets/js/logic.mjs` (ES module) so Node can test it: timeli
 - **Hardening:** `og:url`, `og:image`, the canonical link, JSON-LD, `<noscript>` and `robots.txt` already existed on `main`. Updated: `meta description`, `og:description` and `twitter:description` now open with the current hero line. JSON-LD gained `description`, `alumniOf`, `worksFor`, `knowsLanguage` and `knowsAbout`, all taken from facts on the site. The noscript message is restyled, and the empty page skeleton is hidden without JS. `robots.txt` was correct and is unchanged.
 - **404 page** rebuilt in the new style with its existing NL/EN text; it now has `noindex`, absolute asset paths, a real link instead of a button-with-JS, and no storage.
 - **Privacy page:** only technical changes (self-hosted fonts, NL/EN segments without storage, a `<main>` landmark). Wording untouched. **Flag:** it shows `robertkarzijn@icloud.com` twice, while the repo's rules say no email address on the site. Decision for you: keep it (a GDPR contact point is reasonable on a privacy page) or replace it with the form.
+- **Project pages (stretch):** `projecten/<id>/index.html` for all three projects, rendered by the same `app.js` (`<body data-page="project" data-project="<id>">`). They use `<base href="/">`, so assets, JSON and `#section` links resolve from the root; the skip link names its own page for that reason. Static per page: `<title>`, meta description and OG tags in Dutch, from the project's existing `title` / `intro`. A new optional field `page` in `projects.json` controls the "Lees meer" link, so a project without a page never links to a 404. A test checks that each `page` exists and points at the right project. The three URLs were added to `sitemap.xml`. **To add a page for a new project:** copy one of the folders, change `data-project`, the title, the description, the canonical/OG URLs and the skip-link path, then set `page` in `projects.json`.
 - **Project meta line:** the existing `tag` field already is "type · year", so it's rendered as the meta line. No new year/type fields.
 
 ## Copy to review
@@ -110,6 +111,8 @@ All new strings are drafts in `content/nl.json` and `content/en.json`. NL is the
 | `experience.group_steps` (label of the step list) | Doorgroei | Progression |
 | `skills.soft` | Persoonlijke vaardigheden | Soft skills |
 | `skills.groups` / `skills.soft` in `data/skills.json` | Grouping of existing tools and project techniques under the pillars; soft skills are the old bar labels minus "IT-vaardigheden". Check that the grouping feels right. | |
+| `projects.read_more` | Lees meer | Read more |
+| `project_page.back` / `project_page.more` | ← Alle projecten / Andere projecten | ← All projects / Other projects |
 | `specimen.btn_next` / `btn_reset` | Simuleer een volgend bezoek / Terug naar bezoek 1 | Simulate a return visit / Back to visit 1 |
 
 ## TODOs for Robert

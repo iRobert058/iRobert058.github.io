@@ -7,6 +7,8 @@
 
 import { pick, esc, lookup, pad2, assignInterludes, groupTimeline, periodLabel, isCurrent, skillGroups, softSkills } from "./logic.mjs";
 
+const page = document.body.dataset.page ?? "home"; // "home" or "project" (the pages in /projecten/<id>/)
+
 const state = {
   lang: "nl", // Dutch by default. Nothing is stored: a language or theme choice lasts for this page view.
   theme: null, // null = follow the system; "light" / "dark" once the visitor picks one
@@ -117,41 +119,72 @@ function numberSections() {
 const linkAttrs = (url) => (url.startsWith("http") ? ' target="_blank" rel="noopener"' : "");
 const sizeAttrs = (w, h) => (w && h ? ` width="${Number(w)}" height="${Number(h)}"` : "");
 
+// Image, or a link to the video when there is one: a video links out instead of embedding,
+// so the page stays free of third-party cookies
+function projectVisual(p, L) {
+  if (!p.image) return "";
+  const img = `<img src="${esc(p.image)}" alt="${esc(t(p.imageAlt))}"${sizeAttrs(p.imageWidth, p.imageHeight)} loading="lazy" decoding="async">`;
+  return p.video
+    ? `<a class="project-visual project-video" href="${esc(p.video)}" target="_blank" rel="noopener">${img}
+        <span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>${esc(L.watch_trailer)}</span>
+      </a>`
+    : `<div class="project-visual">${img}</div>`;
+}
+
+const projectCase = (p, L) =>
+  [[L.label_problem, p.problem], [L.label_role, p.role], [L.label_result, p.result]]
+    .map(([label, text]) => `<div><dt class="label">${esc(label)}</dt><dd>${esc(t(text))}</dd></div>`)
+    .join("");
+
+const projectTech = (p) => p.tech.map((c) => `<li>${esc(t(c))}</li>`).join("");
+
 function renderProjects() {
   const L = ui[state.lang].projects;
   $("#projectsList").innerHTML = projects
     .map((p) => {
-      const imgTag = p.image
-        ? `<img src="${esc(p.image)}" alt="${esc(t(p.imageAlt))}"${sizeAttrs(p.imageWidth, p.imageHeight)} loading="lazy" decoding="async">`
-        : "";
-      // A video links out instead of embedding, so the page stays free of third-party cookies
-      const visual = !p.image
-        ? ""
-        : p.video
-          ? `<a class="project-visual project-video" href="${esc(p.video)}" target="_blank" rel="noopener">${imgTag}
-              <span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>${esc(L.watch_trailer)}</span>
-            </a>`
-          : `<div class="project-visual">${imgTag}</div>`;
-      const chips = p.tech.map((c) => `<li>${esc(t(c))}</li>`).join("");
-      const block = (label, text) => `<div><dt class="label">${esc(label)}</dt><dd>${esc(t(text))}</dd></div>`;
+      // Only projects with a detail page (the optional `page` field) get a "read more" link
+      const more = p.page ? `<a class="project-more" href="${esc(p.page)}">${esc(L.read_more)}<span class="sr-only">: ${esc(t(p.title))}</span></a>` : "";
       return `<li class="project reveal">
         <div class="project-side">
           <p class="label project-meta">${esc(t(p.tag))}</p>
           <h3>${esc(t(p.title))}</h3>
           <p class="project-intro">${esc(t(p.intro))}</p>
-          <ul class="chips" aria-label="${esc(L.label_tech)}">${chips}</ul>
-          <a class="project-cta" href="${esc(p.cta.url)}"${linkAttrs(p.cta.url)}>${esc(t(p.cta.label))}</a>
+          <ul class="chips" aria-label="${esc(L.label_tech)}">${projectTech(p)}</ul>
+          <div class="project-links">
+            <a class="project-cta" href="${esc(p.cta.url)}"${linkAttrs(p.cta.url)}>${esc(t(p.cta.label))}</a>
+            ${more}
+          </div>
         </div>
         <div class="project-main">
-          ${visual}
-          <dl class="case">
-            ${block(L.label_problem, p.problem)}
-            ${block(L.label_role, p.role)}
-            ${block(L.label_result, p.result)}
-          </dl>
+          ${projectVisual(p, L)}
+          <dl class="case">${projectCase(p, L)}</dl>
         </div>
       </li>`;
     })
+    .join("");
+}
+
+/* A project's own page (/projecten/<id>/): the same data, with room for the image */
+function renderProjectPage() {
+  const id = document.body.dataset.project;
+  const p = projects.find((x) => x.id === id);
+  if (!p) throw new Error(`No project with id "${id}" in data/projects.json`);
+  const L = ui[state.lang].projects;
+  document.title = `${t(p.title)} — ${site.name}`;
+  $("#ppMeta").textContent = t(p.tag);
+  $("#ppTitle").textContent = t(p.title);
+  $("#ppIntro").textContent = t(p.intro);
+  $("#ppVisual").innerHTML = projectVisual(p, L).replace(' loading="lazy"', ""); // above the fold here
+  $("#ppCase").innerHTML = projectCase(p, L);
+  $("#ppTech").innerHTML = projectTech(p);
+  $("#ppTech").setAttribute("aria-label", L.label_tech);
+  const cta = $("#ppCta");
+  cta.href = p.cta.url;
+  cta.textContent = t(p.cta.label);
+  if (p.cta.url.startsWith("http")) Object.assign(cta, { target: "_blank", rel: "noopener" });
+  $("#ppMore").innerHTML = projects
+    .filter((x) => x.id !== id && x.page)
+    .map((x) => `<li><a href="${esc(x.page)}"><span class="label">${esc(t(x.tag))}</span><span class="more-title">${esc(t(x.title))}</span></a></li>`)
     .join("");
 }
 
@@ -279,17 +312,21 @@ function renderPrefs() {
 
 function renderAll() {
   applyUIStrings();
-  renderHighlights();
-  renderAbout();
-  renderPillars();
-  renderProjects();
-  renderInterludes();
-  renderTimeline();
-  renderSkills();
-  renderCertificates();
-  numberSections();
-  renderSocials();
-  renderSpecimen();
+  if (page === "project") {
+    renderProjectPage();
+  } else {
+    renderHighlights();
+    renderAbout();
+    renderPillars();
+    renderProjects();
+    renderInterludes();
+    renderTimeline();
+    renderSkills();
+    renderCertificates();
+    numberSections();
+    renderSocials();
+    renderSpecimen();
+  }
   renderPrefs();
   observeReveals();
 }
@@ -355,78 +392,84 @@ function renderSpecimen() {
   $("#specBtn").textContent = specimen.visit === 1 ? S.btn_next : S.btn_reset;
 }
 
-$("#specBtn").addEventListener("click", () => {
-  const cart = $("#specCart");
-  const before = cart.getBoundingClientRect();
-  specimen.visit = specimen.visit === 1 ? 2 : 1;
-  renderSpecimen();
-  if (reduceMotion.matches) return; // swap instantly
-  // FLIP: start the button at its old spot and let it travel to the new one
-  const after = cart.getBoundingClientRect();
-  const dx = before.left + before.width / 2 - (after.left + after.width / 2);
-  const dy = before.top + before.height / 2 - (after.top + after.height / 2);
-  const easing = getComputedStyle(document.documentElement).getPropertyValue("--ease").trim();
-  cart.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "none" }], { duration: 520, easing });
-  if (specimen.visit === 2) $("#specExtra").animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, delay: 260, fill: "backwards" });
-});
+// Everything below only exists on the homepage
+function initHome() {
+  $("#specBtn").addEventListener("click", () => {
+    const cart = $("#specCart");
+    const before = cart.getBoundingClientRect();
+    specimen.visit = specimen.visit === 1 ? 2 : 1;
+    renderSpecimen();
+    if (reduceMotion.matches) return; // swap instantly
+    // FLIP: start the button at its old spot and let it travel to the new one
+    const after = cart.getBoundingClientRect();
+    const dx = before.left + before.width / 2 - (after.left + after.width / 2);
+    const dy = before.top + before.height / 2 - (after.top + after.height / 2);
+    const easing = getComputedStyle(document.documentElement).getPropertyValue("--ease").trim();
+    cart.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "none" }], { duration: 520, easing });
+    if (specimen.visit === 2) $("#specExtra").animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, delay: 260, fill: "backwards" });
+  });
 
-/* ---------- Honest banner ---------- */
-$("#honestBtn").addEventListener("click", () => {
-  $("#honest").hidden = true;
-  $("#heroTitle").focus({ preventScroll: true }); // the button is gone; keep focus in the hero instead of losing it
-});
+  /* Honest banner */
+  $("#honestBtn").addEventListener("click", () => {
+    $("#honest").hidden = true;
+    $("#heroTitle").focus({ preventScroll: true }); // the button is gone; keep focus in the hero instead of losing it
+  });
 
-/* ---------- Contact form ---------- */
-const form = $("#contactForm");
-const status = $("#formStatus");
-form.addEventListener("input", (e) => e.target.removeAttribute("aria-invalid")); // re-checked on the next submit
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const L = ui[state.lang].contact;
-  status.className = "form-status";
+  /* Contact form */
+  const form = $("#contactForm");
+  const status = $("#formStatus");
+  form.addEventListener("input", (e) => e.target.removeAttribute("aria-invalid")); // re-checked on the next submit
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const L = ui[state.lang].contact;
+    status.className = "form-status";
 
-  if (form.elements._gotcha.value) return; // honeypot: bots fill this hidden field, humans never do
+    if (form.elements._gotcha.value) return; // honeypot: bots fill this hidden field, humans never do
 
-  const fields = ["name", "email", "message"].map((n) => form.elements[n]); // not form.name: that's the form's own name
-  fields.forEach((f) => f.setAttribute("aria-invalid", String(!f.validity.valid)));
-  if (!form.checkValidity()) {
-    status.textContent = L.status_invalid;
-    status.classList.add("err");
-    fields.find((f) => !f.validity.valid).focus();
-    return;
-  }
-  if (!site.formEndpoint) {
-    status.textContent = L.status_unconfigured;
-    status.classList.add("err");
-    return;
-  }
-  status.textContent = L.status_sending;
-  try {
-    const res = await fetch(site.formEndpoint, {
-      method: "POST",
-      headers: { Accept: "application/json" },
-      body: new FormData(form),
-    });
-    if (!res.ok) throw new Error(`Form endpoint answered ${res.status}`);
-    form.reset();
-    status.textContent = L.status_ok;
-    status.classList.add("ok");
-  } catch (err) {
-    console.error(err);
-    status.textContent = L.status_err;
-    status.classList.add("err");
-  }
-});
+    const fields = ["name", "email", "message"].map((n) => form.elements[n]); // not form.name: that's the form's own name
+    fields.forEach((f) => f.setAttribute("aria-invalid", String(!f.validity.valid)));
+    if (!form.checkValidity()) {
+      status.textContent = L.status_invalid;
+      status.classList.add("err");
+      fields.find((f) => !f.validity.valid).focus();
+      return;
+    }
+    if (!site.formEndpoint) {
+      status.textContent = L.status_unconfigured;
+      status.classList.add("err");
+      return;
+    }
+    status.textContent = L.status_sending;
+    try {
+      const res = await fetch(site.formEndpoint, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
+      });
+      if (!res.ok) throw new Error(`Form endpoint answered ${res.status}`);
+      form.reset();
+      status.textContent = L.status_ok;
+      status.classList.add("ok");
+    } catch (err) {
+      console.error(err);
+      status.textContent = L.status_err;
+      status.classList.add("err");
+    }
+  });
+
+  $("#cvBtn").href = site.cvFile;
+  const github = (site.socials || []).find((s) => s.label === "GitHub");
+  if (github) $("#githubBtn").href = github.url;
+  else $("#githubBtn").remove();
+}
 
 /* ---------- Init ---------- */
-$("#cvBtn").href = site.cvFile;
-const github = (site.socials || []).find((s) => s.label === "GitHub");
-if (github) $("#githubBtn").href = github.url;
-else $("#githubBtn").remove();
+if (page === "home") initHome();
 $("#year").textContent = new Date().getFullYear();
 try {
   renderAll();
 } finally {
   $("#main").classList.remove("is-loading"); // also after a render error, which still surfaces in the console
 }
-$("#specCaption").setAttribute("aria-live", "polite"); // only after the first render, so loading the page announces nothing
+// Only after the first render, so loading the page announces nothing
+if (page === "home") $("#specCaption").setAttribute("aria-live", "polite");

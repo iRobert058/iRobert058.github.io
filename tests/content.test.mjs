@@ -40,3 +40,11 @@ test("timeline kinds all have a label in both languages", () => {
 test("terminology: deceptive patterns, never dark patterns", () => {
   for (const file of jsonFiles) assert.doesNotMatch(readFileSync(new URL(file, root), "utf8"), /dark pattern/i, file);
 });
+
+test("every project `page` exists and renders that project", () => {
+  for (const p of read("data/projects.json").filter((p) => p.page)) {
+    const html = readFileSync(new URL(`${p.page}index.html`, root), "utf8");
+    assert.match(html, new RegExp(`data-project="${p.id}"`), p.page);
+    assert.match(html, /<base href="\/">/, `${p.page}: base`);
+  }
+});

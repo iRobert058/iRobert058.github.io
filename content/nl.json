@@ -70,7 +70,8 @@
     "label_role": "Mijn rol",
     "label_result": "Resultaat",
     "watch_trailer": "Bekijk de trailer",
-    "label_tech": "Technieken en methoden"
+    "label_tech": "Technieken en methoden",
+    "read_more": "Lees meer"
   },
   "experience": {
     "eyebrow": "Ervaring & opleiding",
@@ -158,5 +159,9 @@
   },
   "interlude": {
     "credit": "Foto · Robert Karzijn"
+  },
+  "project_page": {
+    "back": "← Alle projecten",
+    "more": "Andere projecten"
   }
 }

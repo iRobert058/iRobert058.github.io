@@ -1,6 +1,7 @@
 [
   {
     "id": "thesis",
+    "page": "projecten/thesis/",
     "tag": { "nl": "Bachelorthesis · 2026", "en": "Bachelor's thesis · 2026" },
     "title": {
       "nl": "Deceptive patterns & gewoontegedrag in webshops",
@@ -34,6 +35,7 @@
   },
   {
     "id": "mobipad",
+    "page": "projecten/mobipad/",
     "tag": { "nl": "Eigen project · 2026", "en": "Personal project · 2026" },
     "title": {
       "nl": "MobiPad - je iPhone als gamecontroller",
@@ -71,6 +73,7 @@
   },
   {
     "id": "execut",
+    "page": "projecten/execut/",
     "tag": { "nl": "Studenten-techconferentie · 2025–2026", "en": "Student tech conference · 2025–2026" },
     "title": {
       "nl": "exec(ut) 2026 - sprekers & programma",
