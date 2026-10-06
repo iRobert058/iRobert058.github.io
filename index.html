@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="nl" data-theme="light">
+<html lang="nl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Robert Karzijn - Human-Computer Interaction & UX-onderzoek</title>
-<meta name="description" content="Portfolio van Robert Karzijn: masterstudent Human-Computer Interaction met een bachelor Information Sciences (Universiteit Utrecht). Onderzoek naar deceptive patterns, interactieontwerp en operationeel leiderschap.">
+<meta name="description" content="Goede techniek begint met een goed gesprek. Robert Karzijn, masterstudent Human-Computer Interaction aan de Universiteit Utrecht: onderzoek naar deceptive patterns, interactieontwerp en de winkelvloer bij Amac.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#FCFCFB" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121316" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F6F6F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
 <meta property="og:site_name" content="Robert Karzijn">
 <meta property="og:locale" content="nl_NL">
 <meta property="og:locale:alternate" content="en_GB">
 <meta property="og:title" content="Robert Karzijn — Portfolio">
-<meta property="og:description" content="Ik ontwerp interfaces die doen wat je verwacht. Human-Computer Interaction, UX-onderzoek en interactieontwerp.">
+<meta property="og:description" content="Goede techniek begint met een goed gesprek. Human-Computer Interaction, UX-onderzoek en interactieontwerp.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://robertkarzijn.nl/">
 <meta property="og:image" content="https://robertkarzijn.nl/assets/img/og-image.png">
@@ -21,7 +21,7 @@
 <meta property="og:image:alt" content="Robert Karzijn — Human-Computer Interaction & UX-onderzoek">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Robert Karzijn — Portfolio">
-<meta name="twitter:description" content="Ik ontwerp interfaces die doen wat je verwacht. Human-Computer Interaction, UX-onderzoek en interactieontwerp.">
+<meta name="twitter:description" content="Goede techniek begint met een goed gesprek. Human-Computer Interaction, UX-onderzoek en interactieontwerp.">
 <meta name="twitter:image" content="https://robertkarzijn.nl/assets/img/og-image.png">
 <link rel="canonical" href="https://robertkarzijn.nl/">
 <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
@@ -29,20 +29,26 @@
 <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png">
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/hanken-grotesk-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/main.css">
-<script src="assets/js/app.js" defer></script>
+<link rel="modulepreload" href="assets/js/logic.mjs">
+<script type="module" src="assets/js/app.js"></script>
+<noscript><style>.topbar, main, footer { display: none; }</style></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Robert Karzijn",
   "jobTitle": "HCI Master's student & Daily Operations Lead",
-  "url": "https://robertkarzijn.nl",
+  "url": "https://robertkarzijn.nl/",
   "image": "https://robertkarzijn.nl/assets/img/portrait.webp",
+  "description": "Masterstudent Human-Computer Interaction aan de Universiteit Utrecht, met onderzoek naar deceptive patterns en gewoontegedrag in webshops.",
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "Universiteit Utrecht" },
+  "worksFor": { "@type": "Organization", "name": "Amac Apple Premium Reseller" },
+  "knowsLanguage": ["nl", "en", "de"],
+  "knowsAbout": ["Human-Computer Interaction", "UX research", "Deceptive patterns", "Interaction design"],
   "sameAs": [
     "https://www.linkedin.com/in/robert-karzijn-260696279",
     "https://github.com/iRobert058"
@@ -52,161 +58,211 @@
 </head>
 <body>
 <noscript>
-  <p style="padding:120px 24px 0;text-align:center;font-family:sans-serif">
-    Deze pagina heeft JavaScript nodig om de content te tonen. Je kunt me ondertussen vinden op
-    <a href="https://www.linkedin.com/in/robert-karzijn-260696279">LinkedIn</a> en <a href="https://github.com/iRobert058">GitHub</a>.
-  </p>
-  <p style="padding:12px 24px 120px;text-align:center;font-family:sans-serif">
-    This page needs JavaScript to show its content. In the meantime, find me on
-    <a href="https://www.linkedin.com/in/robert-karzijn-260696279">LinkedIn</a> and <a href="https://github.com/iRobert058">GitHub</a>.
-  </p>
+  <div class="noscript">
+    <p lang="nl">Deze pagina heeft JavaScript nodig om de content te tonen. Je kunt me ondertussen vinden op
+      <a href="https://www.linkedin.com/in/robert-karzijn-260696279">LinkedIn</a> en <a href="https://github.com/iRobert058">GitHub</a>.</p>
+    <p lang="en">This page needs JavaScript to show its content. In the meantime, find me on
+      <a href="https://www.linkedin.com/in/robert-karzijn-260696279">LinkedIn</a> and <a href="https://github.com/iRobert058">GitHub</a>.</p>
+  </div>
 </noscript>
 
-<nav class="on-stage">
-  <div class="nav-inner">
-    <a class="logo" href="#top"><span class="dot"></span><span data-site="name">Robert Karzijn</span></a>
-    <div class="nav-links">
-      <a href="#over" data-t="nav.about"></a>
-      <a href="#projecten" data-t="nav.projects"></a>
-      <a href="#ervaring" data-t="nav.experience"></a>
-      <a href="#vaardigheden" data-t="nav.skills"></a>
-      <a href="#contact" data-t="nav.contact"></a>
-    </div>
-    <div class="nav-ctrl">
-      <button class="pill" id="langBtn" aria-label="Switch language">EN</button>
-      <button class="pill" id="themeBtn" aria-label="Toggle dark mode">☾</button>
-    </div>
-  </div>
-</nav>
+<a class="skip-link" href="#main" data-t="nav.skip"></a>
 
-<!-- Pinned intro video; the page sheet below slides up over it. The logo's "#top" link (no such id) scrolls to the very top, here. -->
-<div class="hero-stage" id="heroStage">
-  <!-- Decorative intro: the name and field it shows are repeated as text right below -->
-  <video id="heroVideo" muted playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-hidden="true"
-         poster="assets/img/hero-start.webp" data-poster-end="assets/img/hero-end.webp">
-    <source src="assets/video/hero-intro-av1.mp4" type='video/mp4; codecs="av01.0.08M.08"'>
-    <source src="assets/video/hero-intro.mp4" type='video/mp4; codecs="avc1.640028"'>
-  </video>
-  <button class="stage-btn" id="heroVideoBtn" type="button">
-    <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
-    <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-    <svg class="i-replay" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>
-  </button>
-</div>
-
-<div class="page-sheet" id="pageSheet">
-
-<header class="hero">
-  <div class="wrap">
-    <span class="eyebrow" data-t="hero.eyebrow"></span>
-    <h1 data-t-html="hero.title"></h1>
-    <p class="sub" data-t="hero.sub"></p>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="#projecten" data-t="hero.cta_projects"></a>
-      <a class="btn btn-ghost" id="cvBtn" download data-t="hero.cta_cv"></a>
-      <a class="btn btn-ghost" id="githubBtn" target="_blank" rel="noopener" data-t="hero.cta_github"></a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="wordmark" href="#main"><span class="wordmark-mark" aria-hidden="true">RK</span><span data-site="name">Robert Karzijn</span></a>
+    <div class="topbar-panel" id="topbarPanel">
+      <nav class="topbar-nav" data-t-aria="nav.label">
+        <ul>
+          <li><a href="#over" data-t="nav.about"></a></li>
+          <li><a href="#projecten" data-t="nav.projects"></a></li>
+          <li><a href="#ervaring" data-t="nav.experience"></a></li>
+          <li><a href="#vaardigheden" data-t="nav.skills"></a></li>
+        </ul>
+      </nav>
+      <div class="prefs">
+        <div class="lang-switch" role="group" data-t-aria="nav.lang_group">
+          <button type="button" data-lang="nl" lang="nl">NL</button>
+          <button type="button" data-lang="en" lang="en">EN</button>
+        </div>
+        <button type="button" class="theme-toggle" id="themeBtn" data-t-aria="nav.theme">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 3.75a8.25 8.25 0 0 1 0 16.5z" fill="currentColor"/></svg>
+        </button>
+      </div>
     </div>
-    <div class="honest" id="honest">
-      <p data-t="hero.honest"></p>
-      <button id="honestBtn" data-t="hero.honest_btn"></button>
-    </div>
+    <a class="contact-pill" href="#contact" data-t="nav.contact"></a>
+    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="topbarPanel" data-t-aria="nav.menu">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+    </button>
   </div>
 </header>
 
-<section id="hoogtepunten">
-  <div class="wrap">
-    <span class="eyebrow" data-t="highlights.eyebrow"></span>
-    <h2 data-t="highlights.title"></h2>
-    <p class="lead" data-t="highlights.lead"></p>
-    <div class="highlights-grid" id="highlightsGrid"></div>
+<main id="main" tabindex="-1" class="is-loading">
+
+<section class="hero" aria-labelledby="heroTitle">
+  <div class="wrap hero-grid">
+    <div class="hero-head">
+      <p class="label hero-eyebrow" data-t="hero.eyebrow"></p>
+      <h1 id="heroTitle" tabindex="-1" data-t-html="hero.title"></h1>
+    </div>
+    <div class="hero-copy">
+      <p class="hero-sub" data-t="hero.sub"></p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#projecten" data-t="hero.cta_projects"></a>
+        <a class="btn btn-ghost" id="cvBtn" download data-t="hero.cta_cv"></a>
+        <a class="btn btn-ghost" id="githubBtn" target="_blank" rel="noopener" data-t="hero.cta_github"></a>
+      </div>
+    </div>
+
+    <!-- What Robert is doing right now: built from the timeline entries that run until "present" -->
+    <aside class="hero-now" aria-labelledby="heroNowTitle">
+      <p class="label" id="heroNowTitle" data-t="hero.now"></p>
+      <ul id="heroNow"></ul>
+    </aside>
+
+    <div class="honest" id="honest">
+      <span class="honest-dot" aria-hidden="true"></span>
+      <p data-t="hero.honest"></p>
+      <button type="button" id="honestBtn" data-t="hero.honest_btn"></button>
+    </div>
   </div>
 </section>
 
-<section id="over">
+<section id="hoogtepunten" class="abstract" aria-labelledby="highlightsTitle">
   <div class="wrap">
-    <span class="eyebrow" data-t="about.eyebrow"></span>
-    <h2 data-t="about.title"></h2>
-    <div class="about-grid">
+    <header class="sect-head">
+      <p class="sect-meta"><span class="label" data-t="highlights.eyebrow"></span></p>
+      <div>
+        <h2 id="highlightsTitle" data-t="highlights.title"></h2>
+        <p class="lead" data-t="highlights.lead"></p>
+      </div>
+    </header>
+    <div class="highlights" id="highlightsGrid"></div>
+  </div>
+</section>
+
+<section id="over" class="sect" aria-labelledby="aboutTitle">
+  <div class="wrap">
+    <header class="sect-head">
+      <p class="sect-meta"><span class="label" data-t="about.eyebrow"></span></p>
+      <div><h2 id="aboutTitle" data-t="about.title"></h2></div>
+    </header>
+    <div class="sect-body about-grid">
       <div class="about-text reveal" id="aboutText"></div>
-      <div class="portrait reveal"><img id="portraitImg" alt="Portretfoto van Robert Karzijn" loading="lazy" decoding="async"></div>
+      <figure class="portrait reveal">
+        <img id="portraitImg" width="960" height="1044" data-t-alt="about.portrait_alt" alt="" loading="lazy" decoding="async">
+        <figcaption data-site="name"></figcaption>
+      </figure>
+      <dl class="facts reveal" id="aboutFacts"></dl>
     </div>
   </div>
 </section>
 
-<section id="projecten">
+<section id="werkwijze" class="sect" aria-labelledby="pillarsTitle">
   <div class="wrap">
-    <span class="eyebrow" data-t="projects.eyebrow"></span>
-    <h2 data-t="projects.title"></h2>
-    <p class="lead" data-t="projects.lead"></p>
-    <div id="projectsList"></div>
+    <header class="sect-head">
+      <p class="sect-meta"><span class="label" data-t="pillars.eyebrow"></span></p>
+      <div><h2 id="pillarsTitle" data-t="pillars.title"></h2></div>
+    </header>
+    <ol class="pillars" id="pillarList"></ol>
   </div>
 </section>
 
-<section id="ervaring">
+<div class="interlude-slot" data-slot="0" hidden></div>
+
+<section id="projecten" class="sect band" aria-labelledby="projectsTitle">
   <div class="wrap">
-    <span class="eyebrow" data-t="experience.eyebrow"></span>
-    <h2 data-t="experience.title"></h2>
-    <p class="lead" data-t="experience.lead"></p>
-    <div class="timeline" id="timelineList"></div>
+    <header class="sect-head">
+      <p class="sect-meta"><span class="label" data-t="projects.eyebrow"></span></p>
+      <div>
+        <h2 id="projectsTitle" data-t="projects.title"></h2>
+        <p class="lead" data-t="projects.lead"></p>
+      </div>
+    </header>
+    <ol class="projects" id="projectsList"></ol>
   </div>
 </section>
 
-<section id="vaardigheden">
+<section id="ervaring" class="sect" aria-labelledby="experienceTitle">
   <div class="wrap">
-    <span class="eyebrow" data-t="skills.eyebrow"></span>
-    <h2 data-t="skills.title"></h2>
-    <div class="skills-grid">
-      <div id="skillBars"></div>
-      <div class="skills-side">
-        <h4 data-t="skills.tools"></h4>
-        <div class="chips" id="toolChips"></div>
-        <h4 data-t="skills.languages"></h4>
-        <div id="languageList"></div>
+    <header class="sect-head">
+      <p class="sect-meta"><span class="label" data-t="experience.eyebrow"></span></p>
+      <div>
+        <h2 id="experienceTitle" data-t="experience.title"></h2>
+        <p class="lead" data-t="experience.lead"></p>
+      </div>
+    </header>
+    <ol class="ledger" id="timelineList"></ol>
+  </div>
+</section>
+
+<div class="interlude-slot" data-slot="1" hidden></div>
+
+<section id="vaardigheden" class="sect" aria-labelledby="skillsTitle">
+  <div class="wrap">
+    <header class="sect-head">
+      <p class="sect-meta"><span class="label" data-t="skills.eyebrow"></span></p>
+      <div><h2 id="skillsTitle" data-t="skills.title"></h2></div>
+    </header>
+    <h3 class="label skills-sub" data-t="skills.tools"></h3>
+    <div class="capabilities" id="capabilityList"></div>
+    <div class="skills-extra">
+      <div class="reveal">
+        <h3 class="label skills-sub" data-t="skills.soft"></h3>
+        <ul class="soft-list" id="softList"></ul>
+      </div>
+      <div class="reveal">
+        <h3 class="label skills-sub" data-t="skills.languages"></h3>
+        <dl class="lang-table" id="languageList"></dl>
       </div>
     </div>
   </div>
 </section>
 
-<section id="certificaten" class="hidden">
+<section id="certificaten" class="sect hidden" aria-labelledby="certTitle">
   <div class="wrap">
-    <span class="eyebrow" data-t="certificates.eyebrow"></span>
-    <h2 data-t="certificates.title"></h2>
-    <div id="certList"></div>
+    <header class="sect-head">
+      <p class="sect-meta"><span class="label" data-t="certificates.eyebrow"></span></p>
+      <div><h2 id="certTitle" data-t="certificates.title"></h2></div>
+    </header>
+    <ul class="ledger" id="certList"></ul>
   </div>
 </section>
 
-<section id="contact">
-  <div class="wrap">
-    <div class="contact-card reveal">
-      <div class="contact-inner">
-        <span class="eyebrow" data-t="contact.eyebrow"></span>
-        <h2 data-t="contact.title"></h2>
-        <p class="lead" data-t="contact.lead"></p>
-        <form class="contact-form" id="contactForm" novalidate>
-          <div class="hp-field" aria-hidden="true">
-            <label for="cf-company">Company</label>
-            <input id="cf-company" name="company" type="text" tabindex="-1" autocomplete="off">
-          </div>
-          <div class="field">
-            <label for="cf-name" data-t="contact.name"></label>
-            <input id="cf-name" name="name" type="text" required autocomplete="name">
-          </div>
-          <div class="field">
-            <label for="cf-email" data-t="contact.email"></label>
-            <input id="cf-email" name="email" type="email" required autocomplete="email">
-          </div>
-          <div class="field">
-            <label for="cf-message" data-t="contact.message"></label>
-            <textarea id="cf-message" name="message" required></textarea>
-          </div>
-          <button class="btn btn-primary" type="submit" data-t="contact.send"></button>
-          <p class="form-status" id="formStatus" role="status"></p>
-        </form>
-        <div class="contact-socials" id="socialLinks"></div>
-      </div>
+<div class="interlude-slot" data-slot="2" hidden></div>
+
+<section id="contact" class="sect band" aria-labelledby="contactTitle">
+  <div class="wrap contact-grid">
+    <div class="contact-intro">
+      <p class="sect-meta"><span class="label" data-t="contact.eyebrow"></span></p>
+      <h2 id="contactTitle" data-t="contact.title"></h2>
+      <p class="lead" data-t="contact.lead"></p>
+      <ul class="contact-socials" id="socialLinks"></ul>
     </div>
+    <form class="contact-form" id="contactForm" novalidate>
+      <div class="hp-field" aria-hidden="true">
+        <label for="cf-gotcha">Leave this field empty</label>
+        <input id="cf-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="cf-name" data-t="contact.name"></label>
+        <input id="cf-name" name="name" type="text" required autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="cf-email" data-t="contact.email"></label>
+        <input id="cf-email" name="email" type="email" required autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="cf-message" data-t="contact.message"></label>
+        <textarea id="cf-message" name="message" rows="6" required></textarea>
+      </div>
+      <button class="btn btn-primary" type="submit" data-t="contact.send"></button>
+      <p class="form-status" id="formStatus" role="status"></p>
+    </form>
   </div>
 </section>
+
+</main>
 
 <footer>
   <div class="wrap">
@@ -215,7 +271,6 @@
   </div>
 </footer>
 
-</div><!-- /.page-sheet -->
 
 </body>
 </html>

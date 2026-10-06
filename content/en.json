@@ -4,11 +4,16 @@
     "projects": "Projects",
     "experience": "Experience",
     "skills": "Skills",
-    "contact": "Contact"
+    "contact": "Contact",
+    "skip": "Skip to content",
+    "label": "Main menu",
+    "menu": "Menu",
+    "theme": "Dark theme",
+    "lang_group": "Language"
   },
   "hero": {
     "eyebrow": "Human-Computer Interaction · UX Research",
-    "title": "Good technology starts<br>with a good <em>conversation</em>.",
+    "title": "Good technology starts <br>with a good <em>conversation</em>.",
     "sub": "Master's student in Human-Computer Interaction, holding a bachelor's degree in Information Sciences from Utrecht University. I'm at my best in between parties: understanding stakeholders and users, translating requirements into design and bringing people along from research and speaker acquisition to the shop floor at Amac.",
     "cta_projects": "View my projects",
     "cta_cv": "Download CV (PDF)",
@@ -17,7 +22,8 @@
     "honest_btn": "Got it",
     "video_pause": "Pause intro",
     "video_play": "Play intro",
-    "video_replay": "Replay intro"
+    "video_replay": "Replay intro",
+    "now": "Right now"
   },
   "highlights": {
     "eyebrow": "Highlights",
@@ -31,6 +37,29 @@
       "I'm Robert Karzijn. My interest lies at the intersection of people and technology: how people use interfaces, which habits form along the way, and how design (deliberately or not) plays into that. In my bachelor's thesis I experimentally investigated how web shops can disrupt procedural memory by relocating interface elements.",
       "Alongside my studies I work at Amac in Apeldoorn, where I progressed from Junior Sales Associate to Daily Operations Lead in two years and worked across several branches to share knowledge and experience. That combination keeps me sharp: theory on user behaviour in the lecture hall, and real users in front of me on the shop floor every day.",
       "I'm currently pursuing a master's in Human-Computer Interaction, focusing on cognitive UX and ethical interface design. Outside study and work: photography, audio and the occasional evening of gaming."
+    ],
+    "portrait_alt": "Portrait photo of Robert Karzijn",
+    "facts": [
+      {
+        "k": "Studying",
+        "v": "MSc Human-Computer Interaction, Utrecht University"
+      },
+      {
+        "k": "Working",
+        "v": "Daily Operations Lead at Amac, Apeldoorn"
+      },
+      {
+        "k": "Research",
+        "v": "Deceptive patterns and habitual behaviour in web shops"
+      },
+      {
+        "k": "Languages",
+        "v": "Dutch, English, German"
+      },
+      {
+        "k": "Beyond that",
+        "v": "Photography, audio and the occasional game"
+      }
     ]
   },
   "projects": {
@@ -40,7 +69,9 @@
     "label_problem": "Problem",
     "label_role": "My role",
     "label_result": "Outcome",
-    "watch_trailer": "Watch the trailer"
+    "watch_trailer": "Watch the trailer",
+    "label_tech": "Techniques and methods",
+    "read_more": "Read more"
   },
   "experience": {
     "eyebrow": "Experience & education",
@@ -51,13 +82,18 @@
       "work": "Work",
       "education": "Education",
       "extracurricular": "Extracurricular"
-    }
+    },
+    "now": "Current",
+    "details": "Details",
+    "group_details": "What I did in each role",
+    "group_steps": "Progression"
   },
   "skills": {
     "eyebrow": "Skills",
     "title": "What I'm good at",
     "tools": "Methods & tools",
-    "languages": "Languages"
+    "languages": "Languages",
+    "soft": "Soft skills"
   },
   "certificates": {
     "eyebrow": "Certificates",
@@ -75,11 +111,41 @@
     "status_ok": "Thanks for your message. I'll get back to you as soon as possible.",
     "status_err": "Sending failed. Please try again later or reach out via LinkedIn.",
     "status_invalid": "Please fill in all fields with a valid email address.",
-    "status_unconfigured": "The form has not been connected to a processing service yet. See the README for configuration.",
-    "footer_location": "The Netherlands"
+    "status_unconfigured": "The form has not been connected to a processing service yet. See the README for configuration."
   },
   "footer": {
     "location": "The Netherlands",
     "note": "Built without frameworks, cookies or deceptive patterns."
+  },
+  "pillars": {
+    "eyebrow": "How I work",
+    "title": "Research, design, organise",
+    "items": [
+      {
+        "id": "research",
+        "name": "Research",
+        "promise": "Finding out how people actually behave, not how we assume they do.",
+        "text": "From literature review and experimental design to data collection and statistical analysis. In my bachelor's thesis I studied with 40 participants how relocating interface elements disrupts habitual behaviour in web shops."
+      },
+      {
+        "id": "design",
+        "name": "Design",
+        "promise": "Interfaces that do what you expect.",
+        "text": "Translating requirements into a design, and that design into something that works. I designed and built MobiPad myself: from requirements and architecture to three controller layouts, tested on real hardware."
+      },
+      {
+        "id": "organise",
+        "name": "Organise",
+        "promise": "Bringing people, plans and agreements together, against a deadline.",
+        "text": "Recruiting and supporting speakers for exec(ut), keeping daily operations running at Amac as Daily Operations Lead, and keeping the administration of Stichting Sticky as its secretary."
+      }
+    ]
+  },
+  "interlude": {
+    "credit": "Photo · Robert Karzijn"
+  },
+  "project_page": {
+    "back": "← All projects",
+    "more": "Other projects"
   }
 }

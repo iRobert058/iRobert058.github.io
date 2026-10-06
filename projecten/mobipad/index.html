@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Every relative path on this page (assets, JSON, links to #sections of the homepage) resolves from the site root -->
+<base href="/">
+<title>MobiPad - je iPhone als gamecontroller — Robert Karzijn</title>
+<meta name="description" content="MobiPad maakt van een iPhone een draadloze gamecontroller voor emulators op de Mac. Tot vier telefoons kunnen tegelijk meespelen, elk als eigen speler.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F6F6F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
+<meta property="og:site_name" content="Robert Karzijn">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:title" content="MobiPad - je iPhone als gamecontroller — Robert Karzijn">
+<meta property="og:description" content="MobiPad maakt van een iPhone een draadloze gamecontroller voor emulators op de Mac. Tot vier telefoons kunnen tegelijk meespelen, elk als eigen speler.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://robertkarzijn.nl/projecten/mobipad/">
+<meta property="og:image" content="https://robertkarzijn.nl/assets/img/og-image.png">
+<link rel="canonical" href="https://robertkarzijn.nl/projecten/mobipad/">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/hanken-grotesk-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/main.css">
+<link rel="modulepreload" href="assets/js/logic.mjs">
+<script type="module" src="assets/js/app.js"></script>
+<noscript><style>.topbar, main, footer { display: none; }</style></noscript>
+</head>
+<body data-page="project" data-project="mobipad">
+<noscript>
+  <div class="noscript">
+    <p lang="nl">Deze pagina heeft JavaScript nodig om de content te tonen. <a href="./">Naar de homepage</a>.</p>
+    <p lang="en">This page needs JavaScript to show its content. <a href="./">Go to the homepage</a>.</p>
+  </div>
+</noscript>
+
+<!-- With <base href="/">, a bare "#main" would point at the homepage, so the skip link names this page -->
+<a class="skip-link" href="projecten/mobipad/#main" data-t="nav.skip"></a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="wordmark" href="./"><span class="wordmark-mark" aria-hidden="true">RK</span><span data-site="name">Robert Karzijn</span></a>
+    <div class="topbar-panel" id="topbarPanel">
+      <nav class="topbar-nav" data-t-aria="nav.label">
+        <ul>
+          <li><a href="#over" data-t="nav.about"></a></li>
+          <li><a href="#projecten" data-t="nav.projects"></a></li>
+          <li><a href="#ervaring" data-t="nav.experience"></a></li>
+          <li><a href="#vaardigheden" data-t="nav.skills"></a></li>
+        </ul>
+      </nav>
+      <div class="prefs">
+        <div class="lang-switch" role="group" data-t-aria="nav.lang_group">
+          <button type="button" data-lang="nl" lang="nl">NL</button>
+          <button type="button" data-lang="en" lang="en">EN</button>
+        </div>
+        <button type="button" class="theme-toggle" id="themeBtn" data-t-aria="nav.theme">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 3.75a8.25 8.25 0 0 1 0 16.5z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+    <a class="contact-pill" href="#contact" data-t="nav.contact"></a>
+    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="topbarPanel" data-t-aria="nav.menu">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main" tabindex="-1" class="is-loading">
+  <article class="project-page" aria-labelledby="ppTitle">
+    <div class="wrap">
+      <a class="back-link" href="#projecten" data-t="project_page.back"></a>
+      <header class="project-page-head">
+        <p class="label project-meta" id="ppMeta"></p>
+        <h1 id="ppTitle"></h1>
+        <p class="lead" id="ppIntro"></p>
+      </header>
+      <div id="ppVisual"></div>
+      <div class="project-page-body">
+        <dl class="case" id="ppCase"></dl>
+        <div class="project-page-side">
+          <ul class="chips" id="ppTech"></ul>
+          <a class="btn btn-primary" id="ppCta"></a>
+        </div>
+      </div>
+    </div>
+  </article>
+  <nav class="more-projects" aria-labelledby="moreTitle">
+    <div class="wrap">
+      <h2 class="label" id="moreTitle" data-t="project_page.more"></h2>
+      <ul id="ppMore"></ul>
+    </div>
+  </nav>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span id="year"></span> <span data-site="name">Robert Karzijn</span> · <span data-t="footer.location"></span> · <a href="privacy.html">Privacy</a></div>
+    <div class="foot-note" data-t="footer.note"></div>
+  </div>
+</footer>
+
+</body>
+</html>
