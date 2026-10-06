@@ -36,6 +36,30 @@
       "I'm Robert Karzijn. My interest lies at the intersection of people and technology: how people use interfaces, which habits form along the way, and how design (deliberately or not) plays into that. In my bachelor's thesis I experimentally investigated how web shops can disrupt procedural memory by relocating interface elements.",
       "Alongside my studies I work at Amac in Apeldoorn, where I progressed from Junior Sales Associate to Daily Operations Lead in two years and worked across several branches to share knowledge and experience. That combination keeps me sharp: theory on user behaviour in the lecture hall, and real users in front of me on the shop floor every day.",
       "I'm currently pursuing a master's in Human-Computer Interaction, focusing on cognitive UX and ethical interface design. Outside study and work: photography, audio and the occasional evening of gaming."
+    ],
+    "portrait_alt": "Portrait photo of Robert Karzijn",
+    "portrait_fig": "Fig. 2",
+    "facts": [
+      {
+        "k": "Studying",
+        "v": "MSc Human-Computer Interaction, Utrecht University"
+      },
+      {
+        "k": "Working",
+        "v": "Daily Operations Lead at Amac, Apeldoorn"
+      },
+      {
+        "k": "Research",
+        "v": "Deceptive patterns and habitual behaviour in web shops"
+      },
+      {
+        "k": "Languages",
+        "v": "Dutch, English, German"
+      },
+      {
+        "k": "Beyond that",
+        "v": "Photography, audio and the occasional game"
+      }
     ]
   },
   "projects": {
@@ -101,5 +125,29 @@
     "caption_2": "Visit 2: the cart button has moved to the top and its old spot now holds a paid warranty. Habit sends your click there.",
     "btn_next": "Simulate a return visit",
     "btn_reset": "Back to visit 1"
+  },
+  "pillars": {
+    "eyebrow": "How I work",
+    "title": "Research, design, organise",
+    "items": [
+      {
+        "id": "research",
+        "name": "Research",
+        "promise": "Finding out how people actually behave, not how we assume they do.",
+        "text": "From literature review and experimental design to data collection and statistical analysis. In my bachelor's thesis I studied with 40 participants how relocating interface elements disrupts habitual behaviour in web shops."
+      },
+      {
+        "id": "design",
+        "name": "Design",
+        "promise": "Interfaces that do what you expect.",
+        "text": "Translating requirements into a design, and that design into something that works. I designed and built MobiPad myself: from requirements and architecture to three controller layouts, tested on real hardware."
+      },
+      {
+        "id": "organise",
+        "name": "Organise",
+        "promise": "Bringing people, plans and agreements together, against a deadline.",
+        "text": "Recruiting and supporting speakers for exec(ut), keeping daily operations running at Amac as Daily Operations Lead, and keeping the administration of Stichting Sticky as its secretary."
+      }
+    ]
   }
 }

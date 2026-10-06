@@ -36,6 +36,30 @@
       "Ik ben Robert Karzijn. Mijn interesse ligt op het snijvlak van mens en technologie: hoe mensen interfaces gebruiken, welke gewoontes daarbij ontstaan en hoe ontwerp daar (zowel bewust of onbewust) op inspeelt. In mijn bachelorthesis onderzocht ik experimenteel hoe webshops procedureel geheugen kunnen verstoren door interface elementen te verplaatsen.",
       "Naast mijn studie werk ik bij Amac in Apeldoorn, waar ik in twee jaar doorgroeide van Junior Sales Associate naar Daily Operations Lead en in verschillende filialen meedraaide om kennis en ervaring te delen. Die combinatie houdt me scherp: theorie over gebruikersgedrag in de collegezaal, en elke dag echte gebruikers tegenover me op de winkelvloer.",
       "Momenteel volg ik de master Human-Computer Interaction, met focus op cognitieve UX en ethisch interface-ontwerp. Buiten studie en werk: fotografie, audio en af en toe een avond gamen."
+    ],
+    "portrait_alt": "Portretfoto van Robert Karzijn",
+    "portrait_fig": "Fig. 2",
+    "facts": [
+      {
+        "k": "Studie",
+        "v": "MSc Human-Computer Interaction, Universiteit Utrecht"
+      },
+      {
+        "k": "Werk",
+        "v": "Daily Operations Lead bij Amac, Apeldoorn"
+      },
+      {
+        "k": "Onderzoek",
+        "v": "Deceptive patterns en gewoontegedrag in webshops"
+      },
+      {
+        "k": "Talen",
+        "v": "Nederlands, Engels, Duits"
+      },
+      {
+        "k": "Daarbuiten",
+        "v": "Fotografie, audio en af en toe gamen"
+      }
     ]
   },
   "projects": {
@@ -101,5 +125,29 @@
     "caption_2": "Bezoek 2: de winkelwagenknop staat nu bovenaan en op de oude plek zit een betaalde garantie. Uit gewoonte klik je dáár.",
     "btn_next": "Simuleer een volgend bezoek",
     "btn_reset": "Terug naar bezoek 1"
+  },
+  "pillars": {
+    "eyebrow": "Werkwijze",
+    "title": "Onderzoeken, ontwerpen, organiseren",
+    "items": [
+      {
+        "id": "research",
+        "name": "Onderzoeken",
+        "promise": "Uitzoeken hoe mensen zich echt gedragen, niet hoe we denken dat ze dat doen.",
+        "text": "Van literatuurstudie en experimenteel ontwerp tot dataverzameling en statistische analyse. In mijn bachelorthesis onderzocht ik met 40 deelnemers hoe het verplaatsen van interface-elementen gewoontegedrag in webshops verstoort."
+      },
+      {
+        "id": "design",
+        "name": "Ontwerpen",
+        "promise": "Interfaces die doen wat je verwacht.",
+        "text": "Eisen vertalen naar een ontwerp, en dat ontwerp naar iets dat werkt. MobiPad ontwierp en bouwde ik zelf: van requirements en architectuur tot drie controller-layouts, getest op echte hardware."
+      },
+      {
+        "id": "organise",
+        "name": "Organiseren",
+        "promise": "Mensen, planning en afspraken bij elkaar brengen, met een deadline.",
+        "text": "Sprekers werven en begeleiden voor exec(ut), als Daily Operations Lead de dagelijkse operatie bij Amac draaiende houden en als secretaris de administratie van Stichting Sticky bijhouden."
+      }
+    ]
   }
 }

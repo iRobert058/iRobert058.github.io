@@ -5,7 +5,7 @@
    Pure helpers live in logic.js, where they are unit tested.
    ============================================================= */
 
-import { pick, esc, lookup } from "./logic.js";
+import { pick, esc, lookup, pad2 } from "./logic.js";
 
 const state = {
   lang: "nl", // Dutch by default. Nothing is stored: a language or theme choice lasts for this page view.
@@ -64,6 +64,10 @@ function applyUIStrings() {
     const v = uiText(el.dataset.tAria);
     if (v !== undefined) el.setAttribute("aria-label", v);
   });
+  document.querySelectorAll("[data-t-alt]").forEach((el) => {
+    const v = uiText(el.dataset.tAlt);
+    if (v !== undefined) el.alt = v;
+  });
   document.querySelectorAll("[data-site]").forEach((el) => {
     el.textContent = site[el.dataset.site] ?? el.textContent;
   });
@@ -74,22 +78,39 @@ function renderHighlights() {
   $("#highlightsGrid").innerHTML = highlights
     .map((h) => {
       const external = h.link && h.link.startsWith("http");
-      const tagOpen = h.link
-        ? `<a class="highlight reveal" href="${esc(h.link)}"${external ? ' target="_blank" rel="noopener"' : ""}>`
-        : '<div class="highlight reveal">';
-      const tagClose = h.link ? "</a>" : "</div>";
-      return `${tagOpen}
-        <span class="hl-year">${esc(h.year)}</span>
+      const inner = `<span class="label">${esc(h.year)}</span>
         <h3>${esc(t(h.title))}</h3>
-        <p>${esc(t(h.text))}</p>
-      ${tagClose}`;
+        <p>${esc(t(h.text))}</p>`;
+      return h.link
+        ? `<a class="highlight reveal" href="${esc(h.link)}"${external ? ' target="_blank" rel="noopener"' : ""}>${inner}</a>`
+        : `<div class="highlight reveal">${inner}</div>`;
     })
     .join("");
 }
 
 function renderAbout() {
-  $("#aboutText").innerHTML = ui[state.lang].about.paragraphs.map((p) => `<p>${esc(p)}</p>`).join("");
+  const A = ui[state.lang].about;
+  $("#aboutText").innerHTML = A.paragraphs.map((p) => `<p>${esc(p)}</p>`).join("");
+  $("#aboutFacts").innerHTML = (A.facts ?? []).map((f) => `<div><dt class="label">${esc(f.k)}</dt><dd>${esc(f.v)}</dd></div>`).join("");
   $("#portraitImg").src = site.portraitImage;
+}
+
+function renderPillars() {
+  $("#pillarList").innerHTML = ui[state.lang].pillars.items
+    .map(
+      (p, i) => `<li class="pillar reveal">
+        <span class="pillar-no" aria-hidden="true">${i + 1}</span>
+        <h3>${esc(p.name)}</h3>
+        <p class="pillar-promise">${esc(p.promise)}</p>
+        <p>${esc(p.text)}</p>
+      </li>`
+    )
+    .join("");
+}
+
+/* Paper-style section numbers (§ 01 …), counted over the sections that are visible right now */
+function numberSections() {
+  document.querySelectorAll(".sect:not(.hidden) .sect-no").forEach((el, i) => (el.textContent = `§ ${pad2(i + 1)}`));
 }
 
 function renderProjects() {
@@ -207,10 +228,12 @@ function renderAll() {
   applyUIStrings();
   renderHighlights();
   renderAbout();
+  renderPillars();
   renderProjects();
   renderTimeline();
   renderSkills();
   renderCertificates();
+  numberSections();
   renderSocials();
   renderSpecimen();
   renderPrefs();
