@@ -4,7 +4,12 @@
     "projects": "Projecten",
     "experience": "Ervaring",
     "skills": "Vaardigheden",
-    "contact": "Contact"
+    "contact": "Contact",
+    "skip": "Ga naar de inhoud",
+    "label": "Hoofdmenu",
+    "menu": "Menu",
+    "theme": "Donker thema",
+    "lang_group": "Taal"
   },
   "hero": {
     "eyebrow": "Human-Computer Interaction · UX-onderzoek",

@@ -1,115 +1,133 @@
-/* Component styles. Brand values come from tokens.css. */
+/* Component styles. Every colour, font, size and duration comes from tokens.css. */
 
+/* ---------- Base ---------- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); -webkit-text-size-adjust: 100%; }
 body {
   background: var(--bg); color: var(--ink);
   font-family: var(--font-body); font-size: var(--fs-body); line-height: var(--lh-body);
-  -webkit-font-smoothing: antialiased; transition: background .3s, color .3s;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
 ::selection { background: var(--accent); color: var(--accent-contrast); }
 a { color: inherit; }
-img { max-width: 100%; display: block; }
+img { max-width: 100%; height: auto; display: block; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: var(--focus-ring); outline-offset: 3px; }
+main:focus { outline: none; } /* focused only as the skip-link target */
 
-.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
 section { padding: var(--section-gap) 0; }
 .hidden { display: none !important; }
-
-.eyebrow {
-  font-family: var(--font-mono); font-size: 13px; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 16px;
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
-h2 { font-family: var(--font-display); font-size: clamp(30px, 4.5vw, 44px); font-weight: 700; letter-spacing: -.01em; margin-bottom: 20px; }
-.lead { color: var(--muted); max-width: 640px; margin-bottom: 48px; }
+.skip-link {
+  position: absolute; left: var(--space-4); top: var(--space-3); z-index: 100;
+  background: var(--ink); color: var(--bg); padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm); font-weight: 600; text-decoration: none;
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
+.load-error { padding: var(--space-9) var(--gutter); text-align: center; }
 
-/* ---------- Nav ---------- */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+/* Small mono label, used for eyebrows, meta lines and captions */
+.label {
+  font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 500;
+  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--muted);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--space-2); text-decoration: none;
+  font-family: var(--font-body); font-weight: 600; font-size: 16px; line-height: 1.2;
+  border-radius: var(--radius-pill); padding: 13px 22px; border: 1px solid transparent; cursor: pointer;
+  transition: background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast);
+}
+.btn-primary { background: var(--ink); color: var(--bg); }
+.btn-primary:hover { background: var(--accent); color: var(--accent-contrast); }
+.btn-ghost { border-color: var(--line-strong); color: var(--ink); }
+.btn-ghost:hover { border-color: var(--ink); }
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px);
   border-bottom: 1px solid var(--line);
-  transition: background .3s, border-color .3s, color .3s;
 }
-/* While the nav floats over the intro video (set by app.js) */
-nav.on-stage {
-  background: transparent; border-bottom-color: transparent; color: var(--stage-ink);
-  backdrop-filter: none; -webkit-backdrop-filter: none;
+.topbar-inner {
+  max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); height: var(--nav-h);
+  display: flex; align-items: center; gap: var(--space-5);
 }
-nav.on-stage .logo .dot { background: var(--stage-accent); }
-nav.on-stage .nav-links a { color: color-mix(in srgb, var(--stage-ink) 72%, transparent); }
-nav.on-stage .nav-links a:hover { color: var(--stage-ink); }
-nav.on-stage .pill {
-  color: var(--stage-ink); background: color-mix(in srgb, var(--stage-ink) 8%, transparent);
-  border-color: color-mix(in srgb, var(--stage-ink) 22%, transparent);
+.wordmark {
+  display: flex; align-items: center; gap: 10px; text-decoration: none; white-space: nowrap;
+  font-family: var(--font-display); font-weight: 650; font-size: 18px; letter-spacing: -.01em;
 }
-nav.on-stage .pill:hover { border-color: var(--stage-accent); }
-.nav-inner { max-width: var(--maxw); margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 20px; }
-.logo { font-family: var(--font-display); font-weight: 700; font-size: 19px; text-decoration: none; display: flex; align-items: center; gap: 10px; }
-.logo .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
-.nav-links { display: flex; gap: 24px; margin-left: auto; }
-.nav-links a { text-decoration: none; font-size: 15px; font-weight: 500; color: var(--muted); transition: color .2s; }
-.nav-links a:hover { color: var(--ink); }
-.nav-ctrl { display: flex; gap: 8px; margin-left: 20px; }
-.pill {
-  font-family: var(--font-mono); font-size: 13px; border: 1px solid var(--line);
-  background: var(--surface); color: var(--ink); border-radius: 99px;
-  padding: 6px 14px; cursor: pointer; transition: border-color .2s, background .3s, color .3s, transform .15s;
+.wordmark-mark {
+  width: 28px; height: 28px; border-radius: 7px; display: grid; place-items: center;
+  background: var(--ink); color: var(--bg);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .02em;
 }
-.pill:hover { border-color: var(--accent); }
-.pill:active { transform: scale(.96); }
-@media (max-width: 760px) { .nav-links { display: none; } }
+.topbar-panel { margin-left: auto; display: flex; align-items: center; gap: var(--space-6); }
+.topbar-nav ul { list-style: none; display: flex; gap: var(--space-5); }
+.topbar-nav a {
+  text-decoration: none; font-size: var(--fs-sm); font-weight: 500; color: var(--muted);
+  transition: color var(--dur-fast);
+}
+.topbar-nav a:hover { color: var(--ink); }
+.prefs { display: flex; align-items: center; gap: var(--space-2); }
+.lang-switch { display: inline-flex; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); padding: 2px; }
+.lang-switch button {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: .04em;
+  border: 0; background: none; color: var(--muted); padding: 5px 10px; border-radius: var(--radius-pill); cursor: pointer;
+}
+.lang-switch button:hover { color: var(--ink); }
+.lang-switch button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.theme-toggle, .menu-btn {
+  width: 36px; height: 36px; display: grid; place-items: center; cursor: pointer;
+  border: 1px solid var(--line-strong); border-radius: 50%; background: none; color: var(--ink);
+  transition: border-color var(--dur-fast);
+}
+.theme-toggle:hover, .menu-btn:hover { border-color: var(--ink); }
+.theme-toggle svg, .menu-btn svg { width: 18px; height: 18px; }
+.theme-toggle svg { transition: transform var(--dur) var(--ease); }
+.theme-toggle[aria-pressed="true"] svg { transform: rotate(180deg); }
+.contact-pill {
+  background: var(--accent); color: var(--accent-contrast); text-decoration: none; white-space: nowrap;
+  font-weight: 600; font-size: var(--fs-sm); padding: 8px 18px; border-radius: var(--radius-pill);
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.contact-pill:hover { background: var(--ink); color: var(--bg); }
+.menu-btn { display: none; }
+.menu-btn[aria-expanded="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
-/* ---------- Hero ---------- */
-/* The intro video is pinned to the top of the page and the rest of the page (.page-sheet) slides up
-   over it. app.js sets --p from 0 to 1 while the sheet travels up, and the video recedes with it. */
-:root { --sheet-peek: 40px; } /* how far the sheet's edge shows on the first screen, as a cue to scroll */
-.hero-stage {
-  position: sticky; top: 0; overflow: hidden; background: var(--stage-bg);
-  /* Full screen, but never narrower than square: the title sits in the middle half of the video,
-     so cover only ever trims empty edges */
-  height: min(100svh, 100vw); min-height: 320px;
-  transform-origin: 50% 0;
-}
-.hero-stage.covered { visibility: hidden; } /* fully under the sheet: skip painting it, and its button leaves the tab order */
-@media (prefers-reduced-motion: no-preference) {
-  .hero-stage {
-    --p2: calc(var(--p, 0) * var(--p, 0));
-    transform: scale(calc(1 - .08 * var(--p, 0)));
-    border-radius: calc(36px * var(--p, 0));
-    /* Stays crisp while the sheet covers it, then dissolves into the page over the last stretch (p⁴) */
-    opacity: calc(1 - .9 * var(--p2) * var(--p2));
+@media (max-width: 760px) {
+  .wordmark [data-site] { font-size: 17px; }
+  .menu-btn { display: grid; }
+  .contact-pill { margin-left: auto; }
+  .topbar-panel {
+    display: none; position: absolute; top: 100%; left: 0; right: 0; margin: 0;
+    flex-direction: column; align-items: stretch; gap: var(--space-5);
+    background: var(--bg); border-bottom: 1px solid var(--line);
+    padding: var(--space-2) var(--gutter) var(--space-5);
+    max-height: calc(100svh - var(--nav-h)); overflow-y: auto;
   }
-}
-@media (prefers-reduced-motion: reduce) { .hero-stage { position: relative; } } /* no pinning: everything scrolls together */
-.hero-stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.stage-btn {
-  position: absolute; right: 20px; bottom: calc(var(--sheet-peek) + 20px); width: 40px; height: 40px;
-  display: grid; place-items: center; cursor: pointer; border-radius: 50%;
-  color: var(--stage-ink); background: color-mix(in srgb, var(--stage-bg) 55%, transparent);
-  border: 1px solid color-mix(in srgb, var(--stage-ink) 18%, transparent);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  opacity: .7; transition: opacity .2s, border-color .2s, transform .15s;
-}
-.stage-btn:hover, .stage-btn:focus-visible { opacity: 1; border-color: var(--stage-accent); }
-.stage-btn:focus-visible { outline: 2px solid var(--stage-accent); outline-offset: 3px; }
-.stage-btn:active { transform: scale(.94); }
-.stage-btn svg { width: 16px; height: 16px; fill: currentColor; display: none; }
-.hero-stage:not([data-state]) .stage-btn { visibility: hidden; } /* until app.js knows the state */
-.hero-stage[data-state="playing"] .i-pause,
-.hero-stage[data-state="paused"] .i-play,
-.hero-stage[data-state="ended"] .i-replay { display: block; }
-
-.page-sheet {
-  position: relative; z-index: 1; margin-top: calc(-1 * var(--sheet-peek));
-  background: var(--bg); border-radius: 32px 32px 0 0; transition: background .3s;
-  box-shadow: 0 -1px 0 var(--line), 0 -24px 64px rgba(0, 0, 0, .28);
-}
-@media (max-width: 700px) {
-  :root { --sheet-peek: 28px; }
-  .page-sheet { border-radius: 24px 24px 0 0; }
-  .stage-btn { right: 12px; bottom: calc(var(--sheet-peek) + 12px); width: 36px; height: 36px; }
+  .topbar-panel.open { display: flex; }
+  .topbar-nav ul { flex-direction: column; gap: 0; }
+  .topbar-nav a {
+    display: block; padding: 14px 0; border-bottom: 1px solid var(--line);
+    font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--ink);
+  }
+  .prefs { gap: var(--space-3); }
 }
 
+/* ---------- Footer ---------- */
+footer { border-top: 1px solid var(--line); padding: var(--space-6) 0 var(--space-7); color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+footer .foot-note { font-family: var(--font-mono); font-size: var(--fs-xs); }
+
+/* ---------- Legacy section styles (replaced section by section during the redesign) ---------- */
 .hero { padding: 104px 0 110px; }
 .hero h1 {
   font-family: var(--font-display); font-weight: 700; letter-spacing: -.02em;
@@ -280,15 +298,20 @@ a.highlight:hover { transform: translateY(-4px); box-shadow: var(--shadow); bord
 .contact-socials a:hover { border-color: var(--accent); transform: translateY(-2px); }
 @media (max-width: 600px) { .contact-card { padding: 44px 22px; } }
 
-footer { padding: 44px 0 56px; text-align: center; color: var(--muted); font-size: 14px; }
-footer .foot-note { font-family: var(--font-mono); font-size: 12.5px; margin-top: 6px; }
 
 /* ---------- Reveal ---------- */
-.reveal { opacity: 0; transform: translateY(22px); transition: opacity var(--reveal-duration) ease, transform var(--reveal-duration) ease; }
-.reveal.in { opacity: 1; transform: none; }
+/* Content rises in once as it enters the view. Where CSS scroll-driven animations exist the browser
+   does it on its own; elsewhere app.js adds .reveal-io to <html> and an IntersectionObserver adds .in. */
+@keyframes rise-in { from { opacity: 0; transform: translateY(18px); } }
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal { animation: rise-in linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+  }
+  .reveal-io .reveal { transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease); }
+  .reveal-io .reveal:not(.in) { opacity: 0; transform: translateY(18px); }
+}
+
+/* ---------- Reduced motion: everything instant ---------- */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
-  html { scroll-behavior: auto; }
-  .reveal { opacity: 1; transform: none; }
-  .hero h1 em::after { transform: none; }
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }

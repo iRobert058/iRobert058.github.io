@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="nl" data-theme="light">
+<html lang="nl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Robert Karzijn - Human-Computer Interaction & UX-onderzoek</title>
 <meta name="description" content="Portfolio van Robert Karzijn: masterstudent Human-Computer Interaction met een bachelor Information Sciences (Universiteit Utrecht). Onderzoek naar deceptive patterns, interactieontwerp en operationeel leiderschap.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#FCFCFB" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121316" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F6F6F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
 <meta property="og:site_name" content="Robert Karzijn">
 <meta property="og:locale" content="nl_NL">
 <meta property="og:locale:alternate" content="en_GB">
@@ -29,12 +29,11 @@
 <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png">
 <link rel="shortcut icon" href="/favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/hanken-grotesk-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/main.css">
-<script src="assets/js/app.js" defer></script>
+<script type="module" src="assets/js/app.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -62,39 +61,38 @@
   </p>
 </noscript>
 
-<nav class="on-stage">
-  <div class="nav-inner">
-    <a class="logo" href="#top"><span class="dot"></span><span data-site="name">Robert Karzijn</span></a>
-    <div class="nav-links">
-      <a href="#over" data-t="nav.about"></a>
-      <a href="#projecten" data-t="nav.projects"></a>
-      <a href="#ervaring" data-t="nav.experience"></a>
-      <a href="#vaardigheden" data-t="nav.skills"></a>
-      <a href="#contact" data-t="nav.contact"></a>
+<a class="skip-link" href="#main" data-t="nav.skip"></a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="wordmark" href="#main"><span class="wordmark-mark" aria-hidden="true">RK</span><span data-site="name">Robert Karzijn</span></a>
+    <div class="topbar-panel" id="topbarPanel">
+      <nav class="topbar-nav" data-t-aria="nav.label">
+        <ul>
+          <li><a href="#over" data-t="nav.about"></a></li>
+          <li><a href="#projecten" data-t="nav.projects"></a></li>
+          <li><a href="#ervaring" data-t="nav.experience"></a></li>
+          <li><a href="#vaardigheden" data-t="nav.skills"></a></li>
+        </ul>
+      </nav>
+      <div class="prefs">
+        <div class="lang-switch" role="group" data-t-aria="nav.lang_group">
+          <button type="button" data-lang="nl" lang="nl" aria-label="Nederlands">NL</button>
+          <button type="button" data-lang="en" lang="en" aria-label="English">EN</button>
+        </div>
+        <button type="button" class="theme-toggle" id="themeBtn" data-t-aria="nav.theme">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 3.75a8.25 8.25 0 0 1 0 16.5z" fill="currentColor"/></svg>
+        </button>
+      </div>
     </div>
-    <div class="nav-ctrl">
-      <button class="pill" id="langBtn" aria-label="Switch language">EN</button>
-      <button class="pill" id="themeBtn" aria-label="Toggle dark mode">☾</button>
-    </div>
+    <a class="contact-pill" href="#contact" data-t="nav.contact"></a>
+    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="topbarPanel" data-t-aria="nav.menu">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+    </button>
   </div>
-</nav>
+</header>
 
-<!-- Pinned intro video; the page sheet below slides up over it. The logo's "#top" link (no such id) scrolls to the very top, here. -->
-<div class="hero-stage" id="heroStage">
-  <!-- Decorative intro: the name and field it shows are repeated as text right below -->
-  <video id="heroVideo" muted playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-hidden="true"
-         poster="assets/img/hero-start.webp" data-poster-end="assets/img/hero-end.webp">
-    <source src="assets/video/hero-intro-av1.mp4" type='video/mp4; codecs="av01.0.08M.08"'>
-    <source src="assets/video/hero-intro.mp4" type='video/mp4; codecs="avc1.640028"'>
-  </video>
-  <button class="stage-btn" id="heroVideoBtn" type="button">
-    <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
-    <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-    <svg class="i-replay" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>
-  </button>
-</div>
-
-<div class="page-sheet" id="pageSheet">
+<main id="main" tabindex="-1">
 
 <header class="hero">
   <div class="wrap">
@@ -184,8 +182,8 @@
         <p class="lead" data-t="contact.lead"></p>
         <form class="contact-form" id="contactForm" novalidate>
           <div class="hp-field" aria-hidden="true">
-            <label for="cf-company">Company</label>
-            <input id="cf-company" name="company" type="text" tabindex="-1" autocomplete="off">
+            <label for="cf-gotcha">Leave this field empty</label>
+            <input id="cf-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
           </div>
           <div class="field">
             <label for="cf-name" data-t="contact.name"></label>
@@ -208,6 +206,8 @@
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap">
     <div>© <span id="year"></span> <span data-site="name">Robert Karzijn</span> · <span data-t="footer.location"></span> · <a href="privacy.html">Privacy</a></div>
@@ -215,7 +215,6 @@
   </div>
 </footer>
 
-</div><!-- /.page-sheet -->
 
 </body>
 </html>

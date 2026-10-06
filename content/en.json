@@ -4,7 +4,12 @@
     "projects": "Projects",
     "experience": "Experience",
     "skills": "Skills",
-    "contact": "Contact"
+    "contact": "Contact",
+    "skip": "Skip to content",
+    "label": "Main menu",
+    "menu": "Menu",
+    "theme": "Dark theme",
+    "lang_group": "Language"
   },
   "hero": {
     "eyebrow": "Human-Computer Interaction · UX Research",
@@ -75,8 +80,7 @@
     "status_ok": "Thanks for your message. I'll get back to you as soon as possible.",
     "status_err": "Sending failed. Please try again later or reach out via LinkedIn.",
     "status_invalid": "Please fill in all fields with a valid email address.",
-    "status_unconfigured": "The form has not been connected to a processing service yet. See the README for configuration.",
-    "footer_location": "The Netherlands"
+    "status_unconfigured": "The form has not been connected to a processing service yet. See the README for configuration."
   },
   "footer": {
     "location": "The Netherlands",
