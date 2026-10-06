@@ -32,9 +32,10 @@
   --muted: #5B5F67;
   --line: #E2E2DC;
   --line-strong: #C9C9C2;
-  --accent: #2F45D8;          /* signal blue */
+  --accent: #E23C46;          /* brand red: large text, underlines, numerals, dots */
+  --accent-strong: #C42D38;   /* the same red, deepened to pass WCAG AA for small text and behind white text */
   --accent-contrast: #FFFFFF; /* text on a filled accent */
-  --accent-soft: #E8EBFB;
+  --accent-soft: #FCEDEE;
   --ok: #1E7A46;
   --err: #B42318;
 
@@ -45,7 +46,7 @@
   --band-muted: #A4A8AF;
   --band-line: #2B2D32;
   --band-line-strong: #3E4047;
-  --band-accent: #A3AEFF;
+  --band-accent: #FF5C63;
   --band-accent-contrast: #0E0F12;
   --band-ok: #6FD49A;
   --band-err: #FF9C93;
@@ -111,9 +112,10 @@
     --muted: #A2A6AD;
     --line: #26282C;
     --line-strong: #3A3C42;
-    --accent: #8D9BFF;
+    --accent: #FF5C63;
+    --accent-strong: #FF5C63;
     --accent-contrast: #0E0F12;
-    --accent-soft: #1C2040;
+    --accent-soft: #2A1D1F;
     --ok: #6FD49A;
     --err: #FF9C93;
     --band-bg: #08090A;
@@ -131,9 +133,10 @@
   --muted: #A2A6AD;
   --line: #26282C;
   --line-strong: #3A3C42;
-  --accent: #8D9BFF;
+  --accent: #FF5C63;
+  --accent-strong: #FF5C63;
   --accent-contrast: #0E0F12;
-  --accent-soft: #1C2040;
+  --accent-soft: #2A1D1F;
   --ok: #6FD49A;
   --err: #FF9C93;
   --band-bg: #08090A;

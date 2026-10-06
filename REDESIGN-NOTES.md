@@ -7,7 +7,7 @@ Branch `redesign/v3`, cut from `main` at `813bcf4` (V1.13). Fresh redesign: `red
 **One idea:** the site reads like a well-made research paper that happens to be interactive. Robert studies how people actually use interfaces, so the page behaves like a careful study does: it numbers its sections, labels its figures, shows its evidence in ruled tables, and explains every experiment it runs on you.
 
 - **Clean and light first.** Soft paper-white background, near-black ink, one accent. The dark theme is a proper second theme that follows the system, never the default.
-- **New accent: signal blue** (`#2F45D8` light, `#8D9BFF` dark), replacing the red, as agreed in the preflight ("let loose of my signature colours, focus on a clean aesthetic"). It's one token pair in `tokens.css`, so swapping it back is a two-line change.
+- **Accent: your brand red** (`#E23C46` light, `#FF5C63` dark). The first version used signal blue; you asked for the red back after review. Small text and fills behind white text use `--accent-strong` (`#C42D38` in light mode, the same `#FF5C63` in dark), because `#E23C46` is only ~3.9:1 on the paper background and white on it ~4.2:1, both below WCAG AA for small text.
 - **Type:** the three existing families stay (Bricolage Grotesque for display, Hanken Grotesk for body, Spline Sans Mono for labels), now self-hosted. Display weight is 600 with tight tracking: confident, not shouty.
 - **Paper conventions as the structuring device:** sections are numbered `§ 01` to `§ 06` (computed, so a hidden section doesn't leave a gap), figures get `Fig.` captions, and facts, experience and skills sit in ruled tables with hairlines rather than cards with shadows.
 - **Rhythm:** paper sections alternate with two ink bands (projects and contact) and up to two full-bleed photo interludes.
@@ -60,7 +60,7 @@ A complete visual and structural redesign on `redesign/v3`, in 12 commits, one p
 
 1. **Brief** (this file).
 2. **Tokens, fonts, base, nav:** a new token set in `tokens.css`:
-   - light paper palette, signal-blue accent, ink band colours
+   - light paper palette, brand-red accent (after review; first signal blue), ink band colours
    - type and spacing scales
    - dark theme that follows the system, plus the toggle
 
@@ -146,7 +146,7 @@ A complete visual and structural redesign on `redesign/v3`, in 12 commits, one p
 ## Decisions log
 
 - **Hero headline:** the current one, "Goede techniek begint met een goed *gesprek*.", as answered in the preflight. The brief's "Ik ontwerp interfaces die doen wat je verwacht" isn't used.
-- **Accent colour:** red replaced by signal blue (preflight answer). The favicon and `og-image.png` are existing images and still red. See TODOs.
+- **Accent colour:** first signal blue (preflight answer), then back to your brand red after review. `#E23C46` / `#FF5C63` stay as the brand colours for large text, underlines, numerals and dots. A new token `--accent-strong` (`#C42D38`) carries small red text and the filled Contact pill in light mode so they pass WCAG AA (4.5:1). The old site used `#E23C46` for those too, at ~3.9–4.2:1. In dark mode both tokens are `#FF5C63`, with dark text on red fills.
 - **Intro video (V1.13) leaves the homepage.** The pinned, autoplaying video stage conflicts with the brief's hero (headline plus specimen) and with "nothing moves unless the visitor asks". The files in `assets/video/`, the posters and `assets/robert-portfolio-intro.mp4` stay in the repo, untouched. To bring it back, restore the `.hero-stage` markup from `main`. **Decision for you.**
 - **No storage at all:** `app.js`, `404.html` and `privacy.html` used `localStorage` for the language. That's removed (the site promises nothing is stored), so a language choice now lasts for the page view only.
 - **Language toggle** becomes two segments (NL / EN) with `aria-pressed`. The theme toggle is a button with `aria-pressed` and a translated label. The theme follows the system until the visitor toggles it.
@@ -215,7 +215,6 @@ All new strings are drafts in `content/nl.json` and `content/en.json`. NL is the
 ## TODOs for Robert
 
 - **Review the drafts** in "Copy to review", especially the pillar texts (working labels) and the demo captions.
-- **Favicon and `og-image.png`** are still in the old red. Export new ones in signal blue (`#2F45D8`) when you're happy with the colour.
 - **Privacy policy:** a page already exists (`privacy.html`, last updated 1 September 2026). I didn't write or change any legal copy. Check that it's still accurate, see the email-address flag in the decisions log, and consider stating there that no cookies or local storage are used, now that this is literally true.
 - **Missing facts I didn't invent:** for the About facts, things like a graduation year for the MSc, a city of residence, or what you're looking for (internship, job, project) could be added if you want them. The current table uses only facts already on the site.
 - **Interlude photos.** Add entries to `interludes` in `data/site.json`: `{ "src": "assets/img/interlude-1.webp", "alt": { "nl": "…", "en": "…" } }`. Entries fill the page's three slots in order: (1) between "Werkwijze" and the projects, (2) between experience and skills, (3) between skills and contact. Empty `src` entries are skipped and extra entries are ignored. Export **2400 × 1029 px (21:9) WebP, about 300–400 KB**. Phones crop the same file to 4:3 around the centre, so keep the subject central. Leave `alt` empty only if a photo is purely atmospheric.
@@ -224,7 +223,7 @@ All new strings are drafts in `content/nl.json` and `content/en.json`. NL is the
 
 1. **The intro video** is no longer on the page (files kept). Bring it back somewhere (for example as an opt-in "play intro" in About, or on a project page), or leave it out.
 2. **The email address on `privacy.html`**: keep it as the GDPR contact point, or point to the form.
-3. **The accent colour**: signal blue now. Reverting to red is two values per theme in `tokens.css` (`--accent`, plus the band and soft variants).
+3. **The accent colour**: settled, back to your red.
 4. **README language**: English kept; say so if you want it in Dutch.
 5. **Merging**: not done, and the draft PR stays a draft. Nothing reached `main`.
 
