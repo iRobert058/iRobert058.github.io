@@ -279,9 +279,10 @@ function renderSocials() {
 }
 
 /* ---------- Reveal animations ---------- */
-// CSS scroll-driven animations handle .reveal where supported; this observer is the fallback.
-const scrollDriven = CSS.supports("animation-timeline: view()");
-if (!scrollDriven) document.documentElement.classList.add("reveal-io");
+// An IntersectionObserver in every browser. Not CSS scroll-driven animations (animation-timeline: view()):
+// in Safari/WebKit 26–27 those sometimes stay stuck on their first frame, which left whole blocks at opacity 0.
+// The .reveal-io class is only set here, so without this script nothing is ever hidden.
+document.documentElement.classList.add("reveal-io");
 const io = new IntersectionObserver(
   (entries) => {
     entries.forEach((e) => {
@@ -290,12 +291,20 @@ const io = new IntersectionObserver(
       io.unobserve(e.target);
     });
   },
-  { threshold: 0.15 }
+  // Any visible pixel counts (threshold 0), so blocks taller than the screen reveal too; the margin waits
+  // until the block is a little way into the view
+  { threshold: 0, rootMargin: "0px 0px -5% 0px" }
 );
 
+let revealsObserved = false;
 function observeReveals() {
-  if (scrollDriven) return;
-  document.querySelectorAll(".reveal:not(.in)").forEach((el) => io.observe(el));
+  if (revealsObserved) {
+    // A language switch re-renders blocks: show them at once instead of fading them in a second time
+    document.querySelectorAll(".reveal:not(.in)").forEach((el) => el.classList.add("in"));
+    return;
+  }
+  revealsObserved = true;
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 }
 
 /* ---------- Language & theme ---------- */
