@@ -14,6 +14,8 @@ img { max-width: 100%; height: auto; display: block; }
 button { font: inherit; color: inherit; }
 :focus-visible { outline: var(--focus-ring); outline-offset: 3px; }
 main:focus { outline: none; } /* focused only as the skip-link target */
+/* Until app.js has rendered the content once: appear in one go instead of shifting the layout */
+main.is-loading { visibility: hidden; }
 
 .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
 section { padding: var(--section-gap) 0; }
@@ -43,7 +45,7 @@ section { padding: var(--section-gap) 0; }
 .btn {
   display: inline-flex; align-items: center; gap: var(--space-2); text-decoration: none;
   font-family: var(--font-body); font-weight: 600; font-size: 16px; line-height: 1.2;
-  border-radius: var(--radius-pill); padding: 13px 22px; border: 1px solid transparent; cursor: pointer;
+  border-radius: var(--radius-pill); padding: 13px 22px; border: 1px solid transparent; background: none; cursor: pointer;
   transition: background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast);
 }
 .btn-primary { background: var(--ink); color: var(--bg); }
@@ -104,7 +106,8 @@ section { padding: var(--section-gap) 0; }
 .menu-btn { display: none; }
 .menu-btn[aria-expanded="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
-@media (max-width: 760px) {
+/* The bar holds links, language, theme and Contact down to ~980px (Dutch labels are the longest) */
+@media (max-width: 980px) {
   .wordmark [data-site] { font-size: 17px; }
   .menu-btn { display: grid; }
   .contact-pill { margin-left: auto; }

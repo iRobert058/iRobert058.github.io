@@ -33,6 +33,7 @@
 <link rel="preload" href="assets/fonts/hanken-grotesk-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/main.css">
+<link rel="modulepreload" href="assets/js/logic.js">
 <script type="module" src="assets/js/app.js"></script>
 <noscript><style>.topbar, main, footer { display: none; }</style></noscript>
 <script type="application/ld+json">
@@ -81,8 +82,8 @@
       </nav>
       <div class="prefs">
         <div class="lang-switch" role="group" data-t-aria="nav.lang_group">
-          <button type="button" data-lang="nl" lang="nl" aria-label="Nederlands">NL</button>
-          <button type="button" data-lang="en" lang="en" aria-label="English">EN</button>
+          <button type="button" data-lang="nl" lang="nl">NL</button>
+          <button type="button" data-lang="en" lang="en">EN</button>
         </div>
         <button type="button" class="theme-toggle" id="themeBtn" data-t-aria="nav.theme">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 3.75a8.25 8.25 0 0 1 0 16.5z" fill="currentColor"/></svg>
@@ -96,7 +97,7 @@
   </div>
 </header>
 
-<main id="main" tabindex="-1">
+<main id="main" tabindex="-1" class="is-loading">
 
 <section class="hero" aria-labelledby="heroTitle">
   <div class="wrap hero-grid">

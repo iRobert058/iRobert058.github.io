@@ -41,6 +41,7 @@ try {
   ]);
   ui = { nl, en };
 } catch (err) {
+  $("#main").classList.remove("is-loading");
   $("#main").insertAdjacentHTML(
     "afterbegin",
     '<p class="load-error">Content could not be loaded. Serve the site through a (local) web server, ' +
@@ -310,10 +311,10 @@ $("#themeBtn").addEventListener("click", () => {
 darkQuery.addEventListener("change", renderPrefs); // the system theme changed while we're still following it
 
 /* ---------- Mobile menu ---------- */
-// Below 760px the panel with links and preferences becomes a disclosure under the menu button.
+// Below 980px (keep in sync with main.css) the panel with links and preferences becomes a disclosure under the menu button.
 const menuBtn = $("#menuBtn");
 const panel = $("#topbarPanel");
-const narrow = window.matchMedia("(max-width: 760px)");
+const narrow = window.matchMedia("(max-width: 980px)");
 
 function setMenu(open, { returnFocus = false } = {}) {
   menuBtn.setAttribute("aria-expanded", String(open));
@@ -423,5 +424,9 @@ const github = (site.socials || []).find((s) => s.label === "GitHub");
 if (github) $("#githubBtn").href = github.url;
 else $("#githubBtn").remove();
 $("#year").textContent = new Date().getFullYear();
-renderAll();
+try {
+  renderAll();
+} finally {
+  $("#main").classList.remove("is-loading"); // also after a render error, which still surfaces in the console
+}
 $("#specCaption").setAttribute("aria-live", "polite"); // only after the first render, so loading the page announces nothing
