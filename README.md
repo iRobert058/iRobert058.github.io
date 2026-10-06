@@ -10,7 +10,7 @@ A single static page that serves as a digital business card for employers, clien
 
 - **Bilingual (NL/EN)**: Dutch is the default language, with an NL/EN switch in the navigation. All content, from UI labels to project descriptions, is written in both languages and switches instantly without a page reload.
 - **Light and dark theme**: follows the system preference (`prefers-color-scheme`) and can be switched with the toggle. The choice lasts for the page view; nothing is stored.
-- **A demo in the hero**: a small browser window with a fake web-shop product card. Pressing "Simuleer een volgend bezoek" moves the add-to-cart button and puts a paid extra in its old spot, which is the habit effect my thesis studies. The caption explains it (and is announced to screen readers). It only moves when the visitor asks, and swaps instantly with reduced motion.
+- **A typographic hero**: the headline, the intro and an "Op dit moment" list that is built from the timeline entries running until `present`, so it updates itself.
 - **Content sections**: highlights, about me (with a fact table), three pillars (research, design, organise), featured projects as small case studies (problem / role / result), one timeline of work, education and extracurricular activities (with the Amac roles shown as one progression), capabilities grouped by pillar, soft skills and languages, and a contact form. A certificates section appears automatically when there are certificates in the data. Optional full-width photo interludes appear between sections.
 - **Contact form without visible personal details**: messages go to a Formspree endpoint, with a `_gotcha` honeypot against spam.
 - **No cookies, no trackers, no storage and no deceptive patterns**: no analytics, no third-party requests (fonts are self-hosted), and no `localStorage`. The only external request is the form submission.
@@ -28,7 +28,7 @@ Deliberately **without frameworks or a build step**: vanilla HTML, CSS and JavaS
 ├── assets/
 │   ├── css/tokens.css         # All design tokens: fonts, colours, type and spacing scales, motion (light + dark)
 │   ├── css/main.css           # Component styles, built on the tokens
-│   ├── js/app.js              # Loads JSON, renders sections, handles language / theme / menu / demo / form
+│   ├── js/app.js              # Loads JSON, renders sections, handles language / theme / menu / form
 │   ├── js/logic.mjs           # Pure helpers (timeline grouping, interludes, skills fallbacks), unit tested
 │   ├── fonts/                 # Self-hosted variable WOFF2 fonts (Latin subset) + OFL licence
 │   ├── img/                   # Images (WebP, max ~1600px wide)

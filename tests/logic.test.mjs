@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  pick, esc, lookup, pad2, isCurrent, periodLabel, groupTimeline, assignInterludes, skillGroups, softSkills,
+  pick, esc, lookup, pad2, isCurrent, periodLabel, groupTimeline, assignInterludes, skillGroups, softSkills, currentRoles,
 } from "../assets/js/logic.mjs";
 
 test("pick returns the language, falls back to nl, passes plain strings through", () => {
@@ -83,4 +83,10 @@ test("softSkills uses `soft` and falls back to the bar labels without levels", (
   assert.deepEqual(softSkills({ soft: ["Teamwork"] }), ["Teamwork"]);
   assert.deepEqual(softSkills({ bars: [{ label: "Lead", level: 80 }] }), ["Lead"]);
   assert.deepEqual(softSkills({}), []);
+});
+
+test("currentRoles keeps only running roles, in file order", () => {
+  const items = [job("Senior", "2026", "present", "amac"), job("Old", "2019", "2024"), job("Study", "2026", "present")];
+  assert.deepEqual(currentRoles(items).map((i) => i.title), ["Senior", "Study"]);
+  assert.deepEqual(currentRoles(undefined), []);
 });

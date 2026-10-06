@@ -5,7 +5,7 @@
    Pure helpers live in logic.mjs, where they are unit tested.
    ============================================================= */
 
-import { pick, esc, lookup, pad2, assignInterludes, groupTimeline, periodLabel, isCurrent, skillGroups, softSkills } from "./logic.mjs";
+import { pick, esc, lookup, pad2, assignInterludes, groupTimeline, periodLabel, isCurrent, skillGroups, softSkills, currentRoles } from "./logic.mjs";
 
 const page = document.body.dataset.page ?? "home"; // "home" or "project" (the pages in /projecten/<id>/)
 
@@ -325,7 +325,7 @@ function renderAll() {
     renderCertificates();
     numberSections();
     renderSocials();
-    renderSpecimen();
+    renderHeroNow();
   }
   renderPrefs();
   observeReveals();
@@ -377,38 +377,15 @@ panel.addEventListener("focusout", (e) => {
 });
 narrow.addEventListener("change", () => setMenu(false));
 
-/* ---------- Hero specimen ---------- */
-// A fake product card from a web shop. Pressing the button simulates a return visit on which the
-// add-to-cart button has moved and its old spot holds a paid extra: the habit effect from the thesis.
-// It only ever moves on request, and the caption (a live region) says what changed.
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const specimen = { visit: 1 };
-
-function renderSpecimen() {
-  const S = ui[state.lang].specimen;
-  $("#specShop").dataset.visit = specimen.visit;
-  $("#specVisit").textContent = S.visit.replace("{n}", specimen.visit);
-  $("#specCaption").textContent = specimen.visit === 1 ? S.caption_1 : S.caption_2;
-  $("#specBtn").textContent = specimen.visit === 1 ? S.btn_next : S.btn_reset;
+/* ---------- Hero: right now ---------- */
+function renderHeroNow() {
+  $("#heroNow").innerHTML = currentRoles(timeline)
+    .map((r) => `<li><span class="now-role">${esc(t(r.title))}</span><span class="now-org">${esc(r.org)}</span></li>`)
+    .join("");
 }
 
 // Everything below only exists on the homepage
 function initHome() {
-  $("#specBtn").addEventListener("click", () => {
-    const cart = $("#specCart");
-    const before = cart.getBoundingClientRect();
-    specimen.visit = specimen.visit === 1 ? 2 : 1;
-    renderSpecimen();
-    if (reduceMotion.matches) return; // swap instantly
-    // FLIP: start the button at its old spot and let it travel to the new one
-    const after = cart.getBoundingClientRect();
-    const dx = before.left + before.width / 2 - (after.left + after.width / 2);
-    const dy = before.top + before.height / 2 - (after.top + after.height / 2);
-    const easing = getComputedStyle(document.documentElement).getPropertyValue("--ease").trim();
-    cart.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "none" }], { duration: 520, easing });
-    if (specimen.visit === 2) $("#specExtra").animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, delay: 260, fill: "backwards" });
-  });
-
   /* Honest banner */
   $("#honestBtn").addEventListener("click", () => {
     $("#honest").hidden = true;
@@ -471,5 +448,3 @@ try {
 } finally {
   $("#main").classList.remove("is-loading"); // also after a render error, which still surfaces in the console
 }
-// Only after the first render, so loading the page announces nothing
-if (page === "home") $("#specCaption").setAttribute("aria-live", "polite");

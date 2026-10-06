@@ -13,7 +13,7 @@
   },
   "hero": {
     "eyebrow": "Human-Computer Interaction · UX-onderzoek",
-    "title": "Goede techniek begint<br>met een goed <em>gesprek</em>.",
+    "title": "Goede techniek begint <br>met een goed <em>gesprek</em>.",
     "sub": "Masterstudent Human-Computer Interaction, met een bachelor Informatiekunde van Universiteit Utrecht. Ik voel me het meest thuis tussen partijen: stakeholders en gebruikers begrijpen, eisen vertalen naar ontwerp en mensen meenemen in het verhaal van onderzoek en sprekersacquisitie tot de winkelvloer bij Amac.",
     "cta_projects": "Bekijk mijn projecten",
     "cta_cv": "Download CV (PDF)",
@@ -22,7 +22,8 @@
     "honest_btn": "Duidelijk",
     "video_pause": "Intro pauzeren",
     "video_play": "Intro afspelen",
-    "video_replay": "Intro opnieuw afspelen"
+    "video_replay": "Intro opnieuw afspelen",
+    "now": "Op dit moment"
   },
   "highlights": {
     "eyebrow": "Hoogtepunten",
@@ -38,7 +39,7 @@
       "Momenteel volg ik de master Human-Computer Interaction, met focus op cognitieve UX en ethisch interface-ontwerp. Buiten studie en werk: fotografie, audio en af en toe een avond gamen."
     ],
     "portrait_alt": "Portretfoto van Robert Karzijn",
-    "portrait_fig": "Fig. 2",
+    "portrait_fig": "Fig. 1",
     "facts": [
       {
         "k": "Studie",
@@ -116,22 +117,6 @@
   "footer": {
     "location": "Nederland",
     "note": "Gebouwd zonder frameworks, cookies of deceptive patterns."
-  },
-  "specimen": {
-    "fig": "Fig. 1",
-    "url": "winkel.example/koptelefoon",
-    "brand": "Winkel",
-    "product": "Draadloze koptelefoon",
-    "price": "€ 89,00",
-    "stock": "Op voorraad",
-    "cart": "In winkelwagen",
-    "extra": "Garantie toevoegen + € 19",
-    "save": "Bewaar voor later",
-    "visit": "Bezoek {n}",
-    "caption_1": "Dit is wat mijn thesis onderzoekt: uit gewoonte klik je waar de knop vorige keer stond.",
-    "caption_2": "Bezoek 2: de winkelwagenknop staat nu bovenaan en op de oude plek zit een betaalde garantie. Uit gewoonte klik je dáár.",
-    "btn_next": "Simuleer een volgend bezoek",
-    "btn_reset": "Terug naar bezoek 1"
   },
   "pillars": {
     "eyebrow": "Werkwijze",

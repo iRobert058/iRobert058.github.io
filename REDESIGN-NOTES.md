@@ -11,7 +11,7 @@ Branch `redesign/v3`, cut from `main` at `813bcf4` (V1.13). Fresh redesign: `red
 - **Type:** the three existing families stay (Bricolage Grotesque for display, Hanken Grotesk for body, Spline Sans Mono for labels), now self-hosted. Display weight is 600 with tight tracking: confident, not shouty.
 - **Paper conventions as the structuring device:** sections are numbered `§ 01` to `§ 06` (computed, so a hidden section doesn't leave a gap), figures get `Fig.` captions, and facts, experience and skills sit in ruled tables with hairlines rather than cards with shadows.
 - **Rhythm:** paper sections alternate with two ink bands (projects and contact) and up to two full-bleed photo interludes.
-- **Motion:** small and explanatory. Reveals fade up once, the hero underline draws once, and the hero demo moves only when the visitor presses the button. Everything is instant under `prefers-reduced-motion`.
+- **Motion:** small and explanatory. Reveals fade up once, the hero underline draws once. Nothing moves on its own beyond that. Everything is instant under `prefers-reduced-motion`.
 
 ## Borrowed patterns and what makes mine different
 
@@ -19,8 +19,8 @@ Reference: jopmors.com, studied only through screenshots of the live site at 144
 
 | Pattern borrowed | His version | Mine |
 |---|---|---|
-| Framed "app window" in the hero | Code editor on a laptop in a photographed room, which zooms in on scroll | A small browser window with a fake web-shop product card on a plain paper background, beside the headline. It's an interactive figure of my thesis: a labelled button moves the add-to-cart button, and a live caption explains the effect. No scroll-linked zoom. |
-| Numbered structure, mono labels | `01 / 03` counters and small caps labels | Paper-style `§ 01` section numbers and `Fig. 1` captions. Pillars are numbered `1`, `2`, `3` as large figures in a three-column ruled grid. |
+| ~~Framed "app window" in the hero~~ | Code editor on a laptop in a photographed room, which zooms in on scroll | **Dropped after review.** The first v3 hero had a fake web-shop window with a "return visit" demo; you didn't like it (too close to v2's idea), so the hero is now type only, with a "right now" column. No framed object at all. |
+| Numbered structure, mono labels | `01 / 03` counters and small caps labels | Paper-style `§ 01` section numbers and a `Fig.` caption on the portrait. Pillars are numbered `1`, `2`, `3` as large figures in a three-column ruled grid. |
 | About: portrait + key–value facts | Portrait above a 2×2 fact grid, narrative in a right column, serif-italic intro line | Narrative on the left, a captioned portrait figure on the right, and the facts as a full-width ruled table (`dl`) underneath. No serif, no italic intro line. |
 | Three numbered pillars | Stacked large cards, each with a generative line illustration and an italic serif promise | Three equal columns side by side, separated by hairlines, text only. The promise is set in the body face, not italic serif. |
 | Project cards as mini case studies | Glass cards on dark, big product visual, status chips, Launched / Ongoing split | One list on an ink band. Each project is a two-column row: a sticky left column (number, meta line, title, link), a right column with the image and a problem / role / result table. No status split, no glass. |
@@ -41,7 +41,7 @@ Reference: jopmors.com, studied only through screenshots of the live site at 144
 
 1. Brief (this file) — commit.
 2. Tokens, self-hosted fonts, base styles, nav with mobile menu.
-3. Hero with the specimen demo and the honest note.
+3. Hero (first with a specimen demo, later replaced by a type-only hero) and the honest note.
 4. Highlights, About with facts, pillars.
 5. Projects (ink band) and interludes.
 6. Experience timeline with groups, `Nu` and `<details>`.
@@ -65,7 +65,7 @@ A complete visual and structural redesign on `redesign/v3`, in 12 commits, one p
    - dark theme that follows the system, plus the toggle
 
    Self-hosted variable fonts with preloads replace Google Fonts. `app.js` became an ES module without `localStorage`. The sticky top bar has NL/EN segments, the theme toggle, a filled Contact pill and an accessible mobile menu. The pinned intro video left the page.
-3. **Hero:** the current headline with its drawn underline, the browser-window specimen with an explained, opt-in "return visit" demo, and the restyled honest note.
+3. **Hero:** the current headline with its drawn underline and the restyled honest note. (It first had a browser-window demo; after review it became type only with a "right now" column, see the decisions log.)
 4. **Highlights, About, pillars:** paper-style section heads with computed `§` numbers, a facts table, and three numbered pillars.
 5. **Projects and interludes:** projects as case studies on an ink band with a sticky title column; photo interludes from `site.json` (empty for now).
 6. **Experience:** a ledger with a `Nu` marker and `<details>`, plus the Amac roles grouped into one progression card.
@@ -89,8 +89,7 @@ A complete visual and structural redesign on `redesign/v3`, in 12 commits, one p
   - The mobile menu opens with focus on the first link; Esc closes it and returns focus to the button; tabbing out or following a link closes it too.
   - `<details>` open with Enter.
   - The language and theme toggles work with Space/Enter and update `aria-pressed`, `lang` and the labels.
-  - The hero demo works with Enter and Space, focus stays on the control, and the live caption updates.
-- **Reduced motion:** after scrolling the whole page there are 0 running animations, 0 transitions and no smooth scrolling. The demo swaps instantly.
+- **Reduced motion:** after scrolling the whole page there are 0 running animations, 0 transitions and no smooth scrolling.
 - **Form validation** (Formspree requests blocked in the test, nothing was sent):
   - an empty submit marks all three fields `aria-invalid`, shows the message and focuses the name field
   - an invalid email marks and focuses only that field
@@ -105,7 +104,7 @@ A complete visual and structural redesign on `redesign/v3`, in 12 commits, one p
   | Project page, mobile | 91 | 100 | 100 | 100 |
 
   Remaining hints are only about compression, caching and minification, which GitHub Pages or a build step would handle.
-- **axe-core 4** (WCAG 2.0–2.2 A/AA and best practice): 0 violations on the homepage (menu open, demo on visit 2, all `<details>` open), the 404, privacy and project pages, at 390 and 1280, both themes and both languages.
+- **axe-core 4** (WCAG 2.0–2.2 A/AA and best practice): 0 violations on the homepage (menu open, all `<details>` open), the 404, privacy and project pages, at 390 and 1280, both themes and both languages.
 - **JS size:** 24 KB unminified (`app.js` 19.9 KB, `logic.mjs` 4.2 KB), 8 KB gzipped, under the 30 KB budget. Fonts are 112 KB in total.
 - **Originality script** (class names, IDs, custom properties, keyframes, identical strings of 40+ characters): the only overlaps are `js` (a false positive from "app.js" in comments), `#contact`, `--ease` and `--font-mono` (all already in this repo on `main`, before the redesign), and the line `@media (prefers-reduced-motion: reduce) {`. Nothing to rename. The reference clone in `/tmp` is deleted.
 - **Distance tests,** per section, comparing his screenshots with mine:
@@ -123,8 +122,7 @@ A complete visual and structural redesign on `redesign/v3`, in 12 commits, one p
 
 - **Safari and Firefox** (only Chromium was tested). Two things to check by hand in Safari 18+ and Firefox:
   - The scroll-driven reveals: Firefox doesn't support `animation-timeline` yet, so it takes the IntersectionObserver fallback. That fallback path was not exercised.
-  - The demo's FLIP animation.
-- **A real screen reader:** that the specimen caption is announced after pressing the button (VoiceOver: press "Simuleer een volgend bezoek" and listen for the "Bezoek 2: …" sentence), and how the step list in the Amac card is read.
+- **A real screen reader:** how the step list in the Amac card and the "right now" list are read (VoiceOver, Safari).
 - **The live form:** never submitted, on purpose. After merging, send one test message to check that Formspree accepts `_gotcha` and still delivers.
 - **GitHub Pages specifics:** that `.mjs` is served as JavaScript there (it is locally, and Pages normally does), and that `/projecten/thesis/` works without the trailing `index.html`. Check both on the deployed preview or after merging.
 
@@ -147,12 +145,12 @@ A complete visual and structural redesign on `redesign/v3`, in 12 commits, one p
 
 - **Hero headline:** the current one, "Goede techniek begint met een goed *gesprek*.", as answered in the preflight. The brief's "Ik ontwerp interfaces die doen wat je verwacht" isn't used.
 - **Accent colour:** first signal blue (preflight answer), then back to your brand red after review. `#E23C46` / `#FF5C63` stay as the brand colours for large text, underlines, numerals and dots. A new token `--accent-strong` (`#C42D38`) carries small red text and the filled Contact pill in light mode so they pass WCAG AA (4.5:1). The old site used `#E23C46` for those too, at ~3.9–4.2:1. In dark mode both tokens are `#FF5C63`, with dark text on red fills.
-- **Intro video (V1.13) leaves the homepage.** The pinned, autoplaying video stage conflicts with the brief's hero (headline plus specimen) and with "nothing moves unless the visitor asks". The files in `assets/video/`, the posters and `assets/robert-portfolio-intro.mp4` stay in the repo, untouched. To bring it back, restore the `.hero-stage` markup from `main`. **Decision for you.**
+- **Intro video (V1.13) leaves the homepage.** The pinned, autoplaying video stage conflicted with the brief's hero (headline plus specimen; now type only) and with "nothing moves unless the visitor asks". The files in `assets/video/`, the posters and `assets/robert-portfolio-intro.mp4` stay in the repo, untouched. To bring it back, restore the `.hero-stage` markup from `main`. **Decision for you.**
 - **No storage at all:** `app.js`, `404.html` and `privacy.html` used `localStorage` for the language. That's removed (the site promises nothing is stored), so a language choice now lasts for the page view only.
 - **Language toggle** becomes two segments (NL / EN) with `aria-pressed`. The theme toggle is a button with `aria-pressed` and a translated label. The theme follows the system until the visitor toggles it.
 - **Honeypot** renamed from `company` to Formspree's `_gotcha`, which Formspree discards server-side as well. The client still skips sending when it's filled.
 - **Grades:** the thesis `result` text still says "beoordeeld met een 8,5". That is existing content in the one place the repo's CLAUDE.md allows a grade, and the brief says nothing gets deleted. There are no grade badges or highlights.
-- **Hero demo content:** on the return visit the add-to-cart button moves into the shop's top bar and a paid "add warranty" button takes its old spot. That makes the habit effect concrete (a habitual click now buys something) and is shown and explained, never done to the visitor. The fake shop buttons are plain text, not controls, so nothing on the page pretends to be clickable. The product is fictional.
+- **Hero: type only (after review).** The shop demo is removed; you chose a type-only hero. Next to the intro sits an "Op dit moment / Right now" column, built from the timeline entries that run until `present` (`currentRoles()` in `logic.mjs`, tested). The thesis isn't in the hero on purpose: it's finished and lives in the projects, and the hero should say what you're doing now. Below 560 px the headline's forced line break is dropped so it wraps naturally; for that, a space was added before `<br>` in `hero.title` (whitespace only, same words). The portrait caption is now `Fig. 1`.
 - **Hero layout:** the headline has a forced line break and is too wide to sit beside the window, so it spans the full width and the window sits beside the intro and buttons. Below 900 px everything stacks.
 - **`content/en.json` had an extra key** `contact.footer_location` (unused duplicate of `footer.location`), which broke NL/EN key parity. Removed; a test now checks parity.
 - **Pillar section label is "Werkwijze / How I work", not "Wat ik doe".** "What I do" is the reference site's own section label, and the brief forbids his section titles, translated ones included. The pillar names themselves are your working labels.
@@ -185,15 +183,9 @@ All new strings are drafts in `content/nl.json` and `content/en.json`. NL is the
 | `nav.skip` | Ga naar de inhoud | Skip to content |
 | `nav.label` / `nav.menu` / `nav.lang_group` | Hoofdmenu / Menu / Taal | Main menu / Menu / Language |
 | `nav.theme` (label of the toggle, `aria-pressed` = dark) | Donker thema | Dark theme |
-| `specimen.fig` | Fig. 1 | Fig. 1 |
-| `specimen.url` | winkel.example/koptelefoon | shop.example/headphones |
-| `specimen.brand` / `product` / `price` / `stock` | Winkel / Draadloze koptelefoon / € 89,00 / Op voorraad | Shop / Wireless headphones / €89.00 / In stock |
-| `specimen.cart` / `extra` / `save` | In winkelwagen / Garantie toevoegen + € 19 / Bewaar voor later | Add to cart / Add warranty + €19 / Save for later |
-| `specimen.visit` | Bezoek {n} | Visit {n} |
-| `specimen.caption_1` | Dit is wat mijn thesis onderzoekt: uit gewoonte klik je waar de knop vorige keer stond. | This is what my thesis studies: habit makes you click where the button used to be. |
-| `specimen.caption_2` | Bezoek 2: de winkelwagenknop staat nu bovenaan en op de oude plek zit een betaalde garantie. Uit gewoonte klik je dáár. | Visit 2: the cart button has moved to the top and its old spot now holds a paid warranty. Habit sends your click there. |
 | `about.portrait_alt` (was hardcoded Dutch in `index.html`) | Portretfoto van Robert Karzijn | Portrait photo of Robert Karzijn |
-| `about.portrait_fig` | Fig. 2 | Fig. 2 |
+| `about.portrait_fig` | Fig. 1 | Fig. 1 |
+| `hero.now` (label of the column beside the intro) | Op dit moment | Right now |
 | `about.facts` (k / v) | Studie / MSc Human-Computer Interaction, Universiteit Utrecht · Werk / Daily Operations Lead bij Amac, Apeldoorn · Onderzoek / Deceptive patterns en gewoontegedrag in webshops · Talen / Nederlands, Engels, Duits · Daarbuiten / Fotografie, audio en af en toe gamen | Studying / MSc Human-Computer Interaction, Utrecht University · Working / Daily Operations Lead at Amac, Apeldoorn · Research / Deceptive patterns and habitual behaviour in web shops · Languages / Dutch, English, German · Beyond that / Photography, audio and the occasional game |
 | `pillars.eyebrow` | Werkwijze | How I work |
 | `pillars.title` | Onderzoeken, ontwerpen, organiseren | Research, design, organise |
@@ -210,11 +202,10 @@ All new strings are drafts in `content/nl.json` and `content/en.json`. NL is the
 | `skills.groups` / `skills.soft` in `data/skills.json` | Grouping of existing tools and project techniques under the pillars; soft skills are the old bar labels minus "IT-vaardigheden". Check that the grouping feels right. | |
 | `projects.read_more` | Lees meer | Read more |
 | `project_page.back` / `project_page.more` | ← Alle projecten / Andere projecten | ← All projects / Other projects |
-| `specimen.btn_next` / `btn_reset` | Simuleer een volgend bezoek / Terug naar bezoek 1 | Simulate a return visit / Back to visit 1 |
 
 ## TODOs for Robert
 
-- **Review the drafts** in "Copy to review", especially the pillar texts (working labels) and the demo captions.
+- **Review the drafts** in "Copy to review", especially the pillar texts (working labels).
 - **Privacy policy:** a page already exists (`privacy.html`, last updated 1 September 2026). I didn't write or change any legal copy. Check that it's still accurate, see the email-address flag in the decisions log, and consider stating there that no cookies or local storage are used, now that this is literally true.
 - **Missing facts I didn't invent:** for the About facts, things like a graduation year for the MSc, a city of residence, or what you're looking for (internship, job, project) could be added if you want them. The current table uses only facts already on the site.
 - **Interlude photos.** Add entries to `interludes` in `data/site.json`: `{ "src": "assets/img/interlude-1.webp", "alt": { "nl": "…", "en": "…" } }`. Entries fill the page's three slots in order: (1) between "Werkwijze" and the projects, (2) between experience and skills, (3) between skills and contact. Empty `src` entries are skipped and extra entries are ignored. Export **2400 × 1029 px (21:9) WebP, about 300–400 KB**. Phones crop the same file to 4:3 around the centre, so keep the subject central. Leave `alt` empty only if a photo is purely atmospheric.
@@ -250,10 +241,10 @@ No build step, linter or package.json. Check visual changes in both languages, b
     404.html, privacy.html Standalone pages with their own small NL/EN dictionary
     assets/css/tokens.css  All fonts, colours, scales, radii, motion. Light, dark (system + toggle) and the "band" (ink) colours
     assets/css/main.css    Components, built only on tokens. .band re-points the colour tokens for the dark sections
-    assets/js/app.js       ES module: loads JSON, renders the page, language/theme/menu/demo/form
+    assets/js/app.js       ES module: loads JSON, renders the page, language/theme/menu/form
     assets/js/logic.mjs    Pure helpers (no DOM), unit tested in tests/
     assets/fonts/          Self-hosted variable WOFF2 (Latin) + OFL licence
-    content/{nl,en}.json   UI strings, About, facts, pillars, demo copy. Identical keys in both files
+    content/{nl,en}.json   UI strings, About, facts, pillars. Identical keys in both files
     data/*.json            Projects, timeline, skills, highlights, certificates, site config
 
 Content model (L = string or { "nl", "en" }; optional fields are additive and backwards compatible):
@@ -270,7 +261,7 @@ Content model (L = string or { "nl", "en" }; optional fields are additive and ba
 - Every rendered value goes through esc(). Pure logic goes in logic.mjs with a test.
 - Bilingual parity: every change lands in NL and EN, same keys (a test enforces it). Dutch is the source.
 - Say "deceptive patterns", never "dark patterns".
-- Colours, fonts and sizes only from tokens.css. Anything that moves must be off under prefers-reduced-motion. The hero demo moves only on request and explains itself.
+- Colours, fonts and sizes only from tokens.css. Anything that moves must be off under prefers-reduced-motion.
 - WCAG 2.2 AA: keep the skip link, landmarks, visible focus, aria-pressed toggles, label-in-name, and width/height on images.
 - No email address or phone number on the site (privacy.html is a flagged exception, pending Robert's decision). No grades except possibly in the thesis result text.
 - Don't touch CNAME, formEndpoint, socials, the CV file or existing images without asking. Don't submit the live form.

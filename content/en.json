@@ -13,7 +13,7 @@
   },
   "hero": {
     "eyebrow": "Human-Computer Interaction · UX Research",
-    "title": "Good technology starts<br>with a good <em>conversation</em>.",
+    "title": "Good technology starts <br>with a good <em>conversation</em>.",
     "sub": "Master's student in Human-Computer Interaction, holding a bachelor's degree in Information Sciences from Utrecht University. I'm at my best in between parties: understanding stakeholders and users, translating requirements into design and bringing people along from research and speaker acquisition to the shop floor at Amac.",
     "cta_projects": "View my projects",
     "cta_cv": "Download CV (PDF)",
@@ -22,7 +22,8 @@
     "honest_btn": "Got it",
     "video_pause": "Pause intro",
     "video_play": "Play intro",
-    "video_replay": "Replay intro"
+    "video_replay": "Replay intro",
+    "now": "Right now"
   },
   "highlights": {
     "eyebrow": "Highlights",
@@ -38,7 +39,7 @@
       "I'm currently pursuing a master's in Human-Computer Interaction, focusing on cognitive UX and ethical interface design. Outside study and work: photography, audio and the occasional evening of gaming."
     ],
     "portrait_alt": "Portrait photo of Robert Karzijn",
-    "portrait_fig": "Fig. 2",
+    "portrait_fig": "Fig. 1",
     "facts": [
       {
         "k": "Studying",
@@ -116,22 +117,6 @@
   "footer": {
     "location": "The Netherlands",
     "note": "Built without frameworks, cookies or deceptive patterns."
-  },
-  "specimen": {
-    "fig": "Fig. 1",
-    "url": "shop.example/headphones",
-    "brand": "Shop",
-    "product": "Wireless headphones",
-    "price": "€89.00",
-    "stock": "In stock",
-    "cart": "Add to cart",
-    "extra": "Add warranty + €19",
-    "save": "Save for later",
-    "visit": "Visit {n}",
-    "caption_1": "This is what my thesis studies: habit makes you click where the button used to be.",
-    "caption_2": "Visit 2: the cart button has moved to the top and its old spot now holds a paid warranty. Habit sends your click there.",
-    "btn_next": "Simulate a return visit",
-    "btn_reset": "Back to visit 1"
   },
   "pillars": {
     "eyebrow": "How I work",

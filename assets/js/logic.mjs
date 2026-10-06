@@ -60,6 +60,9 @@ export function groupTimeline(items) {
   });
 }
 
+/** The roles that are still running ("present"), in file order: the hero's "right now" list. */
+export const currentRoles = (items) => (Array.isArray(items) ? items.filter((i) => isCurrent(i.period)) : []);
+
 /**
  * Place photo interludes into the page's fixed slots, in order. Entries without a src are skipped,
  * so the empty placeholder in site.json renders nothing. Entries beyond the number of slots are ignored.
