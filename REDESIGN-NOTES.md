@@ -52,6 +52,97 @@ Reference: jopmors.com, studied only through screenshots of the live site at 144
 
 Pure logic goes in `assets/js/logic.mjs` (ES module) so Node can test it: timeline grouping, interlude slots, skill groups with fallbacks, section numbering.
 
+## Report
+
+### What changed and why
+
+A complete visual and structural redesign on `redesign/v3`, in 12 commits, one per phase or section:
+
+1. **Brief** (this file).
+2. **Tokens, fonts, base, nav:** a new token set in `tokens.css`:
+   - light paper palette, signal-blue accent, ink band colours
+   - type and spacing scales
+   - dark theme that follows the system, plus the toggle
+
+   Self-hosted variable fonts with preloads replace Google Fonts. `app.js` became an ES module without `localStorage`. The sticky top bar has NL/EN segments, the theme toggle, a filled Contact pill and an accessible mobile menu. The pinned intro video left the page.
+3. **Hero:** the current headline with its drawn underline, the browser-window specimen with an explained, opt-in "return visit" demo, and the restyled honest note.
+4. **Highlights, About, pillars:** paper-style section heads with computed `§` numbers, a facts table, and three numbered pillars.
+5. **Projects and interludes:** projects as case studies on an ink band with a sticky title column; photo interludes from `site.json` (empty for now).
+6. **Experience:** a ledger with a `Nu` marker and `<details>`, plus the Amac roles grouped into one progression card.
+7. **Skills, certificates, contact:**
+   - capabilities grouped by pillar, soft skills as a list, languages as a table
+   - certificates as ledger rows
+   - contact on an ink band, with `_gotcha` and `aria-invalid` feedback
+8. **Hardening:** meta and OG descriptions, JSON-LD, noscript, the 404 page in the new style, and the privacy page without Google Fonts or storage.
+9. **Verification fixes:** menu breakpoint, a button background bug, layout shift on load, label-in-name.
+10. **README and tests;** `logic.mjs`.
+11. **Stretch:** project detail pages.
+
+### Checks that ran
+
+- **`node --test`:** 16 tests, all passing. They cover the logic helpers, that every JSON file parses, NL/EN key parity, required project fields, timeline kind labels, "deceptive patterns" terminology, and that each project page exists.
+- **Browser matrix (Playwright, Chromium):** 4 widths (390, 768, 1280, 1440) × light/dark × NL/EN. All 16 combinations have no console errors or warnings, no horizontal overflow, no empty `data-t` elements, width/height on every image, and **no requests to any other host**. Screenshots are in `_review/v3/` (gitignored).
+- **Pages:** the 404 page, the privacy page, the three project pages and the no-JS fallback load without errors in both languages and themes.
+- **Keyboard:**
+  - Tab order starts at the skip link, which moves focus to `<main>`.
+  - Every stop has a visible focus ring.
+  - The mobile menu opens with focus on the first link; Esc closes it and returns focus to the button; tabbing out or following a link closes it too.
+  - `<details>` open with Enter.
+  - The language and theme toggles work with Space/Enter and update `aria-pressed`, `lang` and the labels.
+  - The hero demo works with Enter and Space, focus stays on the control, and the live caption updates.
+- **Reduced motion:** after scrolling the whole page there are 0 running animations, 0 transitions and no smooth scrolling. The demo swaps instantly.
+- **Form validation** (Formspree requests blocked in the test, nothing was sent):
+  - an empty submit marks all three fields `aria-invalid`, shows the message and focuses the name field
+  - an invalid email marks and focuses only that field
+  - the message is translated
+- **Certificates:** the section stays hidden with `[]`. With a temporary test certificate it appears as `§ 06` and contact moves to `§ 07`; with `[]` the numbers close up again. Reverted, and git shows no change.
+- **Lighthouse** (local Python server, which has no compression or caching):
+
+  | Page | Performance | Accessibility | Best practices | SEO |
+  |---|---|---|---|---|
+  | Home, mobile | 98 | 100 | 100 | 100 |
+  | Home, desktop | 100 | 100 | 100 | 100 |
+  | Project page, mobile | 91 | 100 | 100 | 100 |
+
+  Remaining hints are only about compression, caching and minification, which GitHub Pages or a build step would handle.
+- **axe-core 4** (WCAG 2.0–2.2 A/AA and best practice): 0 violations on the homepage (menu open, demo on visit 2, all `<details>` open), the 404, privacy and project pages, at 390 and 1280, both themes and both languages.
+- **JS size:** 24 KB unminified (`app.js` 19.9 KB, `logic.mjs` 4.2 KB), 8 KB gzipped, under the 30 KB budget. Fonts are 112 KB in total.
+- **Originality script** (class names, IDs, custom properties, keyframes, identical strings of 40+ characters): the only overlaps are `js` (a false positive from "app.js" in comments), `#contact`, `--ease` and `--font-mono` (all already in this repo on `main`, before the redesign), and the line `@media (prefers-reduced-motion: reduce) {`. Nothing to rename. The reference clone in `/tmp` is deleted.
+- **Distance tests,** per section, comparing his screenshots with mine:
+  - **Hero:** photo room with a laptop and giant name vs. a light headline with a small product card.
+  - **About:** his facts sit under the photo; mine are a full-width table under narrative + figure.
+  - **Pillars:** stacked illustrated cards vs. text columns.
+  - **Projects:** glass cards with a status split vs. a sticky column with a case table.
+  - **Timeline:** a centre spine with year numerals vs. a ledger.
+  - **Skills:** glass cards and logos vs. ruled lists.
+  - **Contact:** photo and glass vs. an ink band.
+
+  None reads as "same layout, different colours".
+
+### Unverified
+
+- **Safari and Firefox** (only Chromium was tested). Two things to check by hand in Safari 18+ and Firefox:
+  - The scroll-driven reveals: Firefox doesn't support `animation-timeline` yet, so it takes the IntersectionObserver fallback. That fallback path was not exercised.
+  - The demo's FLIP animation.
+- **A real screen reader:** that the specimen caption is announced after pressing the button (VoiceOver: press "Simuleer een volgend bezoek" and listen for the "Bezoek 2: …" sentence), and how the step list in the Amac card is read.
+- **The live form:** never submitted, on purpose. After merging, send one test message to check that Formspree accepts `_gotcha` and still delivers.
+- **GitHub Pages specifics:** that `.mjs` is served as JavaScript there (it is locally, and Pages normally does), and that `/projecten/thesis/` works without the trailing `index.html`. Check both on the deployed preview or after merging.
+
+### Small fixes, workarounds, dependencies, abstractions
+
+- **Small fixes:**
+  - the dead `contact.footer_location` key
+  - `localStorage` removed from three pages
+  - the hardcoded form-status green replaced by tokens
+  - the portrait `alt` is now translated
+  - the honeypot is now `_gotcha`
+- **Workarounds:** none marked in the code.
+- **New dependencies:** none in the site. The fonts come from `@fontsource-variable/*` 5.3.0 (OFL, licence in `assets/fonts/`). Playwright, Lighthouse and axe-core ran from a scratch folder and are not in the repo. `npm audit` flags issues in Lighthouse's own dependencies there, which don't touch the site.
+- **Abstractions:**
+  - `logic.mjs`, so the pure logic can be tested with `node --test`.
+  - The ink band re-points the colour tokens, so every component works on paper and on ink without duplicate styles.
+  - `projectVisual` / `projectCase` / `projectTech` are shared between the homepage cards and the detail pages, to avoid two copies of the same markup.
+
 ## Decisions log
 
 - **Hero headline:** the current one, "Goede techniek begint met een goed *gesprek*.", as answered in the preflight. The brief's "Ik ontwerp interfaces die doen wat je verwacht" isn't used.
@@ -70,7 +161,7 @@ Pure logic goes in `assets/js/logic.mjs` (ES module) so Node can test it: timeli
 - **New optional fields `imageWidth` / `imageHeight` in `projects.json`** (set for all three), so project images get `width`/`height` and don't shift the layout while loading. Without them the image still renders.
 - **Interludes** render in three fixed slots (see TODOs). The caption under each photo is a credit line; `alt` is the description for screen readers.
 - **Timeline groups:** new optional `group` field in `timeline.json`, set to `"amac"` on the three Amac roles. Grouped roles render as one card at the position of the newest role, titled with the organisation, with the roles as steps oldest → newest. The current step is filled and marked `aria-current="step"`. Each role's description sits in one `<details>`. A group of one renders as a normal row. Logic: `groupTimeline()` in `logic.mjs`, with tests.
-- **Highlights still say "Junior → Senior Sales Associate met dagverantwoording"** while the timeline title is "Senior Sales Associate · Daily Operations Lead". Not changed (existing copy), just flagging the mismatch between the NL and EN highlight texts: EN mentions Daily Operations Lead, NL doesn't.
+- **Flag, not changed (existing copy):** the Amac highlight says "naar Senior Sales Associate met dagverantwoording" in NL but "to Senior Sales Associate and Daily Operations Lead" in EN. The NL version doesn't name the Daily Operations Lead title that the timeline and About text use.
 - **Skills:** `bars` in `skills.json` is untouched but no longer rendered (percentages for soft skills suggest a precision they don't have). New fields: `groups` (`[{ pillar, items }]`, pillar ids match `pillars.items[].id` in the content files) and `soft` (a plain list). Without `groups` the old flat `tools` list renders; without `soft` the bar labels render, without levels. "IT-vaardigheden" is left out of the soft skills because the capabilities already cover it. `tools` stays as the fallback.
 - **Contact form:** on an invalid submit, the invalid fields get `aria-invalid="true"` and focus moves to the first one, alongside the existing status message. The status colours now come from tokens (`--ok`, `--err`); the hardcoded green is gone.
 - **Hardening:** `og:url`, `og:image`, the canonical link, JSON-LD, `<noscript>` and `robots.txt` already existed on `main`. Updated: `meta description`, `og:description` and `twitter:description` now open with the current hero line. JSON-LD gained `description`, `alumniOf`, `worksFor`, `knowsLanguage` and `knowsAbout`, all taken from facts on the site. The noscript message is restyled, and the empty page skeleton is hidden without JS. `robots.txt` was correct and is unchanged.
@@ -78,6 +169,12 @@ Pure logic goes in `assets/js/logic.mjs` (ES module) so Node can test it: timeli
 - **Privacy page:** only technical changes (self-hosted fonts, NL/EN segments without storage, a `<main>` landmark). Wording untouched. **Flag:** it shows `robertkarzijn@icloud.com` twice, while the repo's rules say no email address on the site. Decision for you: keep it (a GDPR contact point is reasonable on a privacy page) or replace it with the form.
 - **Project pages (stretch):** `projecten/<id>/index.html` for all three projects, rendered by the same `app.js` (`<body data-page="project" data-project="<id>">`). They use `<base href="/">`, so assets, JSON and `#section` links resolve from the root; the skip link names its own page for that reason. Static per page: `<title>`, meta description and OG tags in Dutch, from the project's existing `title` / `intro`. A new optional field `page` in `projects.json` controls the "Lees meer" link, so a project without a page never links to a 404. A test checks that each `page` exists and points at the right project. The three URLs were added to `sitemap.xml`. **To add a page for a new project:** copy one of the folders, change `data-project`, the title, the description, the canonical/OG URLs and the skip-link path, then set `page` in `projects.json`.
 - **Project meta line:** the existing `tag` field already is "type · year", so it's rendered as the meta line. No new year/type fields.
+- **Mobile menu breakpoint is 980 px, not 760 px.** In Dutch the full bar (links, NL/EN, theme, Contact) overflowed at 768 px. Below 980 px the links and preferences move into the menu; the Contact pill stays visible.
+- **No layout shift on load:** `<main>` stays invisible (`visibility: hidden`) until `app.js` has rendered it once, so the content appears in one go instead of pushing itself down. This took Lighthouse CLS from 0.19–0.76 to ~0.001. A render error still removes the class, so the page never stays blank silently.
+- **`logic.mjs` instead of `logic.js`:** Node otherwise picked up a `package.json` in your home folder and warned on every test run. `.mjs` is always a module, needs no `package.json` and is served as `text/javascript`.
+- **Language buttons have no `aria-label`:** "NL"/"EN" with labels "Nederlands"/"English" failed label-in-name (WCAG 2.5.3, matters for voice control). The visible text is now the name; the group is labelled "Taal".
+- **README stays in English.** The brief says "keep the README in Dutch", but on `main` it's English, and my global rule is English unless the repo uses Dutch. Translating it is a quick follow-up if you want it.
+- **Fonts:** Latin subsets only (Dutch, English, German and € are covered). Bricolage Grotesque uses the weight axis only (no optical-size axis), which halves its file size (41 KB instead of 77 KB).
 
 ## Copy to review
 
@@ -117,4 +214,70 @@ All new strings are drafts in `content/nl.json` and `content/en.json`. NL is the
 
 ## TODOs for Robert
 
+- **Review the drafts** in "Copy to review", especially the pillar texts (working labels) and the demo captions.
+- **Favicon and `og-image.png`** are still in the old red. Export new ones in signal blue (`#2F45D8`) when you're happy with the colour.
+- **Privacy policy:** a page already exists (`privacy.html`, last updated 1 September 2026). I didn't write or change any legal copy. Check that it's still accurate, see the email-address flag in the decisions log, and consider stating there that no cookies or local storage are used, now that this is literally true.
+- **Missing facts I didn't invent:** for the About facts, things like a graduation year for the MSc, a city of residence, or what you're looking for (internship, job, project) could be added if you want them. The current table uses only facts already on the site.
 - **Interlude photos.** Add entries to `interludes` in `data/site.json`: `{ "src": "assets/img/interlude-1.webp", "alt": { "nl": "…", "en": "…" } }`. Entries fill the page's three slots in order: (1) between "Werkwijze" and the projects, (2) between experience and skills, (3) between skills and contact. Empty `src` entries are skipped and extra entries are ignored. Export **2400 × 1029 px (21:9) WebP, about 300–400 KB**. Phones crop the same file to 4:3 around the centre, so keep the subject central. Leave `alt` empty only if a photo is purely atmospheric.
+
+## Decisions for you (skipped or left open)
+
+1. **The intro video** is no longer on the page (files kept). Bring it back somewhere (for example as an opt-in "play intro" in About, or on a project page), or leave it out.
+2. **The email address on `privacy.html`**: keep it as the GDPR contact point, or point to the form.
+3. **The accent colour**: signal blue now. Reverting to red is two values per theme in `tokens.css` (`--accent`, plus the band and soft variants).
+4. **README language**: English kept; say so if you want it in Dutch.
+5. **Merging**: not done, and the draft PR stays a draft. Nothing reached `main`.
+
+## Proposed CLAUDE.md for this repo
+
+Not created; this is the proposal. It replaces the current local `CLAUDE.md` once v3 is merged.
+
+```markdown
+# CLAUDE.md
+
+robertkarzijn.nl: Robert Karzijn's portfolio (HCI / UX research). Static, bilingual (Dutch default, English), deployed to GitHub Pages from `main`.
+
+## Run and test
+
+    python3 -m http.server    # content is loaded with fetch(), so file:// doesn't work
+    node --test               # logic helpers + content checks (JSON parses, NL/EN key parity, project pages exist)
+
+No build step, linter or package.json. Check visual changes in both languages, both themes and at 390 px.
+
+## Architecture
+
+    index.html             Skeleton only. data-t / data-t-html / data-t-aria / data-t-alt keys get their text from content/<lang>.json
+    projecten/<id>/        Project detail pages. <base href="/">; body has data-page="project" data-project="<id>"
+    404.html, privacy.html Standalone pages with their own small NL/EN dictionary
+    assets/css/tokens.css  All fonts, colours, scales, radii, motion. Light, dark (system + toggle) and the "band" (ink) colours
+    assets/css/main.css    Components, built only on tokens. .band re-points the colour tokens for the dark sections
+    assets/js/app.js       ES module: loads JSON, renders the page, language/theme/menu/demo/form
+    assets/js/logic.mjs    Pure helpers (no DOM), unit tested in tests/
+    assets/fonts/          Self-hosted variable WOFF2 (Latin) + OFL licence
+    content/{nl,en}.json   UI strings, About, facts, pillars, demo copy. Identical keys in both files
+    data/*.json            Projects, timeline, skills, highlights, certificates, site config
+
+Content model (L = string or { "nl", "en" }; optional fields are additive and backwards compatible):
+- projects: id, tag: L, title: L, intro: L, image?, imageWidth?, imageHeight?, imageAlt: L (required with image), video?, problem/role/result: L, tech: (string|L)[], cta: {label: L, url}, page? ("projecten/<id>/", only when that page exists)
+- timeline: newest first; period {from, to|"present"}, kind (work|education|extracurricular), title: L, org, description: L, group? (same group = one progression card)
+- skills: groups? [{pillar: research|design|organise, items}], soft?: L[], languages; tools and bars are legacy fallbacks (bars is not rendered)
+- site: name, cvFile, portraitImage, formEndpoint, socials, interludes [{src, alt: L}] (three slots; empty src = nothing)
+- certificates: [] hides the section
+
+## Rules
+
+- Vanilla HTML/CSS/JS only. No frameworks, bundlers, npm dependencies, CDN scripts or embeds. Never commit node_modules, package.json or lockfiles.
+- Privacy is the identity: no cookies, no localStorage/sessionStorage, no analytics, no third-party requests. The only external request is the Formspree POST. Fonts stay self-hosted.
+- Every rendered value goes through esc(). Pure logic goes in logic.mjs with a test.
+- Bilingual parity: every change lands in NL and EN, same keys (a test enforces it). Dutch is the source.
+- Say "deceptive patterns", never "dark patterns".
+- Colours, fonts and sizes only from tokens.css. Anything that moves must be off under prefers-reduced-motion. The hero demo moves only on request and explains itself.
+- WCAG 2.2 AA: keep the skip link, landmarks, visible focus, aria-pressed toggles, label-in-name, and width/height on images.
+- No email address or phone number on the site (privacy.html is a flagged exception, pending Robert's decision). No grades except possibly in the thesis result text.
+- Don't touch CNAME, formEndpoint, socials, the CV file or existing images without asking. Don't submit the live form.
+- Never invent facts about Robert. Missing info → ask.
+
+## Git
+
+`main` is production and public. Work on a branch, ask before pushing main or merging, never force-push, no Claude attribution in commits or PRs. This file and .claude/ stay out of git.
+```
