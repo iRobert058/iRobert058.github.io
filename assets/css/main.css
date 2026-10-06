@@ -449,13 +449,9 @@ a.highlight:hover h3 { color: var(--accent-strong); }
 @media (max-width: 900px) { .contact-grid { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---------- Reveal ---------- */
-/* Content rises in once as it enters the view. Where CSS scroll-driven animations exist the browser
-   does it on its own; elsewhere app.js adds .reveal-io to <html> and an IntersectionObserver adds .in. */
-@keyframes rise-in { from { opacity: 0; transform: translateY(18px); } }
+/* Content rises in once as it enters the view: app.js adds .reveal-io to <html> and an
+   IntersectionObserver adds .in (see app.js for why this isn't a CSS scroll-driven animation) */
 @media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .reveal { animation: rise-in linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
-  }
   .reveal-io .reveal { transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease); }
   .reveal-io .reveal:not(.in) { opacity: 0; transform: translateY(18px); }
 }
