@@ -212,8 +212,8 @@ h2 {
   .sect-body { margin-left: 0; }
 }
 
-/* ---------- Highlights: the abstract ---------- */
-.abstract { padding-top: 0; }
+/* ---------- Highlights ---------- */
+.hero + section { padding-top: 0; } /* the hero already ends with a full section gap */
 .highlights { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-6); }
 .highlight { display: block; text-decoration: none; border-top: 1px solid var(--line-strong); padding-top: var(--space-4); }
 .highlight h3 { font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -.01em; margin: var(--space-3) 0 var(--space-2); transition: color var(--dur-fast); }
