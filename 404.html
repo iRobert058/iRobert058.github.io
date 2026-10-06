@@ -1,50 +1,50 @@
 <!DOCTYPE html>
-<html lang="nl" data-theme="light">
+<html lang="nl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>404 - Robert Karzijn</title>
 <meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/img/favicon-48.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Absolute paths: GitHub Pages serves this page at whatever URL was missing -->
+<link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/tokens.css">
 <link rel="stylesheet" href="/assets/css/main.css">
 <style>
-  .nf-topbar { display: flex; justify-content: flex-end; padding: 24px; }
-  .nf-wrap {
-    min-height: calc(100vh - 72px); display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 24px;
+  .nf { min-height: calc(100svh - var(--nav-h)); display: grid; align-content: center; padding: var(--space-8) 0; }
+  .topbar .lang-switch { margin-left: auto; }
+  .nf .label { color: var(--accent-strong); }
+  .nf h1 {
+    font-family: var(--font-display); font-weight: 600; letter-spacing: var(--tracking-display);
+    font-size: var(--fs-h2); line-height: 1.05; margin: var(--space-4) 0 var(--space-5); max-width: 18ch;
   }
-  .nf-code {
-    font-family: var(--font-mono); font-size: 15px; color: var(--accent);
-    letter-spacing: .08em; text-transform: uppercase; margin-bottom: 18px;
-  }
-  .nf-wrap h1 {
-    font-family: var(--font-display); font-weight: 700; letter-spacing: -.02em;
-    font-size: clamp(32px, 6vw, 52px); margin-bottom: 16px;
-  }
-  .nf-wrap p { color: var(--muted); max-width: 480px; margin-bottom: 40px; }
+  .nf p { color: var(--muted); font-size: var(--fs-lg); max-width: 52ch; margin-bottom: var(--space-7); }
 </style>
 </head>
 <body>
 
-<div class="nf-topbar">
-  <button class="pill" id="langBtn" aria-label="Switch language">EN</button>
-</div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="wordmark" href="/"><span class="wordmark-mark" aria-hidden="true">RK</span><span>Robert Karzijn</span></a>
+    <div class="lang-switch" role="group" aria-label="Taal / Language">
+      <button type="button" data-lang="nl" lang="nl" aria-pressed="true">NL</button>
+      <button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
 
-<div class="nf-wrap">
-  <span class="nf-code" data-t="code">Foutcode 404</span>
-  <h1 data-t="title">Deze pagina bestaat niet.</h1>
-  <p data-t="lead">Een interface-element dat zich niet gedraagt zoals verwacht - toevallig mijn onderzoeksgebied.</p>
-  <button class="btn btn-primary" id="nfBtn" data-t="btn">Terug naar home</button>
-</div>
+<main class="nf">
+  <div class="wrap">
+    <p class="label" data-t="code">Foutcode 404</p>
+    <h1 data-t="title">Deze pagina bestaat niet.</h1>
+    <p data-t="lead">Een interface-element dat zich niet gedraagt zoals verwacht - toevallig mijn onderzoeksgebied.</p>
+    <a class="btn btn-primary" href="/" data-t="btn">Terug naar home</a>
+  </div>
+</main>
 
 <script>
   (function () {
-    document.documentElement.dataset.theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-
     var dict = {
       nl: {
         code: "Foutcode 404",
@@ -61,30 +61,25 @@
         pageTitle: "404 - Robert Karzijn"
       }
     };
+    var langBtns = document.querySelectorAll("[data-lang]");
 
-    var langBtn = document.getElementById("langBtn");
-    var lang = localStorage.getItem("site-lang") === "en" ? "en" : "nl";
-
-    function applyLang(l) {
-      document.documentElement.lang = l;
-      document.title = dict[l].pageTitle;
-      langBtn.textContent = l === "nl" ? "EN" : "NL";
+    // Dutch by default; the choice isn't stored anywhere
+    function applyLang(lang) {
+      document.documentElement.lang = lang;
+      document.title = dict[lang].pageTitle;
+      langBtns.forEach(function (btn) {
+        btn.setAttribute("aria-pressed", String(btn.dataset.lang === lang));
+      });
       document.querySelectorAll("[data-t]").forEach(function (el) {
-        el.textContent = dict[l][el.dataset.t];
+        el.textContent = dict[lang][el.dataset.t];
       });
     }
 
-    langBtn.addEventListener("click", function () {
-      lang = lang === "nl" ? "en" : "nl";
-      localStorage.setItem("site-lang", lang);
-      applyLang(lang);
+    langBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        applyLang(btn.dataset.lang);
+      });
     });
-
-    document.getElementById("nfBtn").addEventListener("click", function () {
-      window.location.href = "/";
-    });
-
-    applyLang(lang);
   })();
 </script>
 

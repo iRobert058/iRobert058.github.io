@@ -1,6 +1,7 @@
 [
   {
     "id": "thesis",
+    "page": "projecten/thesis/",
     "tag": { "nl": "Bachelorthesis · 2026", "en": "Bachelor's thesis · 2026" },
     "title": {
       "nl": "Deceptive patterns & gewoontegedrag in webshops",
@@ -11,6 +12,8 @@
       "en": "My bachelor's thesis investigates how web shops can disrupt and exploit procedural memory (users' \"autopilot\") by relocating interface elements."
     },
     "image": "assets/img/project-thesis.svg",
+    "imageWidth": 1800,
+    "imageHeight": 1240,
     "imageAlt": { "nl": "Screenshot van de experimentomgeving", "en": "Screenshot of the experiment environment" },
     "problem": {
       "nl": "Deceptive patterns worden vooral bestudeerd als visueel ontwerp, maar veel manipulatie werkt via gewoontes: je klikt waar je gisteren ook klikte. Over dat cognitieve mechanisme bestaat nog weinig empirisch onderzoek.",
@@ -32,6 +35,7 @@
   },
   {
     "id": "mobipad",
+    "page": "projecten/mobipad/",
     "tag": { "nl": "Eigen project · 2026", "en": "Personal project · 2026" },
     "title": {
       "nl": "MobiPad - je iPhone als gamecontroller",
@@ -42,6 +46,8 @@
       "en": "MobiPad turns an iPhone into a wireless game controller for emulators on a Mac. Up to four phones can play at once, each as its own player."
     },
     "image": "assets/img/project-mobipad.webp",
+    "imageWidth": 1600,
+    "imageHeight": 900,
     "imageAlt": {
       "nl": "Thumbnail van de MobiPad-trailer: \"Your iPhone is a game controller. For emulators on your Mac\", naast een iPhone met de controller-layout",
       "en": "MobiPad trailer thumbnail: \"Your iPhone is a game controller. For emulators on your Mac\", next to an iPhone showing the controller layout"
@@ -67,6 +73,7 @@
   },
   {
     "id": "execut",
+    "page": "projecten/execut/",
     "tag": { "nl": "Studenten-techconferentie · 2025–2026", "en": "Student tech conference · 2025–2026" },
     "title": {
       "nl": "exec(ut) 2026 - sprekers & programma",
@@ -77,6 +84,8 @@
       "en": "For exec(ut), the student IT conference in Utrecht, I was responsible within the committee for recruiting and supporting speakers."
     },
     "image": "assets/img/project-execut.webp",
+    "imageWidth": 1600,
+    "imageHeight": 814,
     "imageAlt": { "nl": "exec(ut) 2026 - sprekers & programma", "en": "exec(ut) 2026 - speakers & programme" },
     "problem": {
       "nl": "Een conferentie staat of valt met het programma: interessante sprekers vinden, overtuigen en begeleiden en ook nog binnen de tijd en het budget van een studentencommissie.",
