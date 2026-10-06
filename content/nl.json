@@ -85,5 +85,21 @@
   "footer": {
     "location": "Nederland",
     "note": "Gebouwd zonder frameworks, cookies of deceptive patterns."
+  },
+  "specimen": {
+    "fig": "Fig. 1",
+    "url": "winkel.example/koptelefoon",
+    "brand": "Winkel",
+    "product": "Draadloze koptelefoon",
+    "price": "€ 89,00",
+    "stock": "Op voorraad",
+    "cart": "In winkelwagen",
+    "extra": "Garantie toevoegen + € 19",
+    "save": "Bewaar voor later",
+    "visit": "Bezoek {n}",
+    "caption_1": "Dit is wat mijn thesis onderzoekt: uit gewoonte klik je waar de knop vorige keer stond.",
+    "caption_2": "Bezoek 2: de winkelwagenknop staat nu bovenaan en op de oude plek zit een betaalde garantie. Uit gewoonte klik je dáár.",
+    "btn_next": "Simuleer een volgend bezoek",
+    "btn_reset": "Terug naar bezoek 1"
   }
 }

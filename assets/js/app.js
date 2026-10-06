@@ -192,7 +192,7 @@ const io = new IntersectionObserver(
 );
 
 function observeReveals() {
-  const selector = scrollDriven ? ".skills-grid, .hero h1 em" : ".reveal, .skills-grid, .hero h1 em";
+  const selector = scrollDriven ? ".skills-grid" : ".reveal, .skills-grid";
   document.querySelectorAll(selector).forEach((el) => io.observe(el));
 }
 
@@ -212,6 +212,7 @@ function renderAll() {
   renderSkills();
   renderCertificates();
   renderSocials();
+  renderSpecimen();
   renderPrefs();
   observeReveals();
 }
@@ -262,8 +263,41 @@ panel.addEventListener("focusout", (e) => {
 });
 narrow.addEventListener("change", () => setMenu(false));
 
+/* ---------- Hero specimen ---------- */
+// A fake product card from a web shop. Pressing the button simulates a return visit on which the
+// add-to-cart button has moved and its old spot holds a paid extra: the habit effect from the thesis.
+// It only ever moves on request, and the caption (a live region) says what changed.
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const specimen = { visit: 1 };
+
+function renderSpecimen() {
+  const S = ui[state.lang].specimen;
+  $("#specShop").dataset.visit = specimen.visit;
+  $("#specVisit").textContent = S.visit.replace("{n}", specimen.visit);
+  $("#specCaption").textContent = specimen.visit === 1 ? S.caption_1 : S.caption_2;
+  $("#specBtn").textContent = specimen.visit === 1 ? S.btn_next : S.btn_reset;
+}
+
+$("#specBtn").addEventListener("click", () => {
+  const cart = $("#specCart");
+  const before = cart.getBoundingClientRect();
+  specimen.visit = specimen.visit === 1 ? 2 : 1;
+  renderSpecimen();
+  if (reduceMotion.matches) return; // swap instantly
+  // FLIP: start the button at its old spot and let it travel to the new one
+  const after = cart.getBoundingClientRect();
+  const dx = before.left + before.width / 2 - (after.left + after.width / 2);
+  const dy = before.top + before.height / 2 - (after.top + after.height / 2);
+  const easing = getComputedStyle(document.documentElement).getPropertyValue("--ease").trim();
+  cart.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "none" }], { duration: 520, easing });
+  if (specimen.visit === 2) $("#specExtra").animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, delay: 260, fill: "backwards" });
+});
+
 /* ---------- Honest banner ---------- */
-$("#honestBtn").addEventListener("click", () => $("#honest").classList.add("gone"));
+$("#honestBtn").addEventListener("click", () => {
+  $("#honest").hidden = true;
+  $("#heroTitle").focus({ preventScroll: true }); // the button is gone; keep focus in the hero instead of losing it
+});
 
 /* ---------- Contact form ---------- */
 const form = $("#contactForm");
@@ -310,3 +344,4 @@ if (github) $("#githubBtn").href = github.url;
 else $("#githubBtn").remove();
 $("#year").textContent = new Date().getFullYear();
 renderAll();
+$("#specCaption").setAttribute("aria-live", "polite"); // only after the first render, so loading the page announces nothing

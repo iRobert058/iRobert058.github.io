@@ -61,11 +61,28 @@ Pure logic goes in `assets/js/logic.js` (ES module) so Node can test it: timelin
 - **Language toggle** becomes two segments (NL / EN) with `aria-pressed`. The theme toggle is a button with `aria-pressed` and a translated label. The theme follows the system until the visitor toggles it.
 - **Honeypot** renamed from `company` to Formspree's `_gotcha`, which Formspree discards server-side as well. The client still skips sending when it's filled.
 - **Grades:** the thesis `result` text still says "beoordeeld met een 8,5". That is existing content in the one place the repo's CLAUDE.md allows a grade, and the brief says nothing gets deleted. There are no grade badges or highlights.
+- **Hero demo content:** on the return visit the add-to-cart button moves into the shop's top bar and a paid "add warranty" button takes its old spot. That makes the habit effect concrete (a habitual click now buys something) and is shown and explained, never done to the visitor. The fake shop buttons are plain text, not controls, so nothing on the page pretends to be clickable. The product is fictional.
+- **Hero layout:** the headline has a forced line break and is too wide to sit beside the window, so it spans the full width and the window sits beside the intro and buttons. Below 900 px everything stacks.
+- **`content/en.json` had an extra key** `contact.footer_location` (unused duplicate of `footer.location`), which broke NL/EN key parity. Removed; a test now checks parity.
 - **Project meta line:** the existing `tag` field already is "type · year", so it's rendered as the meta line. No new year/type fields.
 
 ## Copy to review
 
-_(filled in as sections land)_
+All new strings are drafts in `content/nl.json` and `content/en.json`. NL is the source; EN is a natural translation.
+
+| Key | NL | EN |
+|---|---|---|
+| `nav.skip` | Ga naar de inhoud | Skip to content |
+| `nav.label` / `nav.menu` / `nav.lang_group` | Hoofdmenu / Menu / Taal | Main menu / Menu / Language |
+| `nav.theme` (label of the toggle, `aria-pressed` = dark) | Donker thema | Dark theme |
+| `specimen.fig` | Fig. 1 | Fig. 1 |
+| `specimen.url` | winkel.example/koptelefoon | shop.example/headphones |
+| `specimen.brand` / `product` / `price` / `stock` | Winkel / Draadloze koptelefoon / € 89,00 / Op voorraad | Shop / Wireless headphones / €89.00 / In stock |
+| `specimen.cart` / `extra` / `save` | In winkelwagen / Garantie toevoegen + € 19 / Bewaar voor later | Add to cart / Add warranty + €19 / Save for later |
+| `specimen.visit` | Bezoek {n} | Visit {n} |
+| `specimen.caption_1` | Dit is wat mijn thesis onderzoekt: uit gewoonte klik je waar de knop vorige keer stond. | This is what my thesis studies: habit makes you click where the button used to be. |
+| `specimen.caption_2` | Bezoek 2: de winkelwagenknop staat nu bovenaan en op de oude plek zit een betaalde garantie. Uit gewoonte klik je dáár. | Visit 2: the cart button has moved to the top and its old spot now holds a paid warranty. Habit sends your click there. |
+| `specimen.btn_next` / `btn_reset` | Simuleer een volgend bezoek / Terug naar bezoek 1 | Simulate a return visit / Back to visit 1 |
 
 ## TODOs for Robert
 

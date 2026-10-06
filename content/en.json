@@ -85,5 +85,21 @@
   "footer": {
     "location": "The Netherlands",
     "note": "Built without frameworks, cookies or deceptive patterns."
+  },
+  "specimen": {
+    "fig": "Fig. 1",
+    "url": "shop.example/headphones",
+    "brand": "Shop",
+    "product": "Wireless headphones",
+    "price": "€89.00",
+    "stock": "In stock",
+    "cart": "Add to cart",
+    "extra": "Add warranty + €19",
+    "save": "Save for later",
+    "visit": "Visit {n}",
+    "caption_1": "This is what my thesis studies: habit makes you click where the button used to be.",
+    "caption_2": "Visit 2: the cart button has moved to the top and its old spot now holds a paid warranty. Habit sends your click there.",
+    "btn_next": "Simulate a return visit",
+    "btn_reset": "Back to visit 1"
   }
 }
