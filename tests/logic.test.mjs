@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  pick, esc, lookup, pad2, isCurrent, periodLabel, groupTimeline, assignInterludes, skillGroups, softSkills, currentRoles,
+  pick, esc, lookup, isCurrent, periodLabel, groupTimeline, assignInterludes, skillGroups, softSkills, currentRoles,
 } from "../assets/js/logic.mjs";
 
 test("pick returns the language, falls back to nl, passes plain strings through", () => {
@@ -22,9 +22,7 @@ test("lookup resolves dotted keys and returns undefined for missing ones", () =>
   assert.equal(lookup(s, "hero.nope.deeper"), undefined);
 });
 
-test("pad2 and periodLabel", () => {
-  assert.equal(pad2(3), "03");
-  assert.equal(pad2(12), "12");
+test("periodLabel and isCurrent", () => {
   assert.equal(periodLabel({ from: "2024", to: "2025" }, "heden"), "2024 – 2025");
   assert.equal(periodLabel({ from: "2026", to: "present" }, "heden"), "2026 – heden");
   assert.equal(periodLabel({ from: "2025", to: "2025" }, "heden"), "2025");

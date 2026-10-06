@@ -9,7 +9,7 @@ Branch `redesign/v3`, cut from `main` at `813bcf4` (V1.13). Fresh redesign: `red
 - **Clean and light first.** Soft paper-white background, near-black ink, one accent. The dark theme is a proper second theme that follows the system, never the default.
 - **Accent: your brand red** (`#E23C46` light, `#FF5C63` dark). The first version used signal blue; you asked for the red back after review. Small text and fills behind white text use `--accent-strong` (`#C42D38` in light mode, the same `#FF5C63` in dark), because `#E23C46` is only ~3.9:1 on the paper background and white on it ~4.2:1, both below WCAG AA for small text.
 - **Type:** the three existing families stay (Bricolage Grotesque for display, Hanken Grotesk for body, Spline Sans Mono for labels), now self-hosted. Display weight is 600 with tight tracking: confident, not shouty.
-- **Paper conventions as the structuring device:** sections are numbered `§ 01` to `§ 06` (computed, so a hidden section doesn't leave a gap), figures get `Fig.` captions, and facts, experience and skills sit in ruled tables with hairlines rather than cards with shadows.
+- **Paper conventions as the structuring device:** section labels sit in a left margin column like margin notes, and facts, experience and skills sit in ruled tables with hairlines rather than cards with shadows. (Section numbers `§ 01…` and `Fig.` captions were removed after review.)
 - **Rhythm:** paper sections alternate with two ink bands (projects and contact) and up to two full-bleed photo interludes.
 - **Motion:** small and explanatory. Reveals fade up once, the hero underline draws once. Nothing moves on its own beyond that. Everything is instant under `prefers-reduced-motion`.
 
@@ -20,7 +20,7 @@ Reference: jopmors.com, studied only through screenshots of the live site at 144
 | Pattern borrowed | His version | Mine |
 |---|---|---|
 | ~~Framed "app window" in the hero~~ | Code editor on a laptop in a photographed room, which zooms in on scroll | **Dropped after review.** The first v3 hero had a fake web-shop window with a "return visit" demo; you didn't like it (too close to v2's idea), so the hero is now type only, with a "right now" column. No framed object at all. |
-| Numbered structure, mono labels | `01 / 03` counters and small caps labels | Paper-style `§ 01` section numbers and a `Fig.` caption on the portrait. Pillars are numbered `1`, `2`, `3` as large figures in a three-column ruled grid. |
+| Numbered structure, mono labels | `01 / 03` counters and small caps labels | No running section numbers (removed after review): mono section labels in a margin column beside the heading. Pillars are numbered `1`, `2`, `3` as large figures in a three-column ruled grid. |
 | About: portrait + key–value facts | Portrait above a 2×2 fact grid, narrative in a right column, serif-italic intro line | Narrative on the left, a captioned portrait figure on the right, and the facts as a full-width ruled table (`dl`) underneath. No serif, no italic intro line. |
 | Three numbered pillars | Stacked large cards, each with a generative line illustration and an italic serif promise | Three equal columns side by side, separated by hairlines, text only. The promise is set in the body face, not italic serif. |
 | Project cards as mini case studies | Glass cards on dark, big product visual, status chips, Launched / Ongoing split | One list on an ink band. Each project is a two-column row: a sticky left column (number, meta line, title, link), a right column with the image and a problem / role / result table. No status split, no glass. |
@@ -66,7 +66,7 @@ A complete visual and structural redesign on `redesign/v3`, in 12 commits, one p
 
    Self-hosted variable fonts with preloads replace Google Fonts. `app.js` became an ES module without `localStorage`. The sticky top bar has NL/EN segments, the theme toggle, a filled Contact pill and an accessible mobile menu. The pinned intro video left the page.
 3. **Hero:** the current headline with its drawn underline and the restyled honest note. (It first had a browser-window demo; after review it became type only with a "right now" column, see the decisions log.)
-4. **Highlights, About, pillars:** paper-style section heads with computed `§` numbers, a facts table, and three numbered pillars.
+4. **Highlights, About, pillars:** paper-style section heads (their `§` numbers were removed after review), a facts table, and three numbered pillars.
 5. **Projects and interludes:** projects as case studies on an ink band with a sticky title column; photo interludes from `site.json` (empty for now).
 6. **Experience:** a ledger with a `Nu` marker and `<details>`, plus the Amac roles grouped into one progression card.
 7. **Skills, certificates, contact:**
@@ -94,7 +94,7 @@ A complete visual and structural redesign on `redesign/v3`, in 12 commits, one p
   - an empty submit marks all three fields `aria-invalid`, shows the message and focuses the name field
   - an invalid email marks and focuses only that field
   - the message is translated
-- **Certificates:** the section stays hidden with `[]`. With a temporary test certificate it appears as `§ 06` and contact moves to `§ 07`; with `[]` the numbers close up again. Reverted, and git shows no change.
+- **Certificates:** the section stays hidden with `[]`. With a temporary test certificate it appears; with `[]` it hides again. Reverted, and git shows no change. (Tested while the `§` numbers still existed; the show/hide logic is unchanged.)
 - **Lighthouse** (local Python server, which has no compression or caching):
 
   | Page | Performance | Accessibility | Best practices | SEO |
@@ -150,12 +150,13 @@ A complete visual and structural redesign on `redesign/v3`, in 12 commits, one p
 - **Language toggle** becomes two segments (NL / EN) with `aria-pressed`. The theme toggle is a button with `aria-pressed` and a translated label. The theme follows the system until the visitor toggles it.
 - **Honeypot** renamed from `company` to Formspree's `_gotcha`, which Formspree discards server-side as well. The client still skips sending when it's filled.
 - **Grades:** the thesis `result` text still says "beoordeeld met een 8,5". That is existing content in the one place the repo's CLAUDE.md allows a grade, and the brief says nothing gets deleted. There are no grade badges or highlights.
-- **Hero: type only (after review).** The shop demo is removed; you chose a type-only hero. Next to the intro sits an "Op dit moment / Right now" column, built from the timeline entries that run until `present` (`currentRoles()` in `logic.mjs`, tested). The thesis isn't in the hero on purpose: it's finished and lives in the projects, and the hero should say what you're doing now. Below 560 px the headline's forced line break is dropped so it wraps naturally; for that, a space was added before `<br>` in `hero.title` (whitespace only, same words). The portrait caption is now `Fig. 1`.
+- **Hero: type only (after review).** The shop demo is removed; you chose a type-only hero. Next to the intro sits an "Op dit moment / Right now" column, built from the timeline entries that run until `present` (`currentRoles()` in `logic.mjs`, tested). The thesis isn't in the hero on purpose: it's finished and lives in the projects, and the hero should say what you're doing now. Below 560 px the headline's forced line break is dropped so it wraps naturally; for that, a space was added before `<br>` in `hero.title` (whitespace only, same words).
 - **Hero layout:** the headline has a forced line break and is too wide to sit beside the window, so it spans the full width and the window sits beside the intro and buttons. Below 900 px everything stacks.
 - **`content/en.json` had an extra key** `contact.footer_location` (unused duplicate of `footer.location`), which broke NL/EN key parity. Removed; a test now checks parity.
 - **Pillar section label is "Werkwijze / How I work", not "Wat ik doe".** "What I do" is the reference site's own section label, and the brief forbids his section titles, translated ones included. The pillar names themselves are your working labels.
 - **Pillar and fact copy only uses facts already on the site** (thesis N = 40, MobiPad's three layouts and hardware test, the exec(ut), Amac and Sticky roles, languages, hobbies). The "Ontwerpen" promise reuses your old v1.0 headline, "Interfaces die doen wat je verwacht", which felt right there.
-- **Section numbers** (`§ 01`…) are computed over the visible sections, so the hidden certificates section leaves no gap. The highlights block is unnumbered: it works as the page's abstract.
+- **Section numbers and figure captions removed (after review):** no more `§ 01…` in the section heads and no `Fig.` label under the portrait (only your name stays). `numberSections()` and `pad2()` are gone.
+- **Fix: the honest note didn't disappear** after "Duidelijk". `.honest { display: flex }` overrode the `hidden` attribute. A base rule `[hidden] { display: none !important; }` now makes `hidden` always win. Checked with mouse and keyboard at 1280 and 390 px; focus moves to the headline.
 - **New optional fields `imageWidth` / `imageHeight` in `projects.json`** (set for all three), so project images get `width`/`height` and don't shift the layout while loading. Without them the image still renders.
 - **Interludes** render in three fixed slots (see TODOs). The caption under each photo is a credit line; `alt` is the description for screen readers.
 - **Timeline groups:** new optional `group` field in `timeline.json`, set to `"amac"` on the three Amac roles. Grouped roles render as one card at the position of the newest role, titled with the organisation, with the roles as steps oldest → newest. The current step is filled and marked `aria-current="step"`. Each role's description sits in one `<details>`. A group of one renders as a normal row. Logic: `groupTimeline()` in `logic.mjs`, with tests.
@@ -184,7 +185,6 @@ All new strings are drafts in `content/nl.json` and `content/en.json`. NL is the
 | `nav.label` / `nav.menu` / `nav.lang_group` | Hoofdmenu / Menu / Taal | Main menu / Menu / Language |
 | `nav.theme` (label of the toggle, `aria-pressed` = dark) | Donker thema | Dark theme |
 | `about.portrait_alt` (was hardcoded Dutch in `index.html`) | Portretfoto van Robert Karzijn | Portrait photo of Robert Karzijn |
-| `about.portrait_fig` | Fig. 1 | Fig. 1 |
 | `hero.now` (label of the column beside the intro) | Op dit moment | Right now |
 | `about.facts` (k / v) | Studie / MSc Human-Computer Interaction, Universiteit Utrecht · Werk / Daily Operations Lead bij Amac, Apeldoorn · Onderzoek / Deceptive patterns en gewoontegedrag in webshops · Talen / Nederlands, Engels, Duits · Daarbuiten / Fotografie, audio en af en toe gamen | Studying / MSc Human-Computer Interaction, Utrecht University · Working / Daily Operations Lead at Amac, Apeldoorn · Research / Deceptive patterns and habitual behaviour in web shops · Languages / Dutch, English, German · Beyond that / Photography, audio and the occasional game |
 | `pillars.eyebrow` | Werkwijze | How I work |

@@ -5,7 +5,7 @@
    Pure helpers live in logic.mjs, where they are unit tested.
    ============================================================= */
 
-import { pick, esc, lookup, pad2, assignInterludes, groupTimeline, periodLabel, isCurrent, skillGroups, softSkills, currentRoles } from "./logic.mjs";
+import { pick, esc, lookup, assignInterludes, groupTimeline, periodLabel, isCurrent, skillGroups, softSkills, currentRoles } from "./logic.mjs";
 
 const page = document.body.dataset.page ?? "home"; // "home" or "project" (the pages in /projecten/<id>/)
 
@@ -109,11 +109,6 @@ function renderPillars() {
       </li>`
     )
     .join("");
-}
-
-/* Paper-style section numbers (§ 01 …), counted over the sections that are visible right now */
-function numberSections() {
-  document.querySelectorAll(".sect:not(.hidden) .sect-no").forEach((el, i) => (el.textContent = `§ ${pad2(i + 1)}`));
 }
 
 const linkAttrs = (url) => (url.startsWith("http") ? ' target="_blank" rel="noopener"' : "");
@@ -323,7 +318,6 @@ function renderAll() {
     renderTimeline();
     renderSkills();
     renderCertificates();
-    numberSections();
     renderSocials();
     renderHeroNow();
   }

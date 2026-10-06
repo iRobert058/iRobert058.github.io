@@ -13,9 +13,6 @@ export const esc = (s) =>
 /** Look up a dotted key ("hero.title") in a nested strings object. */
 export const lookup = (strings, key) => key.split(".").reduce((obj, k) => (obj == null ? undefined : obj[k]), strings);
 
-/** Two-digit section number: 1 → "01". */
-export const pad2 = (n) => String(n).padStart(2, "0");
-
 /** True for a period that is still running. */
 export const isCurrent = (period) => period?.to === "present";
 

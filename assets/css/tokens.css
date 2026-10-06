@@ -91,7 +91,7 @@
   --maxw: 1200px;
   --gutter: clamp(16px, 4vw, 40px);
   --nav-h: 64px;
-  --rail: 200px;      /* left margin column of section heads (§ numbers) */
+  --rail: 200px;      /* left margin column of section heads (labels) */
   --rail-gap: clamp(24px, 4vw, 64px);
 
   /* Motion */
