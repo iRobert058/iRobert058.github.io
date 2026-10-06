@@ -71,6 +71,8 @@ Pure logic goes in `assets/js/logic.js` (ES module) so Node can test it: timelin
 - **Interludes** render in three fixed slots (see TODOs). The caption under each photo is a credit line; `alt` is the description for screen readers.
 - **Timeline groups:** new optional `group` field in `timeline.json`, set to `"amac"` on the three Amac roles. Grouped roles render as one card at the position of the newest role, titled with the organisation, with the roles as steps oldest → newest. The current step is filled and marked `aria-current="step"`. Each role's description sits in one `<details>`. A group of one renders as a normal row. Logic: `groupTimeline()` in `logic.js`, with tests.
 - **Highlights still say "Junior → Senior Sales Associate met dagverantwoording"** while the timeline title is "Senior Sales Associate · Daily Operations Lead". Not changed (existing copy), just flagging the mismatch between the NL and EN highlight texts: EN mentions Daily Operations Lead, NL doesn't.
+- **Skills:** `bars` in `skills.json` is untouched but no longer rendered (percentages for soft skills suggest a precision they don't have). New fields: `groups` (`[{ pillar, items }]`, pillar ids match `pillars.items[].id` in the content files) and `soft` (a plain list). Without `groups` the old flat `tools` list renders; without `soft` the bar labels render, without levels. "IT-vaardigheden" is left out of the soft skills because the capabilities already cover it. `tools` stays as the fallback.
+- **Contact form:** on an invalid submit, the invalid fields get `aria-invalid="true"` and focus moves to the first one, alongside the existing status message. The status colours now come from tokens (`--ok`, `--err`); the hardcoded green is gone.
 - **Project meta line:** the existing `tag` field already is "type · year", so it's rendered as the meta line. No new year/type fields.
 
 ## Copy to review
@@ -103,6 +105,8 @@ All new strings are drafts in `content/nl.json` and `content/en.json`. NL is the
 | `experience.details` (summary of each `<details>`) | Toelichting | Details |
 | `experience.group_details` | Wat ik per rol deed | What I did in each role |
 | `experience.group_steps` (label of the step list) | Doorgroei | Progression |
+| `skills.soft` | Persoonlijke vaardigheden | Soft skills |
+| `skills.groups` / `skills.soft` in `data/skills.json` | Grouping of existing tools and project techniques under the pillars; soft skills are the old bar labels minus "IT-vaardigheden". Check that the grouping feels right. | |
 | `specimen.btn_next` / `btn_reset` | Simuleer een volgend bezoek / Terug naar bezoek 1 | Simulate a return visit / Back to visit 1 |
 
 ## TODOs for Robert

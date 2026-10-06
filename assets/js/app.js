@@ -5,7 +5,7 @@
    Pure helpers live in logic.js, where they are unit tested.
    ============================================================= */
 
-import { pick, esc, lookup, pad2, assignInterludes, groupTimeline, periodLabel, isCurrent } from "./logic.js";
+import { pick, esc, lookup, pad2, assignInterludes, groupTimeline, periodLabel, isCurrent, skillGroups, softSkills } from "./logic.js";
 
 const state = {
   lang: "nl", // Dutch by default. Nothing is stored: a language or theme choice lasts for this page view.
@@ -214,36 +214,38 @@ function renderTimeline() {
     .join("");
 }
 
+/* Capabilities grouped under the three pillars; the old percentage bars in skills.json are no longer rendered */
 function renderSkills() {
-  $("#skillBars").innerHTML = skills.bars
-    .map(
-      (b) => `<div class="bar-item">
-        <div class="bar-head"><span>${esc(t(b.label))}</span></div>
-        <div class="bar"><i data-w="${Number(b.level) || 0}"></i></div>
-      </div>`
-    )
+  const pillars = ui[state.lang].pillars.items;
+  $("#capabilityList").innerHTML = skillGroups(skills)
+    .map((g) => {
+      const index = pillars.findIndex((p) => p.id === g.pillar);
+      const head = index >= 0 ? `<h4><span aria-hidden="true">${index + 1}</span> ${esc(pillars[index].name)}</h4>` : "";
+      return `<div class="capability reveal">${head}<ul>${g.items.map((c) => `<li>${esc(t(c))}</li>`).join("")}</ul></div>`;
+    })
     .join("");
-  $("#toolChips").innerHTML = skills.tools.map((c) => `<span class="chip">${esc(t(c))}</span>`).join("");
+  $("#softList").innerHTML = softSkills(skills).map((s) => `<li>${esc(t(s))}</li>`).join("");
   $("#languageList").innerHTML = skills.languages
-    .map((l) => `<div class="lang-row"><span>${esc(t(l.name))}</span><span>${esc(t(l.level))}</span></div>`)
+    .map((l) => `<div><dt>${esc(t(l.name))}</dt><dd>${esc(t(l.level))}</dd></div>`)
     .join("");
 }
 
 function renderCertificates() {
   const section = $("#certificaten");
-  if (!certificates.length) {
-    section.classList.add("hidden");
-    return;
-  }
-  section.classList.remove("hidden");
+  section.classList.toggle("hidden", !certificates.length); // an empty list hides the section
   $("#certList").innerHTML = certificates
-    .map((c) => `<div class="cert-row"><span>${esc(t(c.title))}${c.issuer ? ` — ${esc(c.issuer)}` : ""}</span><span>${esc(c.year ?? "")}</span></div>`)
+    .map(
+      (c) => `<li class="ledger-row">
+        <div class="ledger-side"><span class="ledger-when">${esc(c.year ?? "")}</span></div>
+        <div class="ledger-main"><h3>${esc(t(c.title))}</h3>${c.issuer ? `<p class="ledger-org">${esc(c.issuer)}</p>` : ""}</div>
+      </li>`
+    )
     .join("");
 }
 
 function renderSocials() {
   $("#socialLinks").innerHTML = (site.socials || [])
-    .map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`)
+    .map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)} <span aria-hidden="true">↗</span></a></li>`)
     .join("");
 }
 
@@ -256,7 +258,6 @@ const io = new IntersectionObserver(
     entries.forEach((e) => {
       if (!e.isIntersecting) return;
       e.target.classList.add("in");
-      e.target.querySelectorAll(".bar i").forEach((bar) => (bar.style.width = bar.dataset.w + "%"));
       io.unobserve(e.target);
     });
   },
@@ -264,8 +265,8 @@ const io = new IntersectionObserver(
 );
 
 function observeReveals() {
-  const selector = scrollDriven ? ".skills-grid" : ".reveal, .skills-grid";
-  document.querySelectorAll(selector).forEach((el) => io.observe(el));
+  if (scrollDriven) return;
+  document.querySelectorAll(".reveal:not(.in)").forEach((el) => io.observe(el));
 }
 
 /* ---------- Language & theme ---------- */
@@ -377,16 +378,20 @@ $("#honestBtn").addEventListener("click", () => {
 /* ---------- Contact form ---------- */
 const form = $("#contactForm");
 const status = $("#formStatus");
+form.addEventListener("input", (e) => e.target.removeAttribute("aria-invalid")); // re-checked on the next submit
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const L = ui[state.lang].contact;
   status.className = "form-status";
 
-  if (form._gotcha.value) return; // honeypot: bots fill this hidden field, humans never do
+  if (form.elements._gotcha.value) return; // honeypot: bots fill this hidden field, humans never do
 
+  const fields = ["name", "email", "message"].map((n) => form.elements[n]); // not form.name: that's the form's own name
+  fields.forEach((f) => f.setAttribute("aria-invalid", String(!f.validity.valid)));
   if (!form.checkValidity()) {
     status.textContent = L.status_invalid;
     status.classList.add("err");
+    fields.find((f) => !f.validity.valid).focus();
     return;
   }
   if (!site.formEndpoint) {
