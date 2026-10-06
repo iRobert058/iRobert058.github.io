@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl" data-theme="light">
+<html lang="nl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +7,7 @@
 <meta name="description" content="Privacyverklaring van robertkarzijn.nl: welke gegevens er via het contactformulier verwerkt worden en waarom.">
 <link rel="canonical" href="https://robertkarzijn.nl/privacy.html">
 <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/hanken-grotesk-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/main.css">
 <style>
@@ -27,10 +25,13 @@
 <body>
 
 <div class="pv-topbar">
-  <button class="pill" id="langBtn" aria-label="Switch language">EN</button>
+  <div class="lang-switch" role="group" aria-label="Taal / Language">
+    <button type="button" data-lang="nl" lang="nl" aria-label="Nederlands" aria-pressed="true">NL</button>
+    <button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="false">EN</button>
+  </div>
 </div>
 
-<div class="pv-wrap">
+<main class="pv-wrap">
   <a class="pv-back" href="./" data-t="back">← Terug naar home</a>
   <h1 data-t="title">Privacyverklaring</h1>
   <p class="pv-updated" data-t="updated">Laatst bijgewerkt: 1 september 2026</p>
@@ -51,11 +52,10 @@
 
   <h2 data-t="h_questions">Vragen</h2>
   <p data-t-html="p_questions">Heb je vragen over deze verklaring? Stuur gerust een bericht via <a href="mailto:robertkarzijn@icloud.com">e-mail</a> of <a href="https://www.linkedin.com/in/robert-karzijn-260696279" target="_blank" rel="noopener">LinkedIn</a>.</p>
-</div>
+</main>
 
 <script>
   (function () {
-    document.documentElement.dataset.theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
     var dict = {
       nl: {
@@ -94,12 +94,14 @@
       }
     };
 
-    var langBtn = document.getElementById("langBtn");
+    var langBtns = document.querySelectorAll("[data-lang]");
 
     function applyLang(lang) {
       document.documentElement.lang = lang;
       document.title = dict[lang].pageTitle;
-      langBtn.textContent = lang === "nl" ? "EN" : "NL";
+      langBtns.forEach(function (btn) {
+        btn.setAttribute("aria-pressed", String(btn.dataset.lang === lang));
+      });
       document.querySelectorAll("[data-t]").forEach(function (el) {
         el.textContent = dict[lang][el.dataset.t];
       });
@@ -108,13 +110,13 @@
       });
     }
 
-    var lang = localStorage.getItem("site-lang") === "en" ? "en" : "nl";
-    applyLang(lang);
+    // Dutch by default; the choice isn't stored anywhere
+    applyLang("nl");
 
-    langBtn.addEventListener("click", function () {
-      lang = lang === "nl" ? "en" : "nl";
-      localStorage.setItem("site-lang", lang);
-      applyLang(lang);
+    langBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        applyLang(btn.dataset.lang);
+      });
     });
   })();
 </script>

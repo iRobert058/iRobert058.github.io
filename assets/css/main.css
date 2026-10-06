@@ -30,6 +30,8 @@ section { padding: var(--section-gap) 0; }
 }
 .skip-link:focus { transform: none; }
 .load-error { padding: var(--space-9) var(--gutter); text-align: center; }
+.noscript { max-width: 60ch; margin: 0 auto; padding: var(--space-8) var(--gutter); }
+.noscript p + p { margin-top: var(--space-4); color: var(--muted); }
 
 /* Small mono label, used for eyebrows, meta lines and captions */
 .label {
