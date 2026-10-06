@@ -5,7 +5,7 @@
    Pure helpers live in logic.js, where they are unit tested.
    ============================================================= */
 
-import { pick, esc, lookup, pad2 } from "./logic.js";
+import { pick, esc, lookup, pad2, assignInterludes } from "./logic.js";
 
 const state = {
   lang: "nl", // Dutch by default. Nothing is stored: a language or theme choice lasts for this page view.
@@ -113,38 +113,60 @@ function numberSections() {
   document.querySelectorAll(".sect:not(.hidden) .sect-no").forEach((el, i) => (el.textContent = `§ ${pad2(i + 1)}`));
 }
 
+const linkAttrs = (url) => (url.startsWith("http") ? ' target="_blank" rel="noopener"' : "");
+const sizeAttrs = (w, h) => (w && h ? ` width="${Number(w)}" height="${Number(h)}"` : "");
+
 function renderProjects() {
   const L = ui[state.lang].projects;
   $("#projectsList").innerHTML = projects
     .map((p) => {
       const imgTag = p.image
-        ? `<img src="${esc(p.image)}" alt="${esc(t(p.imageAlt))}" loading="lazy" decoding="async">`
+        ? `<img src="${esc(p.image)}" alt="${esc(t(p.imageAlt))}"${sizeAttrs(p.imageWidth, p.imageHeight)} loading="lazy" decoding="async">`
         : "";
       // A video links out instead of embedding, so the page stays free of third-party cookies
-      const img = !p.image
+      const visual = !p.image
         ? ""
         : p.video
-          ? `<a class="pimg pvideo" href="${esc(p.video)}" target="_blank" rel="noopener">${imgTag}
+          ? `<a class="project-visual project-video" href="${esc(p.video)}" target="_blank" rel="noopener">${imgTag}
               <span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>${esc(L.watch_trailer)}</span>
             </a>`
-          : `<div class="pimg">${imgTag}</div>`;
-      const chips = p.tech.map((c) => `<span class="chip">${esc(t(c))}</span>`).join("");
-      const external = p.cta.url.startsWith("http");
-      return `<article class="project reveal">
-        <span class="tag">${esc(t(p.tag))}</span>
-        <h3>${esc(t(p.title))}</h3>
-        <p class="intro">${esc(t(p.intro))}</p>
-        ${img}
-        <div class="pgrid">
-          <div class="pblock"><h4>${esc(L.label_problem)}</h4><p>${esc(t(p.problem))}</p></div>
-          <div class="pblock"><h4>${esc(L.label_role)}</h4><p>${esc(t(p.role))}</p></div>
+          : `<div class="project-visual">${imgTag}</div>`;
+      const chips = p.tech.map((c) => `<li>${esc(t(c))}</li>`).join("");
+      const block = (label, text) => `<div><dt class="label">${esc(label)}</dt><dd>${esc(t(text))}</dd></div>`;
+      return `<li class="project reveal">
+        <div class="project-side">
+          <p class="label project-meta">${esc(t(p.tag))}</p>
+          <h3>${esc(t(p.title))}</h3>
+          <p class="project-intro">${esc(t(p.intro))}</p>
+          <ul class="chips" aria-label="${esc(L.label_tech)}">${chips}</ul>
+          <a class="project-cta" href="${esc(p.cta.url)}"${linkAttrs(p.cta.url)}>${esc(t(p.cta.label))}</a>
         </div>
-        <div class="chips">${chips}</div>
-        <div class="pblock presult"><h4>${esc(L.label_result)}</h4><p>${esc(t(p.result))}</p></div>
-        <a class="plink" href="${esc(p.cta.url)}"${external ? ' target="_blank" rel="noopener"' : ""}>${esc(t(p.cta.label))}</a>
-      </article>`;
+        <div class="project-main">
+          ${visual}
+          <dl class="case">
+            ${block(L.label_problem, p.problem)}
+            ${block(L.label_role, p.role)}
+            ${block(L.label_result, p.result)}
+          </dl>
+        </div>
+      </li>`;
     })
     .join("");
+}
+
+/* Full-bleed photo interludes from site.json, placed in the page's slots in order. Empty entries render nothing. */
+function renderInterludes() {
+  const slots = document.querySelectorAll(".interlude-slot");
+  assignInterludes(site.interludes, slots.length).forEach((photo, n) => {
+    const slot = slots[n];
+    slot.hidden = !photo;
+    slot.innerHTML = photo
+      ? `<figure class="interlude reveal">
+          <img src="${esc(photo.src)}" alt="${esc(t(photo.alt) ?? "")}" width="2400" height="1029" loading="lazy" decoding="async">
+          <figcaption class="wrap label">${esc(uiText("interlude.credit"))}</figcaption>
+        </figure>`
+      : "";
+  });
 }
 
 function renderTimeline() {
@@ -230,6 +252,7 @@ function renderAll() {
   renderAbout();
   renderPillars();
   renderProjects();
+  renderInterludes();
   renderTimeline();
   renderSkills();
   renderCertificates();

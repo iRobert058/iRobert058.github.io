@@ -69,7 +69,8 @@
     "label_problem": "Probleem",
     "label_role": "Mijn rol",
     "label_result": "Resultaat",
-    "watch_trailer": "Bekijk de trailer"
+    "watch_trailer": "Bekijk de trailer",
+    "label_tech": "Technieken en methoden"
   },
   "experience": {
     "eyebrow": "Ervaring & opleiding",
@@ -149,5 +150,8 @@
         "text": "Sprekers werven en begeleiden voor exec(ut), als Daily Operations Lead de dagelijkse operatie bij Amac draaiende houden en als secretaris de administratie van Stichting Sticky bijhouden."
       }
     ]
+  },
+  "interlude": {
+    "credit": "Foto · Robert Karzijn"
   }
 }

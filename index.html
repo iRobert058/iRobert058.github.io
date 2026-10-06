@@ -183,12 +183,18 @@
   </div>
 </section>
 
-<section id="projecten">
+<div class="interlude-slot" data-slot="0" hidden></div>
+
+<section id="projecten" class="sect band" aria-labelledby="projectsTitle">
   <div class="wrap">
-    <span class="eyebrow" data-t="projects.eyebrow"></span>
-    <h2 data-t="projects.title"></h2>
-    <p class="lead" data-t="projects.lead"></p>
-    <div id="projectsList"></div>
+    <header class="sect-head">
+      <p class="sect-meta"><span class="sect-no"></span><span class="label" data-t="projects.eyebrow"></span></p>
+      <div>
+        <h2 id="projectsTitle" data-t="projects.title"></h2>
+        <p class="lead" data-t="projects.lead"></p>
+      </div>
+    </header>
+    <ol class="projects" id="projectsList"></ol>
   </div>
 </section>
 
@@ -200,6 +206,8 @@
     <div class="timeline" id="timelineList"></div>
   </div>
 </section>
+
+<div class="interlude-slot" data-slot="1" hidden></div>
 
 <section id="vaardigheden">
   <div class="wrap">
@@ -224,6 +232,8 @@
     <div id="certList"></div>
   </div>
 </section>
+
+<div class="interlude-slot" data-slot="2" hidden></div>
 
 <section id="contact">
   <div class="wrap">

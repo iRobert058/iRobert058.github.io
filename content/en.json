@@ -69,7 +69,8 @@
     "label_problem": "Problem",
     "label_role": "My role",
     "label_result": "Outcome",
-    "watch_trailer": "Watch the trailer"
+    "watch_trailer": "Watch the trailer",
+    "label_tech": "Techniques and methods"
   },
   "experience": {
     "eyebrow": "Experience & education",
@@ -149,5 +150,8 @@
         "text": "Recruiting and supporting speakers for exec(ut), keeping daily operations running at Amac as Daily Operations Lead, and keeping the administration of Stichting Sticky as its secretary."
       }
     ]
+  },
+  "interlude": {
+    "credit": "Photo · Robert Karzijn"
   }
 }
