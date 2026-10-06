@@ -50,7 +50,7 @@ Reference: jopmors.com, studied only through screenshots of the live site at 144
 9. Verification: `node --test`, the browser matrix, keyboard, Lighthouse/axe, the originality script. README.
 10. Stretch: project detail pages.
 
-Pure logic goes in `assets/js/logic.js` (ES module) so Node can test it: timeline grouping, interlude slots, skill groups with fallbacks, section numbering.
+Pure logic goes in `assets/js/logic.mjs` (ES module) so Node can test it: timeline grouping, interlude slots, skill groups with fallbacks, section numbering.
 
 ## Decisions log
 
@@ -69,7 +69,7 @@ Pure logic goes in `assets/js/logic.js` (ES module) so Node can test it: timelin
 - **Section numbers** (`§ 01`…) are computed over the visible sections, so the hidden certificates section leaves no gap. The highlights block is unnumbered: it works as the page's abstract.
 - **New optional fields `imageWidth` / `imageHeight` in `projects.json`** (set for all three), so project images get `width`/`height` and don't shift the layout while loading. Without them the image still renders.
 - **Interludes** render in three fixed slots (see TODOs). The caption under each photo is a credit line; `alt` is the description for screen readers.
-- **Timeline groups:** new optional `group` field in `timeline.json`, set to `"amac"` on the three Amac roles. Grouped roles render as one card at the position of the newest role, titled with the organisation, with the roles as steps oldest → newest. The current step is filled and marked `aria-current="step"`. Each role's description sits in one `<details>`. A group of one renders as a normal row. Logic: `groupTimeline()` in `logic.js`, with tests.
+- **Timeline groups:** new optional `group` field in `timeline.json`, set to `"amac"` on the three Amac roles. Grouped roles render as one card at the position of the newest role, titled with the organisation, with the roles as steps oldest → newest. The current step is filled and marked `aria-current="step"`. Each role's description sits in one `<details>`. A group of one renders as a normal row. Logic: `groupTimeline()` in `logic.mjs`, with tests.
 - **Highlights still say "Junior → Senior Sales Associate met dagverantwoording"** while the timeline title is "Senior Sales Associate · Daily Operations Lead". Not changed (existing copy), just flagging the mismatch between the NL and EN highlight texts: EN mentions Daily Operations Lead, NL doesn't.
 - **Skills:** `bars` in `skills.json` is untouched but no longer rendered (percentages for soft skills suggest a precision they don't have). New fields: `groups` (`[{ pillar, items }]`, pillar ids match `pillars.items[].id` in the content files) and `soft` (a plain list). Without `groups` the old flat `tools` list renders; without `soft` the bar labels render, without levels. "IT-vaardigheden" is left out of the soft skills because the capabilities already cover it. `tools` stays as the fallback.
 - **Contact form:** on an invalid submit, the invalid fields get `aria-invalid="true"` and focus moves to the first one, alongside the existing status message. The status colours now come from tokens (`--ok`, `--err`); the hardcoded green is gone.

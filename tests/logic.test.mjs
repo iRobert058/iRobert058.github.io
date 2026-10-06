@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   pick, esc, lookup, pad2, isCurrent, periodLabel, groupTimeline, assignInterludes, skillGroups, softSkills,
-} from "../assets/js/logic.js";
+} from "../assets/js/logic.mjs";
 
 test("pick returns the language, falls back to nl, passes plain strings through", () => {
   assert.equal(pick({ nl: "Hallo", en: "Hello" }, "en"), "Hello");

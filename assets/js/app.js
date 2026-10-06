@@ -2,10 +2,10 @@
    app.js — loads content (content/*.json) and data (data/*.json)
    and renders the site. Changing content = changing JSON;
    this code does not need to be touched for that.
-   Pure helpers live in logic.js, where they are unit tested.
+   Pure helpers live in logic.mjs, where they are unit tested.
    ============================================================= */
 
-import { pick, esc, lookup, pad2, assignInterludes, groupTimeline, periodLabel, isCurrent, skillGroups, softSkills } from "./logic.js";
+import { pick, esc, lookup, pad2, assignInterludes, groupTimeline, periodLabel, isCurrent, skillGroups, softSkills } from "./logic.mjs";
 
 const state = {
   lang: "nl", // Dutch by default. Nothing is stored: a language or theme choice lasts for this page view.
