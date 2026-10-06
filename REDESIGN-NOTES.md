@@ -31,11 +31,11 @@ I couldn't ask, so I picked the conservative option each time. Each one is easy 
    - nl: `"Ik ontwerp interfaces<br>die doen wat je <em>verwacht</em>."`
    - en: `"I design interfaces<br>that do what you <em>expect</em>."`
 
-   Then update `<meta name="description">`, `og:description` and `twitter:description` in `index.html`. The hero demo works with either headline, but it pairs especially well with "verwacht".
+   Then update `<meta name="description">`, `og:description` and `twitter:description` in `index.html`. Fig. 1 works with either headline, but it pairs especially well with "verwacht".
 2. **README language.** The brief says "keep the README in Dutch", but V1.10 (24 Sep) deliberately translated the repo, README included, to English. I kept it in English so I wasn't undoing that commit, and added the new sections in English.
 3. **localStorage.** `app.js`, `404.html` and `privacy.html` store the language in `localStorage` (added in V1.3). Both the brief and CLAUDE.md forbid that, so it's gone. The language now travels in the URL instead (`?lang=en`). That's shareable, survives a reload and is stored nowhere.
 4. **The V1.13 intro video.** The brief doesn't mention it. The redesigned page no longer shows it, and all video files stay untouched in `assets/`. Reasons:
-   - the brief's hero spec makes the browser specimen the immersive object
+   - the brief's hero spec makes the framed Fig. 1 window the immersive object
    - the video's title card is the name ending in a full stop with a role beneath it, on an always-dark stage. That sits too close to three reference signatures the brief says to avoid: the name with roles beneath it, full-stop headings, and charcoal by default
    - it was the heaviest thing on the page.
 
@@ -51,7 +51,7 @@ Reference: jopmors.com (studied 2026-10-05 via screenshots at 1440 and 390, plus
 
 | Pattern | How the reference does it | How my version differs |
 |---|---|---|
-| Immersive hero around a framed "app window" | Photographic dusk office with a laptop running a code editor. A 400svh pinned section zooms into the screen as you scroll ("scroll to enter"). His name is the giant headline. | Text-first hero on warm paper with my existing headline. Beside it sits a light **browser window labelled "Fig. 1"** containing a fake web-shop product card. Nothing moves until the visitor presses "Simuleer een volgend bezoek"; the add-to-cart button then relocates and a dashed ghost marks where it used to be. It's an explained mini-experiment from my thesis, not a scene: no photo, no pinned scroll, no name as the headline. |
+| Immersive hero around a framed "app window" | Photographic dusk office with a laptop running a code editor. A 400svh pinned section zooms into the screen as you scroll ("scroll to enter"). His name is the giant headline. | Text-first hero on warm paper with my existing headline. Beside it sits **Fig. 1, a ten-second mini-experiment** in a framed "lab" window: a consent screen, a fixation cross, a tiny web-shop panel and a live bar chart of the visitor's own reaction times. In round 6 the add-to-cart button moves and a decoy takes its old spot, and a debriefing explains what happened. Nothing moves until the visitor presses Start. No photo, no pinned scroll, no name as the headline: the visitor takes part in my research instead of looking at a scene. |
 | Numbered structure, mono labels, big headings | Small "— LABEL" with a leading rule, "01 / 03" counters, headings ending in a full stop. | Thesis-style section marks (**§ 01**) in red mono next to my existing eyebrow text, and figure numbers ("Fig. 1") on visuals. No leading rules, no "01 / 03" counters, no full-stop headings. |
 | About: portrait, key–value facts, candid narrative | Photo with a 2×2 fact grid under it and a mixed sans/serif-italic heading. | Narrative first, then a **datasheet card**: portrait and a ruled one-fact-per-row table with mono keys. My existing h2, with no serif italic. |
 | Three numbered pillars | "What I do": a sticky single column with generative canvas drawings, each pillar a huge word with a serif-italic one-liner. | Section "Werkwijze" (I avoided "Wat ik doe", which is his label translated). Three side-by-side columns: **Onderzoeken / Ontwerpen / Organiseren**, each with a one-line promise, a paragraph and an **evidence link to the project that proves it**. No canvas, no sticky scroll. |
@@ -137,7 +137,7 @@ Run against a local server with headless Chrome (Playwright), with throwaway too
 
 - **Look:** warm paper with deep ink and one red pen. Thesis-style § numbering and captioned figures. Two dark "ink" bands (projects, contact). Bricolage / Hanken / Spline Mono, now **self-hosted**. Tokens extended with an ink-band palette, AA-safe accent shades, success colour, and type, spacing and motion scales, all in `tokens.css`.
 - **Nav:** full-width sticky paper bar with a red **Contact** pill, an NL/EN segmented toggle and a dark-mode toggle (both `aria-pressed`). An accessible **Menu** disclosure below 860px, where the V1 links used to just disappear.
-- **Hero:** your current headline at full width, with **Fig. 1**, a mock web-shop page beside it. "Simuleer een volgend bezoek" moves the add-to-cart button and leaves a dashed "hier stond hij" ghost. The caption is a live region, it works with the keyboard, and it's instant with reduced motion. The honest banner is restyled as a dashed strip. The V1 video intro is no longer shown (files kept).
+- **Hero:** your current headline at full width, with **Fig. 1** beside it: a ten-second mini-experiment. You click "In winkelmand" six times while a bar chart of your own reaction times builds up. In round 6 the button moves and a lookalike decoy ("+ Verzekering € 4,99") takes its old spot, followed by a debriefing. It only starts on "Start de proef", works with the keyboard, announces each round, and keeps the times in the browser. The honest banner is restyled as a dashed strip. The V1 video intro is no longer shown (files kept). *(Fig. 1 was a shop card with a "simulate a return visit" button until 6 Oct; see decision 45.)*
 - **Sections:**
   - **Highlights:** a ruled four-up strip.
   - **About:** the narrative beside a datasheet card (portrait + four facts).
@@ -195,7 +195,7 @@ Run against a local server with headless Chrome (Playwright), with throwaway too
 | 31 | The contact form sits on a band-coloured card, not a paper card | A paper card inside the dark band needed a second palette remap. The band card keeps every field border ≥ 3:1. |
 | 32 | Footer continues the closing band | The page ends on one dark block instead of a thin paper strip. |
 | 33 | Reveals are CSS scroll-driven (`animation-timeline: view()`) over a **fixed 160px** of entry. The IntersectionObserver only runs where that's unsupported (it still draws the hero underline everywhere). | No JS work while scrolling in modern browsers. A percentage range kept tall case studies half-transparent while you read their top; a fixed distance doesn't. Checked by scrolling with motion on: every block sitting 220px+ inside the viewport is fully opaque. |
-| 34 | Motion inventory, all off or instant under `prefers-reduced-motion`: content settling in (fade + 18px rise), the underline drawing once, the demo button moving and its ghost fading in (only on click), the menu dropping in, 1–2px hover lifts. With reduced motion nothing starts hidden. | No scroll-jacking, parallax, custom cursor or smooth-scroll library. Native anchor scrolling, smooth only when motion is allowed. |
+| 34 | Motion inventory, all off or instant under `prefers-reduced-motion`: content settling in (fade + 18px rise), the underline drawing once, the Fig. 1 experiment (only after Start), the menu dropping in, 1–2px hover lifts. With reduced motion nothing starts hidden. | No scroll-jacking, parallax, custom cursor or smooth-scroll library. Native anchor scrolling, smooth only when motion is allowed. |
 | 35 | Hardening, per item: `og:url`, `og:image` (the existing 1200×630 `og-image.png`), the canonical link and `robots.txt` already existed and are correct, so they're kept. The meta/og/twitter descriptions are rewritten from the current hero copy. The JSON-LD `Person` gains only on-site facts: UU as alma mater and affiliation, Amac, nl/en/de, the fields. | No duplicates. Nothing claimed that the page doesn't say. |
 | 36 | No-JS: a `<noscript><style>` in `<head>` hides the parts only JavaScript fills (the links would be empty). The existing bilingual note is restyled under the brand bar. | Before, the page showed empty nav links and a large blank area without JS. |
 | 37 | `404.html` rebuilt in the new style: the "Fig. 404" window shows the address that was asked for, with a dashed ghost where the page should be. The existing copy is unchanged, the button is now a real link, and the language comes from `?lang=`. | It reuses the hero's "it was here" idea. Absolute paths keep it working at any depth on GitHub Pages. |
@@ -204,8 +204,16 @@ Run against a local server with headless Chrome (Playwright), with throwaway too
 | 40 | The card link says **"Projectpagina"** for now, not "Lees meer". It switches to "Lees meer" automatically once a project has the new optional `story` field (extra paragraphs, shown only on its page). | Today the page holds the same text as the card, plus a larger visual, its own URL and prev/next. A "Read more" that leads to nothing more would be a small deceptive pattern, on this site of all sites. |
 | 41 | Links between pages carry the language (`?lang=en`): home ↔ project pages ↔ privacy, the nav, back links, prev/next and internal CTAs | Switching pages never drops you back into Dutch, and nothing is stored. |
 | 42 | After rendering, the page re-scrolls to `location.hash` | The browser jumps to `/#projecten` before the JSON content above it exists, so deep links landed in the wrong place. That was true in V1 too. |
-| 43 | Specimen product: a drawn instant camera at "€ 89,95" on `shop.example` (a reserved example domain) | Neutral and recognisably a shop, with the brand red as the camera stripe. It's a nod to the photography without claiming anything. |
+| 43 | ~~Specimen product: a drawn instant camera on `shop.example`~~, replaced by decision 45 | The first Fig. 1 felt too much like an illustration of the idea. |
 | 44 | **Scroll animations (added on request after the run):** a red reading-progress line under the nav; section heads settling in; highlight rules and skills underlines drawing themselves column by column; pillar numerals rising out of their baseline while the dividers draw downwards; the dark bands opening from a rounded inset to full width; case images and the portrait settling from a slight zoom; the Amac staircase drawing step by step, Junior → Senior; the contact statement rising into place; interlude photos opening like a curtain. | All CSS scroll-driven animations (`animation-timeline: view()` / `scroll(root)`), with no JavaScript. They are tied to the visitor's own scrolling, play backwards when scrolling up, and never change scroll speed: no scroll-jacking or parallax. The hero stays still on purpose. Browsers without scroll-driven animations get the simple fade-in. With `prefers-reduced-motion` none of it runs and everything shows in its final state (verified). Lighthouse is unchanged (98/100/100/100 mobile, CLS 0). It notes 11 clip-path animations that aren't composited, which costs nothing measurable on this page. |
+| 45 | **Fig. 1 is now a mini-experiment (6 Oct, on request).** It works like a reaction-time task in miniature:
+1. Consent ("Doe je mee?").
+2. A fixation cross, then the shop panel.
+3. "In winkelmand" in the same spot for rounds 1–5.
+4. In round 6 the button moves to the top left and a red lookalike, "+ Verzekering € 4,99", takes its old spot.
+5. A debriefing, with the screen annotated ("jouw klik", "nieuwe plek") and the visitor's own times as a bar chart.
+
+Round 1 counts as practice, so the average uses rounds 2–5. | The visitor experiences the habit instead of watching an illustration of it, and the form is my research method: consent, a manipulation, a debriefing. Nothing moves until Start. Times come from `performance.now()` and never leave the page. Keyboard users tab to the moved button first, and their debrief says honestly why the trick didn't work on them. axe: 0 violations in the idle, running and debrief states. It adds about 4 KB to `app.js` (27 KB total, under 30). |
 
 ## Copy to review (NL + EN)
 
@@ -221,19 +229,29 @@ All new strings are in `content/nl.json` / `content/en.json` unless noted. They'
 | `language` (aria-label of NL/EN) | Taal | Language |
 | `theme` (aria-label of the toggle) | Donkere modus | Dark mode |
 
-**Hero demo, Fig. 1** (`hero.demo.*`)
+**Hero, Fig. 1: the mini-experiment** (`hero.lab.*`, replacing the earlier `hero.demo.*` drafts)
 
 | Key | NL | EN |
 |---|---|---|
-| `button` | Simuleer een volgend bezoek | Simulate a return visit |
-| `caption` | Gewoonte laat je klikken waar de knop stond: dat is wat mijn scriptie onderzoekt. | Habit makes you click where the button used to be: that's what my thesis studies. |
-| `moved` (screen readers only, announced) | Bezoek {n}: de knop staat ergens anders. | Visit {n}: the button has moved. |
-| `visit` (pill in the address bar) | bezoek {n} | visit {n} |
-| `ghost` (dashed outline) | hier stond hij | it was here |
-| `cart` / `save` | In winkelmand / Bewaar | Add to cart / Save |
+| `caption` | Een mini-proef van zo'n tien seconden naar gewoontegedrag, het onderwerp van mijn scriptie. Je reactietijden blijven in je browser. | A ten-second mini-experiment on habitual behaviour, the subject of my thesis. Your reaction times stay in your browser. |
+| `label` / `local` (status bar) | Proef · niets wordt opgeslagen | Experiment · nothing is stored |
+| `intro_title` / `intro_text` | Doe je mee? / Klik zes keer zo snel als je kunt op ‘In winkelmand’. Achteraf leg ik uit wat er gebeurde. | Want to take part? / Click ‘Add to cart’ six times, as fast as you can. Afterwards I'll explain what happened. |
+| `start` | Start de proef | Start the experiment |
 | `product` / `price` | Instant camera / € 89,95 | Instant camera / €89.95 |
-| `fig` | Fig. 1 | Fig. 1 |
-| `alt` (aria-label of the window) | Productpagina van een nagemaakte webshop, met een knop ‘In winkelmand’. | Product page of a mock web shop, with an ‘Add to cart’ button. |
+| `actions` (the other buttons) | Bewaar, Vergelijk, Deel, Reviews, Kies kleur | Save, Compare, Share, Reviews, Pick colour |
+| `target` / `decoy` | In winkelmand / + Verzekering € 4,99 | Add to cart / + Insurance €4.99 |
+| `round` (announced) | Ronde {n} van {total} | Round {n} of {total} |
+| `chart` / `mean` | Reactietijd per ronde / gem. | Reaction time per round / avg. |
+| `note_hit` / `note_decoy` / `note_target` | jouw klik / lokknop / nieuwe plek | your click / decoy / new spot |
+| `debrief_title` | Wat er gebeurde | What happened |
+| `debrief_decoy` | In ronde 6 verhuisde de knop naar linksboven, en op zijn oude plek stond een lokknop. Daar klikte je op: je hand ging naar waar de knop vijf keer had gestaan. Dat is procedureel geheugen, het onderwerp van mijn scriptie. | In round 6 the button moved to the top left, and a decoy took its old spot. That's where you clicked: your hand went where the button had been five times. That's procedural memory, the subject of my thesis. |
+| `debrief_slower` | … Je trapte er niet in, maar had wel {ms} ms langer nodig dan in de rondes ervoor. Hoe gewoonte je klikgedrag stuurt, is het onderwerp van mijn scriptie. | … You didn't fall for it, but you needed {ms} ms longer than in the rounds before. How habit steers your clicks is the subject of my thesis. |
+| `debrief_steady` | … Je trapte er niet in en was niet eens langzamer. Knap. Hoe sterk gewoonte je klikgedrag stuurt, is het onderwerp van mijn scriptie. | … You didn't fall for it and weren't even slower. Well done. How strongly habit steers your clicks is the subject of my thesis. |
+| `debrief_keys` | … Met het toetsenbord volg je de tabvolgorde in plaats van je handgeheugen, dus bij jou had deze truc geen vat. … | … With a keyboard you follow the tab order rather than muscle memory, so this trick had no hold on you. … |
+| `summary` (screen readers) | Jouw reactietijden per ronde: {list} ms. | Your reaction times per round: {list} ms. |
+| `again` / `thesis` | Nog een keer / Over de scriptie → | Try again / About the thesis → |
+
+The debrief texts only describe what the visitor just did. They make no claim about the thesis's results.
 
 **About** (`about.*`)
 
@@ -310,7 +328,7 @@ Every claim in the pillar texts is lifted from `projects.json` / `timeline.json`
 
 - **Open the draft PR.** The `gh` CLI isn't installed here, so I couldn't. Create it as a **draft** from https://github.com/iRobert058/iRobert058.github.io/pull/new/redesign/v2. Merging into `main` puts it live, so check it on your phone first.
 - **Check "Read this first"**: the headline, the README language and the dropped intro video are the three judgement calls most likely to need a flip.
-- **Review every row in "Copy to review"**, especially the pillar texts and the hero demo caption. They're drafts in your voice, not your words.
+- **Review every row in "Copy to review"**, especially the pillar texts and the Fig. 1 experiment copy (intro and debriefings). They're drafts in your voice, not your words.
 - **og-image** (optional): `assets/img/og-image.png` still has the V1 look (system font, white). A 1200×630 export in the new palette would match better. The `og:image` tags can stay as they are if you keep the path.
 - **CLAUDE.md** (local and git-ignored, so I left it alone) is now out of date:
   - the content model is missing `pillars.json` and the new fields
@@ -347,7 +365,7 @@ Every claim in the pillar texts is lifted from `projects.json` / `timeline.json`
   - Without `:has()`, headings without a lead stay in the narrower column.
   - Without subgrid, the pillar rows don't line up across columns.
   - Without `animation-timeline`, reveals use the IntersectionObserver.
-  - Without container-query units (Safari < 16, Chrome < 105), the Fig. 1 demo's internal text sizes fall back to defaults. Those browsers are from 2022 and earlier.
+  - Without container-query units (Safari < 16, Chrome < 105), the Fig. 1 experiment's internal sizes fall back to defaults. Those browsers are from 2022 and earlier.
 - **A filled honeypot** leaves the status line as it was. Only bots see that.
 - **The live Formspree endpoint was deliberately not tested.** All form states were checked against a local fake endpoint with outside requests blocked.
 - **The privacy statement** still overlaps word for word with the reference site's, and it shows an e-mail address (see TODOs).

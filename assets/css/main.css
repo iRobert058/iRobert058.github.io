@@ -160,15 +160,93 @@ h2 {
 .cta-row { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 @media (max-width: 900px) { .hero-grid { grid-template-columns: minmax(0, 1fr); } }
 
-/* ---------- Fig. 1: the specimen ----------
-   A mock product page inside a browser frame. Everything inside scales with the frame (cqi units),
-   so the button spots stay put at any width. Spots and the ghost are positioned by data-spot / data-prev. */
-.specimen { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-4) var(--space-5); align-items: start; }
-.specimen-window {
-  grid-column: 1 / -1; container-type: inline-size; overflow: hidden;
+/* ---------- Fig. 1: the mini-experiment ----------
+   A ten-second reaction-time task: a status bar, a stage (consent → fixation cross → mock shop → debriefing) and a
+   bar chart of the visitor's own times. app.js sets data-phase on .lab; the stage scales with the frame (cqi units). */
+.lab-window, .specimen-window {
+  container-type: inline-size; overflow: hidden;
   background: var(--surface); border: 1px solid color-mix(in srgb, var(--line-strong) 45%, var(--line)); border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
 }
+.lab-bar {
+  display: flex; align-items: center; gap: var(--space-3); padding: 11px 16px; border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+}
+.lab-rec { width: 8px; height: 8px; flex: none; border-radius: 50%; background: var(--line-strong); transition: background-color var(--dur-fast); }
+.lab:is([data-phase="fix"], [data-phase="stim"]) .lab-rec { background: var(--accent); }
+.lab-round { color: var(--ink); }
+.lab-local { margin-left: auto; text-transform: none; letter-spacing: .02em; white-space: nowrap; }
+
+.lab-stage { position: relative; aspect-ratio: 16 / 9; padding: 5cqi 6cqi; }
+.lab-stage:focus { outline: none; } /* only a starting point for Tab between rounds */
+.lab-screen { height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 4cqi; transition: opacity var(--dur) ease; }
+.lab-product { display: flex; align-items: center; gap: 2.4cqi; font-family: var(--font-display); font-size: max(13px, 3.6cqi); font-weight: 650; }
+.lab-thumb { width: 7cqi; aspect-ratio: 1; border-radius: 1.6cqi; background: var(--accent-soft); }
+.lab-price { margin-left: auto; font-family: var(--font-body); font-weight: 700; }
+.lab-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.4cqi; }
+.lab-btn {
+  position: relative; display: grid; place-items: center; height: max(40px, 9.5cqi); padding: 0 1.2cqi; text-align: center;
+  border: 1px solid var(--line-strong); border-radius: 1.8cqi; background: var(--surface);
+  font-family: var(--font-body); font-size: max(11px, 2.9cqi); font-weight: 600; line-height: 1.15; color: var(--muted);
+}
+.lab-btn:is(.is-target, .is-decoy) { border-color: transparent; background: var(--accent-fill); color: var(--on-accent); font-weight: 700; cursor: pointer; }
+.lab-fix { display: none; position: absolute; inset: 0; place-items: center; font-family: var(--font-mono); font-size: 9cqi; font-weight: 300; }
+.lab[data-phase="fix"] .lab-fix { display: grid; }
+.lab[data-phase="fix"] .lab-screen { visibility: hidden; }
+
+/* Idle: the shop waits, dimmed, behind the invitation */
+.lab-intro {
+  display: none; position: absolute; inset: 0; place-content: center; justify-items: center; padding: var(--space-5);
+  text-align: center; font-size: var(--fs-sm); line-height: 1.45;
+  background: radial-gradient(closest-side, var(--surface) 68%, color-mix(in srgb, var(--surface) 0%, transparent));
+}
+.lab[data-phase="idle"] .lab-intro { display: grid; }
+.lab[data-phase="idle"] .lab-screen { opacity: .2; }
+.lab-intro-title { font-family: var(--font-display); font-size: 20px; font-weight: 700; margin-bottom: var(--space-1); }
+.lab-intro p:not(.lab-intro-title) { max-width: 28em; color: var(--muted); margin-bottom: var(--space-4); }
+
+/* Done: the round-6 screen stays, annotated like a marked-up figure */
+.lab[data-phase="done"] .lab-btn.is-plain { opacity: .35; }
+.lab-btn[data-note] { outline: 2px solid var(--accent); outline-offset: 3px; }
+.lab-btn.is-target[data-note] { outline: 2px dashed var(--ink); }
+.lab-btn[data-note]::after {
+  content: attr(data-note); position: absolute; top: 0; left: 1.4cqi; translate: 0 -55%;
+  padding: 0 .9cqi; border-radius: .8cqi; background: var(--surface); color: var(--ink);
+  font-family: var(--font-mono); font-size: max(10px, 2.3cqi); font-weight: 500; line-height: 1.5; white-space: nowrap;
+}
+.lab-debrief { display: none; padding: var(--space-4) var(--space-5) var(--space-5); border-top: 1px solid var(--line); }
+.lab[data-phase="done"] .lab-debrief { display: block; }
+.lab-debrief-title { font-family: var(--font-display); font-size: 19px; font-weight: 700; margin-bottom: var(--space-2); }
+.lab-debrief-title:focus { outline: none; }
+.lab-debrief p { font-size: var(--fs-sm); line-height: 1.55; }
+.lab-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); margin-top: var(--space-4); }
+
+/* The visitor's reaction times: one series, round 6 highlighted, average of rounds 2–5 as a dashed line */
+.lab-chart { padding: 12px 16px 14px; border-top: 1px solid var(--line); }
+.lab-chart-title {
+  display: flex; justify-content: space-between; margin-bottom: var(--space-2);
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+}
+.lab-plot { --axis: 18px; position: relative; height: 76px; }
+.lab-plot::after { content: ""; position: absolute; left: 0; right: 56px; bottom: var(--axis); height: 1px; background: var(--line-strong); }
+.lab-bars { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; height: 100%; margin-right: 56px; }
+.lab-bars li { position: relative; display: flex; flex-direction: column; justify-content: flex-end; }
+.lab-bars i { height: calc(var(--h) * (100% - var(--axis))); background: var(--ink); border-radius: 4px 4px 0 0; }
+.lab-bars .is-trap i { background: var(--accent); }
+.lab-bars .is-empty i { height: 0; }
+.lab-bars span { height: var(--axis); padding-top: 3px; text-align: center; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.lab-bars b {
+  position: absolute; left: 50%; bottom: calc(var(--axis) + var(--h) * (100% - var(--axis)) + 3px); translate: -50% 0;
+  z-index: 1; padding: 0 3px; background: var(--surface); font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--ink);
+}
+.lab-mean { position: absolute; left: 0; right: 0; bottom: calc(var(--axis) + var(--h, 0) * (100% - var(--axis))); border-top: 1px dashed var(--muted); pointer-events: none; }
+.lab-mean[hidden] { display: none; }
+.lab-mean span { position: absolute; right: 0; top: 0; translate: 0 -50%; padding-left: 4px; background: var(--surface); font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); white-space: nowrap; }
+.lab figcaption { margin-top: var(--space-4); font-size: var(--fs-sm); color: var(--muted); line-height: 1.5; }
+.fig-label { font-family: var(--font-mono); font-size: var(--fs-mono); color: var(--ink); margin-right: var(--space-2); }
+@media (max-width: 520px) { .lab-stage { aspect-ratio: 16 / 11; } }
+
+/* The browser frame, still used by the 404 page */
 .specimen-bar {
   display: flex; align-items: center; gap: 2.4cqi; padding: 2.2cqi 2.8cqi;
   border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: 2.5cqi; color: var(--muted);
@@ -181,49 +259,6 @@ h2 {
   background: var(--bg); border-radius: var(--radius-pill); padding: 1cqi 2.4cqi;
   color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.sb-url svg { width: 2.4cqi; height: 2.4cqi; fill: var(--muted); flex: none; }
-.sb-visit {
-  white-space: nowrap; color: var(--accent-ink); border: 1px solid currentColor;
-  border-radius: var(--radius-pill); padding: .5cqi 1.8cqi;
-}
-.specimen-page { position: relative; aspect-ratio: 5 / 3.7; }
-.sp-photo {
-  position: absolute; left: 5%; top: 7%; width: 44%; height: 86%;
-  display: grid; place-items: center; background: var(--accent-soft); border-radius: 3cqi;
-}
-.sp-photo svg { width: 80%; }
-.cam-body, .cam-top, .cam-finder { fill: var(--surface); stroke: var(--ink); stroke-width: 2.4; }
-.cam-stripe { fill: var(--accent); }
-.cam-lens { fill: var(--surface); stroke: var(--ink); stroke-width: 2.4; }
-.cam-glass { fill: var(--ink); }
-.cam-shine { fill: var(--surface); }
-.cam-shutter { fill: var(--accent); }
-.sp-info { position: absolute; left: 55%; right: 5%; top: 8%; display: flex; flex-direction: column; gap: 1.4cqi; }
-.sp-name { font-family: var(--font-display); font-weight: 650; font-size: 4.8cqi; line-height: 1.1; letter-spacing: -.01em; }
-.sp-stars { color: var(--accent); font-size: 3cqi; letter-spacing: .12em; line-height: 1; }
-.sp-price { font-weight: 700; font-size: 4.4cqi; line-height: 1.2; }
-.sp-save { position: absolute; left: 55%; top: 59%; font-size: 3cqi; font-weight: 600; color: var(--muted); }
-.sp-cart, .sp-ghost {
-  position: absolute; left: var(--x, 55%); top: var(--y, 40%); width: 40%; height: 11%;
-  display: grid; place-items: center; border-radius: 2cqi; white-space: nowrap;
-}
-.sp-cart {
-  z-index: 1; background: var(--accent-fill); color: var(--on-accent); font-weight: 700; font-size: 3.3cqi;
-  box-shadow: 0 1cqi 3cqi -1cqi color-mix(in srgb, var(--accent-fill) 80%, transparent);
-  transition: left var(--dur-move) var(--ease), top var(--dur-move) var(--ease);
-}
-.sp-ghost {
-  border: 2px dashed var(--accent); color: var(--accent-ink);
-  font-family: var(--font-mono); font-size: 2.4cqi; opacity: 0;
-}
-.specimen-page[data-prev] .sp-ghost { opacity: 1; transition: opacity var(--dur) var(--dur-fast) ease; }
-[data-spot="0"] .sp-cart, [data-prev="0"] .sp-ghost { --x: 55%; --y: 40%; }
-[data-spot="1"] .sp-cart, [data-prev="1"] .sp-ghost { --x: 7%; --y: 76%; }
-[data-spot="2"] .sp-cart, [data-prev="2"] .sp-ghost { --x: 55%; --y: 76%; }
-.specimen-foot { align-self: center; }
-.specimen figcaption { align-self: center; font-size: var(--fs-sm); color: var(--muted); line-height: 1.5; }
-.fig-label { font-family: var(--font-mono); font-size: var(--fs-mono); color: var(--ink); margin-right: var(--space-2); }
-@media (max-width: 520px) { .specimen { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---------- Signature: honest banner, a dashed tear-off strip ---------- */
 .honest {

@@ -11,7 +11,7 @@ A single static page that serves as a digital business card for employers, clien
 - **Bilingual (NL/EN)**: Dutch is the default language, with an NL/EN switch in the navigation. All content, from UI labels to project descriptions, is fully written in both languages and switches instantly without a page reload. The choice travels in the URL (`?lang=en`), so it survives a reload and can be shared, without storing anything.
 - **Dark mode**: follows the system preference (`prefers-color-scheme`) automatically, even while the page is open, and can be toggled for the current visit.
 - **Content sections** (numbered like a report: §01, §02 …):
-  - hero with a small interactive demo (*Fig. 1*, see below)
+  - hero with a ten-second mini-experiment (*Fig. 1*, see below)
   - highlights
   - about me with a fact sheet
   - *Werkwijze*: three pillars, each linked to the project that shows it
@@ -21,11 +21,12 @@ A single static page that serves as a digital business card for employers, clien
   - a contact form.
 
   A certificates section appears automatically as soon as certificates are present in the data. Full-width photo interludes appear as soon as photos are added.
-- **The hero demo (Fig. 1)**: a mock web-shop page in a browser frame. "Simuleer een volgend bezoek" moves the add-to-cart button and leaves a dashed outline where it used to be, which is the habit my thesis studies.
-  - Nothing moves until the visitor asks.
-  - It works with the keyboard.
-  - The caption is announced to screen readers.
-  - With reduced motion the button moves instantly.
+- **The hero experiment (Fig. 1)**: a ten-second reaction-time task about the subject of my thesis.
+  - The visitor clicks "In winkelmand" six times while a chart of their own reaction times builds up.
+  - In round 6 the button moves and a lookalike decoy takes its old spot.
+  - A debriefing then explains what happened, with the screen annotated.
+
+  It only starts when the visitor presses Start. It works with the keyboard and is announced to screen readers. The times never leave the browser. The texts live in `content/*.json` → `hero.lab`.
 - **Contact form without visible personal details**: messages go through a configurable endpoint (Formspree-compatible), with a `_gotcha` honeypot against bots. No email address or phone number is shown on the site, to protect my privacy.
 - **Scroll animations**: content settles in as it scrolls into view. While you read:
   - a red progress line under the navigation fills up
@@ -90,7 +91,7 @@ Fields added in v2 (all optional or additive; older entries keep working):
 | `data/timeline.json` | `group` | Entries with the same `group` become one card that shows the roles oldest → newest as steps (used for the three Amac roles). Placed where the newest entry sits |
 | `data/skills.json` | `capabilities: [{ pillar, items }]`, `soft` | Methods & tools per pillar (`pillar` is a pillar `id`), and the soft-skills list. `bars` and `tools` are kept but no longer shown |
 | `data/site.json` | `interludes` | Photo interludes, see below. Empty means nothing is shown |
-| `content/*.json` | `about.facts`, `about.portrait_alt`, `pillars.*`, `hero.demo.*`, `experience.now/details/growth`, `skills.soft`, `nav.*` | Text for the new elements |
+| `content/*.json` | `about.facts`, `about.portrait_alt`, `pillars.*`, `hero.lab.*`, `experience.now/details/growth`, `skills.soft`, `nav.*` | Text for the new elements |
 
 Timeline entries whose `to` is `"present"` get the "Nu" / "Current" marker automatically. Keep the file newest first.
 

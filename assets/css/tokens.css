@@ -98,7 +98,6 @@
   --ease-out: cubic-bezier(.2, .8, .2, 1);
   --dur-fast: .2s;
   --dur: .45s;
-  --dur-move: .65s;                           /* the hero demo's button relocation */
   --reveal-duration: .7s;
 }
 

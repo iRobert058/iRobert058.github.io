@@ -325,26 +325,96 @@
       .join("");
   }
 
-  /* ---------- Hero demo (Fig. 1) ---------- */
-  // Each "return visit" moves the add-to-cart button to the next spot; a dashed ghost marks where it was.
-  // The caption is a polite live region, so the change is announced; with reduced motion the move is instant (CSS).
-  const demo = { visit: 1, spot: 0, spots: 3 };
-  const specimenPage = $("#specimenPage");
-  const specimenBtn = $("#specimenBtn");
+  /* ---------- Hero: Fig. 1, a mini-experiment ---------- */
+  // Six rounds of "click Add to cart as fast as you can". In round 6 the button moves to the top left and a
+  // look-alike decoy takes its old spot; a debriefing then explains what happened. It only starts when the
+  // visitor presses Start, and the reaction times never leave this page.
+  const ROUNDS = 6;
+  const HABIT_SLOT = 5; // bottom right: the button's spot in rounds 1–5
+  const NEW_SLOT = 0; // top left: where it moves in round 6
+  const lab = { phase: "idle", round: 0, times: [], decoy: false, keys: false, shown: 0, timer: 0 };
+  const labEl = $("#lab");
 
-  function renderDemo() {
-    const L = ui[state.lang].hero.demo;
-    $("#specimenVisit").textContent = L.visit.replace("{n}", demo.visit);
-    const moved = demo.visit > 1 ? `<span class="sr-only">${esc(L.moved.replace("{n}", demo.visit))} </span>` : "";
-    $("#specimenCaption").innerHTML = moved + esc(L.caption);
+  function renderLab() {
+    if (!labEl) return;
+    const T = ui[state.lang].hero.lab;
+    const t = lab.times;
+    const trap = lab.round === ROUNDS;
+    labEl.dataset.phase = lab.phase;
+    $("#labRound").textContent = `${lab.round}/${ROUNDS}`;
+
+    // The mock shop: a product line and six actions; one is the target, and in round 6 another one is the decoy
+    const note = (slot) =>
+      lab.phase !== "done" ? "" : slot === HABIT_SLOT ? (lab.decoy ? T.note_hit : T.note_decoy) : slot === NEW_SLOT ? T.note_target : "";
+    const slots = Array.from({ length: 6 }, (_, i) =>
+      i === (trap ? NEW_SLOT : HABIT_SLOT) ? ["target", T.target] : trap && i === HABIT_SLOT ? ["decoy", T.decoy.replace(/€ /g, "€\u00A0")] : ["plain", T.actions[i]]
+    );
+    const screen = $("#labScreen");
+    screen.inert = lab.phase !== "stim";
+    screen.innerHTML = `<p class="lab-product"><span class="lab-thumb" aria-hidden="true"></span>${esc(T.product)}<span class="lab-price">${esc(T.price)}</span></p>
+      <div class="lab-grid">${slots
+        .map(([kind, label], i) => {
+          const attrs = `class="lab-btn is-${kind}"${note(i) ? ` data-note="${esc(note(i))}"` : ""}`;
+          return kind === "plain" ? `<span ${attrs}>${esc(label)}</span>` : `<button ${attrs} type="button" data-kind="${kind}">${esc(label)}</button>`;
+        })
+        .join("")}</div>`;
+
+    // The visitor's own reaction times; round 1 is practice, so the average uses rounds 2–5
+    const max = Math.max(400, ...t) * 1.18; // bars start at zero and scale to the slowest round
+    const base = t.length >= 5 ? (t[1] + t[2] + t[3] + t[4]) / 4 : 0;
+    $("#labBars").innerHTML = Array.from({ length: ROUNDS }, (_, i) => {
+      const v = t[i];
+      const cls = `${i === ROUNDS - 1 ? "is-trap" : ""}${v === undefined ? " is-empty" : ""}`.trim();
+      return `<li${cls ? ` class="${cls}"` : ""} style="--h: ${v === undefined ? 0 : (v / max).toFixed(3)}"${v === undefined ? "" : ` title="${i + 1}: ${Math.round(v)} ms"`}>
+        <i></i><span>${i + 1}</span>${i === ROUNDS - 1 && v !== undefined ? `<b>${Math.round(v)}</b>` : ""}</li>`;
+    }).join("");
+    const mean = $("#labMean");
+    mean.hidden = !base;
+    if (base) {
+      mean.style.setProperty("--h", (base / max).toFixed(3));
+      mean.firstElementChild.textContent = `${T.mean} ${Math.round(base)}`;
+    }
+
+    if (lab.phase === "done") {
+      const extra = Math.round(t[ROUNDS - 1] - base);
+      const key = lab.decoy ? "debrief_decoy" : lab.keys ? "debrief_keys" : extra > 40 ? "debrief_slower" : "debrief_steady";
+      $("#labDebriefText").textContent = T[key].replace("{ms}", extra);
+      $("#labSummary").textContent = T.summary.replace("{list}", t.map((v) => Math.round(v)).join(", "));
+    }
   }
 
-  specimenBtn?.addEventListener("click", () => {
-    specimenPage.dataset.prev = demo.spot;
-    demo.spot = (demo.spot + 1) % demo.spots;
-    demo.visit += 1;
-    specimenPage.dataset.spot = demo.spot;
-    renderDemo();
+  function labNextRound() {
+    lab.round += 1;
+    lab.phase = "fix";
+    renderLab();
+    $("#labStage").focus({ preventScroll: true }); // keyboard users carry on with Tab from here
+    // A fixation cross first, for a random half second or so, as in a real reaction-time task
+    lab.timer = setTimeout(() => {
+      lab.phase = "stim";
+      renderLab();
+      $("#labLive").textContent = ui[state.lang].hero.lab.round.replace("{n}", lab.round).replace("{total}", ROUNDS);
+      requestAnimationFrame(() => (lab.shown = performance.now()));
+    }, 450 + Math.random() * 450);
+  }
+
+  function labStart() {
+    clearTimeout(lab.timer);
+    Object.assign(lab, { round: 0, times: [], decoy: false, keys: false });
+    labNextRound();
+  }
+
+  $("#labStart")?.addEventListener("click", labStart);
+  $("#labAgain")?.addEventListener("click", labStart);
+  $("#labScreen")?.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-kind]");
+    if (!btn || lab.phase !== "stim") return;
+    lab.times.push(performance.now() - lab.shown);
+    if (lab.round < ROUNDS) return labNextRound();
+    lab.decoy = btn.dataset.kind === "decoy";
+    lab.keys = e.detail === 0; // Enter or Space instead of a pointer
+    lab.phase = "done";
+    renderLab();
+    $("#labDebriefTitle").focus();
   });
 
   /* ---------- Reveal animations ---------- */
@@ -379,7 +449,7 @@
       renderSkills();
       renderCertificates();
       renderSocials();
-      renderDemo();
+      renderLab();
     }
     observeReveals();
   }
