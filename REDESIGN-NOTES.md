@@ -69,6 +69,8 @@ Pure logic goes in `assets/js/logic.js` (ES module) so Node can test it: timelin
 - **Section numbers** (`§ 01`…) are computed over the visible sections, so the hidden certificates section leaves no gap. The highlights block is unnumbered: it works as the page's abstract.
 - **New optional fields `imageWidth` / `imageHeight` in `projects.json`** (set for all three), so project images get `width`/`height` and don't shift the layout while loading. Without them the image still renders.
 - **Interludes** render in three fixed slots (see TODOs). The caption under each photo is a credit line; `alt` is the description for screen readers.
+- **Timeline groups:** new optional `group` field in `timeline.json`, set to `"amac"` on the three Amac roles. Grouped roles render as one card at the position of the newest role, titled with the organisation, with the roles as steps oldest → newest. The current step is filled and marked `aria-current="step"`. Each role's description sits in one `<details>`. A group of one renders as a normal row. Logic: `groupTimeline()` in `logic.js`, with tests.
+- **Highlights still say "Junior → Senior Sales Associate met dagverantwoording"** while the timeline title is "Senior Sales Associate · Daily Operations Lead". Not changed (existing copy), just flagging the mismatch between the NL and EN highlight texts: EN mentions Daily Operations Lead, NL doesn't.
 - **Project meta line:** the existing `tag` field already is "type · year", so it's rendered as the meta line. No new year/type fields.
 
 ## Copy to review
@@ -97,6 +99,10 @@ All new strings are drafts in `content/nl.json` and `content/en.json`. NL is the
 | `pillars.items[2]` (working label) | **Organiseren.** Mensen, planning en afspraken bij elkaar brengen, met een deadline. / Sprekers werven en begeleiden voor exec(ut), als Daily Operations Lead de dagelijkse operatie bij Amac draaiende houden en als secretaris de administratie van Stichting Sticky bijhouden. | **Organise.** Bringing people, plans and agreements together, against a deadline. / Recruiting and supporting speakers for exec(ut), keeping daily operations running at Amac as Daily Operations Lead, and keeping the administration of Stichting Sticky as its secretary. |
 | `projects.label_tech` (screen-reader label of the tech list) | Technieken en methoden | Techniques and methods |
 | `interlude.credit` (caption under each photo) | Foto · Robert Karzijn | Photo · Robert Karzijn |
+| `experience.now` | Nu | Current |
+| `experience.details` (summary of each `<details>`) | Toelichting | Details |
+| `experience.group_details` | Wat ik per rol deed | What I did in each role |
+| `experience.group_steps` (label of the step list) | Doorgroei | Progression |
 | `specimen.btn_next` / `btn_reset` | Simuleer een volgend bezoek / Terug naar bezoek 1 | Simulate a return visit / Back to visit 1 |
 
 ## TODOs for Robert

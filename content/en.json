@@ -81,7 +81,11 @@
       "work": "Work",
       "education": "Education",
       "extracurricular": "Extracurricular"
-    }
+    },
+    "now": "Current",
+    "details": "Details",
+    "group_details": "What I did in each role",
+    "group_steps": "Progression"
   },
   "skills": {
     "eyebrow": "Skills",

@@ -355,24 +355,60 @@ a.highlight:hover h3 { color: var(--accent); }
 .interlude figcaption { padding-top: var(--space-3); padding-bottom: var(--space-3); }
 @media (max-width: 560px) { .interlude img { aspect-ratio: 4 / 3; } }
 
-/* ---------- Timeline ---------- */
-.timeline { position: relative; margin-left: 8px; }
-.timeline::before { content: ""; position: absolute; left: 0; top: 6px; bottom: 6px; width: 2px; background: var(--line); border-radius: 2px; }
-.titem { position: relative; padding: 0 0 42px 36px; }
-.titem:last-child { padding-bottom: 0; }
-.titem::before {
-  content: ""; position: absolute; left: -5px; top: 7px; width: 12px; height: 12px;
-  border-radius: 50%; background: var(--bg); border: 3px solid var(--accent);
+/* ---------- Experience ledger ---------- */
+/* Period in the margin column, the role beside it: the same rail as the section heads */
+.ledger { list-style: none; }
+.ledger-row {
+  display: grid; grid-template-columns: var(--rail) minmax(0, 1fr); column-gap: var(--rail-gap);
+  border-top: 1px solid var(--line); padding: var(--space-5) 0;
 }
-.titem .when { font-family: var(--font-mono); font-size: 13px; color: var(--muted); display: inline-block; margin-bottom: 4px; }
-.titem .kind {
-  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase;
-  background: var(--accent-soft); color: var(--accent); border-radius: 6px;
-  padding: 2px 8px; margin-left: 10px; vertical-align: 1px;
+.ledger-row:last-child { border-bottom: 1px solid var(--line); }
+.ledger-side { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); padding-top: 2px; }
+.ledger-when { font-family: var(--font-mono); font-size: 13.5px; color: var(--muted); white-space: nowrap; }
+.now-tag {
+  display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--accent);
 }
-.titem h3 { font-family: var(--font-display); font-size: 20px; font-weight: 600; margin: 2px 0 4px; }
-.titem .org { font-weight: 600; color: var(--muted); font-size: 15px; margin-bottom: 6px; }
-.titem p { font-size: 15.5px; color: var(--muted); max-width: 620px; }
+.now-tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.ledger-main h3 { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -.01em; margin-top: var(--space-1); }
+.ledger-org { color: var(--muted); font-size: var(--fs-sm); }
+.ledger-main details { margin-top: var(--space-3); }
+.ledger-main summary {
+  display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; list-style: none;
+  font-size: 14px; font-weight: 600; color: var(--ink);
+}
+.ledger-main summary::-webkit-details-marker { display: none; }
+.ledger-main summary::after {
+  content: ""; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg); transition: transform var(--dur-fast);
+}
+.ledger-main details[open] summary::after { transform: translateY(1px) rotate(-135deg); }
+.ledger-main summary:hover { color: var(--accent); }
+.ledger-main details p, .roles { margin-top: var(--space-3); max-width: 64ch; color: var(--muted); font-size: var(--fs-sm); }
+.roles dt { color: var(--ink); font-weight: 600; margin-top: var(--space-3); }
+.roles dt:first-child { margin-top: 0; }
+
+/* The progression card: steps on a line, the current one filled */
+.ledger-group .ledger-main { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: var(--space-5); margin: calc(-1 * var(--space-2)) 0; }
+.steps { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-4); margin-top: var(--space-5); position: relative; }
+.steps li { position: relative; padding-top: var(--space-5); display: flex; flex-direction: column; gap: 2px; }
+.steps li::before { content: ""; position: absolute; top: 5px; left: 0; right: calc(-1 * var(--space-4)); height: 1px; background: var(--line-strong); }
+.steps li:last-child::before { right: 0; }
+.steps li::after {
+  content: ""; position: absolute; top: 0; left: 0; width: 11px; height: 11px; border-radius: 50%;
+  background: var(--surface); border: 1.5px solid var(--ink);
+}
+.steps li[aria-current]::after { background: var(--accent); border-color: var(--accent); }
+.step-title { font-weight: 600; font-size: var(--fs-sm); line-height: 1.4; }
+@media (max-width: 760px) {
+  .ledger-row { grid-template-columns: minmax(0, 1fr); row-gap: var(--space-2); }
+  .ledger-side { flex-direction: row; align-items: center; gap: var(--space-3); }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  .steps li { padding: 0 0 0 var(--space-6); }
+  .steps li::before { top: 11px; bottom: calc(-1 * var(--space-4) - 5px); left: 5px; right: auto; width: 1px; height: auto; }
+  .steps li:last-child::before { display: none; }
+  .steps li::after { top: 5px; }
+}
 
 /* ---------- Skills & certificates ---------- */
 .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }

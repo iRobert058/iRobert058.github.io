@@ -198,12 +198,16 @@
   </div>
 </section>
 
-<section id="ervaring">
+<section id="ervaring" class="sect" aria-labelledby="experienceTitle">
   <div class="wrap">
-    <span class="eyebrow" data-t="experience.eyebrow"></span>
-    <h2 data-t="experience.title"></h2>
-    <p class="lead" data-t="experience.lead"></p>
-    <div class="timeline" id="timelineList"></div>
+    <header class="sect-head">
+      <p class="sect-meta"><span class="sect-no"></span><span class="label" data-t="experience.eyebrow"></span></p>
+      <div>
+        <h2 id="experienceTitle" data-t="experience.title"></h2>
+        <p class="lead" data-t="experience.lead"></p>
+      </div>
+    </header>
+    <ol class="ledger" id="timelineList"></ol>
   </div>
 </section>
 

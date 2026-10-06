@@ -81,7 +81,11 @@
       "work": "Werk",
       "education": "Opleiding",
       "extracurricular": "Nevenactiviteit"
-    }
+    },
+    "now": "Nu",
+    "details": "Toelichting",
+    "group_details": "Wat ik per rol deed",
+    "group_steps": "Doorgroei"
   },
   "skills": {
     "eyebrow": "Vaardigheden",

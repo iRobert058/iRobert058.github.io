@@ -5,7 +5,7 @@
    Pure helpers live in logic.js, where they are unit tested.
    ============================================================= */
 
-import { pick, esc, lookup, pad2, assignInterludes } from "./logic.js";
+import { pick, esc, lookup, pad2, assignInterludes, groupTimeline, periodLabel, isCurrent } from "./logic.js";
 
 const state = {
   lang: "nl", // Dutch by default. Nothing is stored: a language or theme choice lasts for this page view.
@@ -169,18 +169,47 @@ function renderInterludes() {
   });
 }
 
+/* One ledger of work, education and extracurricular. Roles that share a `group` (the Amac roles)
+   become one card that shows the progression; descriptions sit in native <details>. */
 function renderTimeline() {
   const L = ui[state.lang].experience;
-  $("#timelineList").innerHTML = timeline
-    .map((item) => {
-      const to = item.period.to === "present" ? L.present : item.period.to;
-      const when = item.period.from === item.period.to ? item.period.from : `${item.period.from} — ${to}`;
-      return `<div class="titem reveal">
-        <span class="when">${esc(when)}</span><span class="kind">${esc(L.kinds[item.kind] ?? item.kind)}</span>
-        <h3>${esc(t(item.title))}</h3>
-        <div class="org">${esc(item.org)}</div>
-        <p>${esc(t(item.description))}</p>
-      </div>`;
+  const when = (period) => `<span class="ledger-when">${esc(periodLabel(period, L.present))}</span>`;
+  const now = (current) => (current ? `<span class="now-tag">${esc(L.now)}</span>` : "");
+  const kind = (k) => `<span class="label">${esc(L.kinds[k] ?? k)}</span>`;
+
+  $("#timelineList").innerHTML = groupTimeline(timeline)
+    .map((entry) => {
+      if (entry.type === "item") {
+        const item = entry.item;
+        return `<li class="ledger-row reveal">
+          <div class="ledger-side">${when(item.period)}${now(isCurrent(item.period))}</div>
+          <div class="ledger-main">
+            ${kind(item.kind)}
+            <h3>${esc(t(item.title))}</h3>
+            <p class="ledger-org">${esc(item.org)}</p>
+            <details><summary>${esc(L.details)}</summary><p>${esc(t(item.description))}</p></details>
+          </div>
+        </li>`;
+      }
+      const first = entry.steps[0];
+      const steps = entry.steps
+        .map(
+          (s) => `<li${isCurrent(s.period) ? ' aria-current="step"' : ""}>
+            <span class="ledger-when">${esc(periodLabel(s.period, L.present))}</span>
+            <span class="step-title">${esc(t(s.title))}</span>
+          </li>`
+        )
+        .join("");
+      const roles = entry.steps.map((s) => `<dt>${esc(t(s.title))}</dt><dd>${esc(t(s.description))}</dd>`).join("");
+      return `<li class="ledger-row ledger-group reveal">
+        <div class="ledger-side">${when(entry.period)}${now(entry.current)}</div>
+        <div class="ledger-main">
+          ${kind(first.kind)}
+          <h3>${esc(first.org)}</h3>
+          <ol class="steps" aria-label="${esc(L.group_steps)}">${steps}</ol>
+          <details><summary>${esc(L.group_details)}</summary><dl class="roles">${roles}</dl></details>
+        </div>
+      </li>`;
     })
     .join("");
 }
