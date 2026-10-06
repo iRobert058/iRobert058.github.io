@@ -4,3 +4,7 @@ node_modules/
 CLAUDE.md
 CLAUDE.local.md
 .claude/
+
+# Redesign working files (local only)
+redesign-prompt.md
+_review/
