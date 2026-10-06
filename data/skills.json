@@ -16,6 +16,26 @@
     "Prototyping",
     { "nl": "Statistische analyse", "en": "Statistical analysis" }
   ],
+  "groups": [
+    {
+      "pillar": "research",
+      "items": ["UX-research", { "nl": "Experimenteel design", "en": "Experimental design" }, { "nl": "Statistische analyse", "en": "Statistical analysis" }, "Qualtrics", "LaTeX / Overleaf"]
+    },
+    {
+      "pillar": "design",
+      "items": ["Prototyping", "HTML / CSS / JS", "Swift / SwiftUI", "Git / GitHub"]
+    },
+    {
+      "pillar": "organise",
+      "items": [{ "nl": "Acquisitie", "en": "Acquisition" }, { "nl": "Relatiebeheer", "en": "Relationship management" }, "Planning", "Events"]
+    }
+  ],
+  "soft": [
+    { "nl": "Communicatie", "en": "Communication" },
+    { "nl": "Leiderschap", "en": "Leadership" },
+    { "nl": "Teamwork", "en": "Teamwork" },
+    { "nl": "Probleemoplossend vermogen", "en": "Problem solving" }
+  ],
   "languages": [
     { "name": { "nl": "Nederlands", "en": "Dutch" }, "level": { "nl": "Moedertaal", "en": "Native" } },
     { "name": { "nl": "Engels", "en": "English" }, "level": { "nl": "Volledige professionele vaardigheid", "en": "Full professional proficiency" } },

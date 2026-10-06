@@ -1,52 +1,147 @@
 /* =============================================================
    DESIGN TOKENS — change the entire visual identity here.
-   Colours, fonts, radius and spacing are defined only in this file.
+   Fonts, colours, type and spacing scales, radii and motion are
+   defined only in this file; main.css only refers to them.
    ============================================================= */
 
-:root {
-  /* Colours — light theme */
-  --bg: #FCFCFB;
-  --surface: #FFFFFF;
-  --ink: #17181C;
-  --muted: #5A5E66;
-  --line: #E8E7E3;
-  --accent: #E23C46;
-  --accent-contrast: #FFFFFF;
-  --accent-soft: #FCEDEE;
+/* ---------- Fonts (self-hosted, OFL — see assets/fonts/LICENSE-OFL.txt) ---------- */
+/* Variable Latin subsets from Fontsource. Latin covers Dutch, English, German and the euro sign. */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal; font-weight: 200 800; font-display: swap;
+  src: url("../fonts/bricolage-grotesque-latin-wght.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url("../fonts/hanken-grotesk-latin-wght.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Spline Sans Mono";
+  font-style: normal; font-weight: 300 700; font-display: swap;
+  src: url("../fonts/spline-sans-mono-latin-wght.woff2") format("woff2");
+}
 
-  /* Hero video stage — always dark, matched to the intro video in both themes */
-  --stage-bg: #0D0F10;
-  --stage-ink: #ECECEA;
-  --stage-accent: #FF5C63;
+:root {
+  color-scheme: light;
+
+  /* Colours — light theme (the paper) */
+  --bg: #F6F6F3;
+  --surface: #FFFFFF;
+  --ink: #131417;
+  --muted: #5B5F67;
+  --line: #E2E2DC;
+  --line-strong: #C9C9C2;
+  --accent: #E23C46;          /* brand red: large text, underlines, numerals, dots */
+  --accent-strong: #C42D38;   /* the same red, deepened to pass WCAG AA for small text and behind white text */
+  --accent-contrast: #FFFFFF; /* text on a filled accent */
+  --accent-soft: #FCEDEE;
+  --ok: #1E7A46;
+  --err: #B42318;
+
+  /* Ink band — the dark sections (projects, contact). Dark in both themes. */
+  --band-bg: #131417;
+  --band-surface: #1B1C20;
+  --band-ink: #EDEDEA;
+  --band-muted: #A4A8AF;
+  --band-line: #2B2D32;
+  --band-line-strong: #3E4047;
+  --band-accent: #FF5C63;
+  --band-accent-contrast: #0E0F12;
+  --band-ok: #6FD49A;
+  --band-err: #FF9C93;
 
   /* Effects */
-  --shadow: 0 2px 8px rgba(23, 24, 28, .05), 0 12px 32px rgba(23, 24, 28, .06);
-
-  /* Shape & size */
-  --radius: 16px;
-  --radius-sm: 10px;
-  --maxw: 1080px;
-  --section-gap: 104px;
+  --shadow-window: 0 1px 2px rgba(19, 20, 23, .06), 0 18px 48px -12px rgba(19, 20, 23, .18);
+  --focus-ring: 2px solid var(--accent);
 
   /* Typography */
   --font-display: "Bricolage Grotesque", system-ui, sans-serif;
   --font-body: "Hanken Grotesk", system-ui, sans-serif;
   --font-mono: "Spline Sans Mono", ui-monospace, monospace;
+  --fs-xs: 12.5px;   /* mono labels */
+  --fs-sm: 15px;
   --fs-body: 17px;
+  --fs-lg: 19px;
+  --fs-h3: clamp(20px, 1.6vw + 12px, 26px);
+  --fs-h2: clamp(34px, 4.2vw + 14px, 60px);
+  --fs-h1: clamp(42px, 6vw + 14px, 92px);
+  --fs-figure: clamp(44px, 4vw + 20px, 72px); /* big numerals */
   --lh-body: 1.65;
+  --lh-tight: 1.04;
+  --tracking-display: -.025em;
+  --tracking-label: .08em;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --section-gap: clamp(72px, 7vw, 112px);
+
+  /* Shape & layout */
+  --radius: 14px;
+  --radius-sm: 8px;
+  --radius-pill: 999px;
+  --maxw: 1200px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --nav-h: 64px;
+  --rail: 200px;      /* left margin column of section heads (labels) */
+  --rail-gap: clamp(24px, 4vw, 64px);
 
   /* Motion */
-  --ease: cubic-bezier(.6, 0, .2, 1);
-  --reveal-duration: .7s;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --dur-fast: .18s;
+  --dur: .45s;
+  --dur-slow: .8s;
 }
 
-[data-theme="dark"] {
-  --bg: #121316;
-  --surface: #1A1C20;
-  --ink: #ECECEA;
-  --muted: #9CA0A8;
-  --line: #2A2D33;
+/* Dark theme. It follows the system unless the visitor picked a theme with the toggle,
+   so the same values appear twice: once for the media query, once for the explicit choice. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #111214;
+    --surface: #18191C;
+    --ink: #ECECE8;
+    --muted: #A2A6AD;
+    --line: #26282C;
+    --line-strong: #3A3C42;
+    --accent: #FF5C63;
+    --accent-strong: #FF5C63;
+    --accent-contrast: #0E0F12;
+    --accent-soft: #2A1D1F;
+    --ok: #6FD49A;
+    --err: #FF9C93;
+    --band-bg: #08090A;
+    --band-surface: #111214;
+    --band-line: #222428;
+    --band-line-strong: #34363C;
+    --shadow-window: 0 1px 2px rgba(0, 0, 0, .4), 0 18px 48px -12px rgba(0, 0, 0, .6);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111214;
+  --surface: #18191C;
+  --ink: #ECECE8;
+  --muted: #A2A6AD;
+  --line: #26282C;
+  --line-strong: #3A3C42;
   --accent: #FF5C63;
+  --accent-strong: #FF5C63;
+  --accent-contrast: #0E0F12;
   --accent-soft: #2A1D1F;
-  --shadow: 0 2px 8px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .35);
+  --ok: #6FD49A;
+  --err: #FF9C93;
+  --band-bg: #08090A;
+  --band-surface: #111214;
+  --band-line: #222428;
+  --band-line-strong: #34363C;
+  --shadow-window: 0 1px 2px rgba(0, 0, 0, .4), 0 18px 48px -12px rgba(0, 0, 0, .6);
 }
