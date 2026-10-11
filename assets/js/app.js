@@ -381,6 +381,20 @@ const io =
     : null;
 if (io) document.documentElement.classList.add("reveal-io");
 
+// The portrait gets its own, later trigger: it uncovers once a third of it is in view, so the reveal is seen, not missed
+if (io) {
+  const photoIo = new IntersectionObserver(
+    (entries) =>
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("in");
+        photoIo.unobserve(e.target);
+      }),
+    { threshold: 0.35 }
+  );
+  document.querySelectorAll(".reveal-photo").forEach((el) => photoIo.observe(el));
+}
+
 let revealsObserved = false;
 function observeReveals() {
   if (!io) return;

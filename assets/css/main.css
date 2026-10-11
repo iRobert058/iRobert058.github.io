@@ -265,8 +265,10 @@ a.glass:active, button.glass:active { transform: scale(.97); }
 .sect-head .lead { margin-top: var(--space-2); }
 
 /* ---------- About ---------- */
-.about { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
-.portrait { border-radius: var(--radius-lg); overflow: hidden; background: var(--canvas-alt); position: sticky; top: calc(var(--nav-h) + var(--space-6)); }
+/* Narrative on the left, portrait on the right (in the DOM the portrait comes first, so phones show it above the text) */
+.about { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
+.about-copy { grid-column: 1; grid-row: 1; }
+.portrait { grid-column: 2; grid-row: 1; border-radius: var(--radius-lg); overflow: hidden; background: var(--canvas-alt); position: sticky; top: calc(var(--nav-h) + var(--space-6)); }
 .portrait img { width: 100%; aspect-ratio: 960 / 1044; object-fit: cover; }
 .about-text { display: grid; gap: var(--space-5); max-width: 62ch; }
 .about-text p:first-child { font-size: var(--fs-lead); line-height: var(--lh-lead); color: var(--ink); }
@@ -278,6 +280,7 @@ a.glass:active, button.glass:active { transform: scale(.97); }
 .facts dd { font-weight: 500; }
 @media (max-width: 760px) {
   .about { grid-template-columns: minmax(0, 1fr); }
+  .about-copy, .portrait { grid-column: auto; grid-row: auto; }
   .portrait { position: static; max-width: 420px; }
   .facts div { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
 }
@@ -506,6 +509,15 @@ details p, .roles { color: var(--ink-muted); padding: var(--space-2) 0 var(--spa
   .reveal-io .reveal.in { opacity: 1; transform: none; }
   .hero-title em::after { animation: underline-draw var(--dur-scale) .45s var(--ease-settle) both; }
   .session-stage { animation: stage-rise var(--dur-scale) .2s var(--ease-settle) both; }
+  /* The portrait uncovers from the bottom while the photo settles from a slight zoom (app.js adds .in once a third is in view).
+     The clip sits on the <img>, never on the observed <figure>: Chromium counts a target's own clip-path,
+     so a fully clipped figure would never intersect and the photo would stay hidden. */
+  .reveal-io .reveal-photo { background: transparent; } /* no grey placeholder box ahead of the photo */
+  .reveal-io .reveal-photo img {
+    clip-path: inset(100% 0 0 0); transform: scale(1.18) translateY(6%);
+    transition: clip-path 1.2s var(--ease-settle), transform 1.8s var(--ease-settle);
+  }
+  .reveal-io .reveal-photo.in img { clip-path: inset(0); transform: none; }
 }
 @keyframes underline-draw { from { clip-path: inset(0 100% 0 0); } }
 @keyframes stage-rise { from { opacity: 0; transform: translateY(32px) scale(.98); } }
