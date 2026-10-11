@@ -81,6 +81,11 @@ function applyUIStrings() {
   });
 }
 
+/* ---------- Icons: one drawn set, same stroke as the nav icons ---------- */
+const ICONS = { arrow: "M5 12h14M13 6l6 6-6 6", out: "M7 17 17 7M9 7h8v8" };
+const icon = (name) =>
+  `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[name]}" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
 /* ---------- Section renderers ---------- */
 function renderHighlights() {
   $("#highlightsGrid").innerHTML = highlights
@@ -90,8 +95,8 @@ function renderHighlights() {
         <h3 class="tile-title">${esc(t(h.title))}</h3>
         <p>${esc(t(h.text))}</p>`;
       return h.link
-        ? `<a class="tile reveal" href="${esc(h.link)}"${external ? ' target="_blank" rel="noopener"' : ""}>${inner}<span class="tile-arrow" aria-hidden="true">${external ? "↗" : "→"}</span></a>`
-        : `<div class="tile reveal">${inner}</div>`;
+        ? `<a class="tile" href="${esc(h.link)}"${external ? ' target="_blank" rel="noopener"' : ""}>${inner}<span class="tile-arrow">${icon(external ? "out" : "arrow")}</span></a>`
+        : `<div class="tile">${inner}</div>`;
     })
     .join("");
 }
@@ -106,7 +111,7 @@ function renderAbout() {
 function renderPillars() {
   $("#pillarList").innerHTML = ui[state.lang].pillars.items
     .map(
-      (p, i) => `<li class="pillar reveal">
+      (p, i) => `<li class="pillar">
         <span class="pillar-no" aria-hidden="true">${i + 1}</span>
         <h3 class="title">${esc(p.name)}</h3>
         <p class="pillar-promise">${esc(p.promise)}</p>
@@ -145,7 +150,7 @@ function renderProjects() {
       // Only projects with a detail page (the optional `page` field) get a link; it says "Lees meer"
       // only when that page has more to tell (a `story`), otherwise just "Projectpagina"
       const more = p.page
-        ? `<a class="text-link" href="${esc(withLang(p.page, state.lang))}">${esc(L[projectLinkKey(p, state.lang)])}<span class="sr-only">: ${esc(t(p.title))}</span> <span aria-hidden="true">→</span></a>`
+        ? `<a class="text-link" href="${esc(withLang(p.page, state.lang))}">${esc(L[projectLinkKey(p, state.lang)])}<span class="sr-only">: ${esc(t(p.title))}</span>${icon("arrow")}</a>`
         : "";
       return `<li class="project">
         ${projectVisual(p, L)}
@@ -188,7 +193,7 @@ function renderProjectPage() {
   if (p.cta.url.startsWith("http")) Object.assign(cta, { target: "_blank", rel: "noopener" });
   $("#ppMore").innerHTML = projects
     .filter((x) => x.id !== id && x.page)
-    .map((x) => `<li><a href="${esc(withLang(x.page, state.lang))}"><span class="label">${esc(t(x.tag))}</span><span class="more-title">${esc(t(x.title))}</span><span class="tile-arrow" aria-hidden="true">→</span></a></li>`)
+    .map((x) => `<li><a href="${esc(withLang(x.page, state.lang))}"><span class="label">${esc(t(x.tag))}</span><span class="more-title">${esc(t(x.title))}</span><span class="tile-arrow">${icon("arrow")}</span></a></li>`)
     .join("");
 }
 
@@ -211,18 +216,17 @@ function renderInterludes() {
    become one featured card that shows the progression; descriptions sit in native <details>. */
 function renderTimeline() {
   const L = ui[state.lang].experience;
-  const when = (period) => `<span class="when">${esc(periodLabel(period, L.present))}</span>`;
-  const now = (current) => (current ? `<span class="now-tag">${esc(L.now)}</span>` : "");
-  const kind = (k) => `<span class="label">${esc(L.kinds[k] ?? k)}</span>`;
+  // One meta line per entry: "2024 – heden · Werk", with the "Nu" marker beneath when it's still running
+  const meta = (period, k, current) =>
+    `<p class="when">${esc(periodLabel(period, L.present))} · ${esc(L.kinds[k] ?? k)}</p>${current ? `<span class="now-tag">${esc(L.now)}</span>` : ""}`;
 
   $("#timelineList").innerHTML = groupTimeline(timeline)
     .map((entry) => {
       if (entry.type === "item") {
         const item = entry.item;
-        return `<li class="row reveal">
-          <div class="row-side">${when(item.period)}${now(isCurrent(item.period))}</div>
+        return `<li class="row">
+          <div class="row-side">${meta(item.period, item.kind, isCurrent(item.period))}</div>
           <div class="row-main">
-            ${kind(item.kind)}
             <h3 class="row-title">${esc(t(item.title))}</h3>
             <p class="row-org">${esc(item.org)}</p>
             <details><summary>${esc(L.details)}</summary><p>${esc(t(item.description))}</p></details>
@@ -239,10 +243,9 @@ function renderTimeline() {
         )
         .join("");
       const roles = entry.steps.map((s) => `<dt>${esc(t(s.title))}</dt><dd>${esc(t(s.description))}</dd>`).join("");
-      return `<li class="row row-group reveal">
-        <div class="row-side">${when(entry.period)}${now(entry.current)}</div>
+      return `<li class="row row-group">
+        <div class="row-side">${meta(entry.period, first.kind, entry.current)}</div>
         <div class="row-main">
-          ${kind(first.kind)}
           <h3 class="row-title">${esc(first.org)}</h3>
           <ol class="steps" aria-label="${esc(L.group_steps)}">${steps}</ol>
           <details><summary>${esc(L.group_details)}</summary><dl class="roles">${roles}</dl></details>
@@ -258,8 +261,8 @@ function renderSkills() {
   $("#capabilityList").innerHTML = skillGroups(skills)
     .map((g) => {
       const index = pillars.findIndex((p) => p.id === g.pillar);
-      const head = index >= 0 ? `<h4 class="cap-head"><span aria-hidden="true">${index + 1}</span> ${esc(pillars[index].name)}</h4>` : "";
-      return `<div class="capability reveal">${head}<ul>${g.items.map((c) => `<li>${esc(t(c))}</li>`).join("")}</ul></div>`;
+      const head = index >= 0 ? `<h4 class="cap-head">${esc(pillars[index].name)}</h4>` : "";
+      return `<div class="capability">${head}<ul>${g.items.map((c) => `<li>${esc(t(c))}</li>`).join("")}</ul></div>`;
     })
     .join("");
   $("#softList").innerHTML = softSkills(skills).map((s) => `<li>${esc(t(s))}</li>`).join("");
@@ -283,7 +286,7 @@ function renderCertificates() {
 
 function renderSocials() {
   $("#socialLinks").innerHTML = (site.socials || [])
-    .map((s) => `<li><a class="text-link" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)} <span aria-hidden="true">↗</span></a></li>`)
+    .map((s) => `<li><a class="text-link" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}${icon("out")}</a></li>`)
     .join("");
 }
 
