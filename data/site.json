@@ -17,10 +17,10 @@
     "width": 1920,
     "height": 1080,
     "cues": [
-      { "at": 0.25, "label": { "nl": "cursor komt in beeld", "en": "cursor enters" } },
-      { "at": 0.75, "label": { "nl": "trekt een tekstvak", "en": "draws a text box" } },
-      { "at": 2.0, "label": { "nl": "zet de punt", "en": "places the full stop" } },
-      { "at": 2.3, "label": { "nl": "typt een rol eronder", "en": "types a role beneath" } }
+      { "at": 0.25, "label": { "nl": "cursor verschijnt", "en": "cursor appears" } },
+      { "at": 0.75, "label": { "nl": "tekstvak komt naar voren", "en": "draws a text box" } },
+      { "at": 2.0, "label": { "nl": "punt wordt geplaatst", "en": "places a period" } },
+      { "at": 2.3, "label": { "nl": "typt een rol", "en": "types a banner" } }
     ]
   }
 }

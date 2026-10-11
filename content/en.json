@@ -5,7 +5,7 @@
     "experience": "Experience",
     "skills": "Skills",
     "contact": "Contact",
-    "skip": "Skip to content",
+    "skip": "Skip",
     "label": "Main menu",
     "menu": "Menu",
     "theme": "Dark theme",
@@ -14,16 +14,16 @@
   "hero": {
     "eyebrow": "Human-Computer Interaction · UX Research",
     "title": "Good technology starts <br>with a good <em>conversation</em>.",
-    "sub": "Master's student in Human-Computer Interaction, holding a bachelor's degree in Information Sciences from Utrecht University. I'm at my best in between parties: understanding stakeholders and users, translating requirements into design and bringing people along from research and speaker acquisition to the shop floor at Amac.",
+    "sub": "Master's student in Human-Computer Interaction, with a bachelor's degree in Information Sciences at Utrecht University. I'm at my best in between the lines: understanding stakeholders and users, translating requirements into design and bringing people along together along the way. From research and speaker acquisition to the shop floor at Amac.",
     "cta_projects": "View my projects",
     "cta_cv": "Download CV (PDF)",
     "cta_github": "View my GitHub ↗",
-    "honest": "This site uses no cookies, no trackers and no deceptive patterns, the latter happens to be my field of research ;).",
+    "honest": "This site uses no cookies, no trackers and no deceptive patterns, the last one happens to be my field of research ;).",
     "honest_btn": "Got it",
-    "video_pause": "Pause intro",
-    "video_play": "Play intro",
-    "video_replay": "Replay intro",
-    "now": "Right now",
+    "video_pause": "Pause",
+    "video_play": "Play",
+    "video_replay": "Replay",
+    "now": "Now",
     "session_title": "Session log · intro"
   },
   "highlights": {
@@ -35,9 +35,9 @@
     "eyebrow": "About me",
     "title": "Where people and technology meet",
     "paragraphs": [
-      "I'm Robert Karzijn. My interest lies at the intersection of people and technology: how people use interfaces, which habits form along the way, and how design (deliberately or not) plays into that. In my bachelor's thesis I experimentally investigated how web shops can disrupt procedural memory by relocating interface elements.",
-      "Alongside my studies I work at Amac in Apeldoorn, where I progressed from Junior Sales Associate to Daily Operations Lead in two years and worked across several branches to share knowledge and experience. That combination keeps me sharp: theory on user behaviour in the lecture hall, and real users in front of me on the shop floor every day.",
-      "I'm currently pursuing a master's in Human-Computer Interaction, focusing on cognitive UX and ethical interface design. Outside study and work: photography, audio and the occasional evening of gaming."
+      "I'm Robert Karzijn. My interest is at the intersection of people and technology: how people use interfaces, which habits form along the way and how design (deliberately or not) plays into that. In my bachelor's thesis I experimentally investigated how web shops can disrupt procedural memory by relocating interface elements.",
+      "Alongside my studies I work parttime at Amac in Apeldoorn, where I progressed from Junior Sales Associate to Senior Sales Associate with Daily Operations Lead in two years and worked across several branches to share knowledge and experience. That combination keeps me sharp: theory on user behaviour in the lecture hall, and real users in front of me on the shop floor parttime.",
+      "I'm currently following a master's in Human-Computer Interaction. Outside study and work: photography, going to the gym and the occasional evening of gaming."
     ],
     "portrait_alt": "Portrait photo of Robert Karzijn",
     "facts": [
@@ -47,7 +47,7 @@
       },
       {
         "k": "Working",
-        "v": "Daily Operations Lead at Amac, Apeldoorn"
+        "v": "Senior Sales Associate with Daily Operations Lead at Amac, Apeldoorn"
       },
       {
         "k": "Research",
@@ -59,14 +59,14 @@
       },
       {
         "k": "Beyond that",
-        "v": "Photography, audio and the occasional game"
+        "v": "Photography, going to the gym and the occasional evening of gaming"
       }
     ]
   },
   "projects": {
     "eyebrow": "Featured projects",
     "title": "From research to the stage",
-    "lead": "Three projects that show how I work: empirical research, designing and building an app myself, and organising against a deadline.",
+    "lead": "Three projects that show how I work: empirical research, designing and building an app myself and organising against a deadline.",
     "label_problem": "Problem",
     "label_role": "My role",
     "label_result": "Outcome",
