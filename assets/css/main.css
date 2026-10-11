@@ -71,21 +71,6 @@ p { text-wrap: pretty; }
   a.glass:hover::before, button.glass:hover::before { opacity: 1; background: radial-gradient(120% 90% at 50% 0%, var(--glass-highlight), transparent 70%); }
 }
 a.glass:active, button.glass:active { transform: scale(.97); }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass, .bar-group, .bar-panel { background: var(--glass-solid); }
-}
-@media (prefers-reduced-transparency: reduce) {
-  .glass, .bar-group, .bar-panel { background: var(--glass-solid); -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .glass::before { display: none; }
-}
-@media (prefers-contrast: more) {
-  .glass, .bar-group, .bar-panel {
-    background: var(--glass-solid); -webkit-backdrop-filter: none; backdrop-filter: none;
-    box-shadow: 0 0 0 1.5px var(--glass-solid-border);
-  }
-  .glass::before { display: none; }
-}
-
 /* ---------- Buttons and links ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
@@ -354,7 +339,7 @@ a.project-visual img { transition: transform var(--dur-scale) var(--ease-settle)
   position: absolute; left: var(--space-4); bottom: var(--space-4);
   display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; padding: 0 var(--space-4) 0 var(--space-3);
   border-radius: var(--radius-pill); font-weight: 600; font-size: 14px; color: #111114;
-  --glass-tint-strong: rgba(255, 255, 255, .86); --glass-highlight: rgba(255, 255, 255, .55);
+  --glass-tint-strong: rgba(255, 255, 255, .86); --glass-highlight: rgba(255, 255, 255, .55); --glass-solid: #FFFFFF; /* always light: it sits on a photo */
 }
 .play-chip svg { width: 16px; height: 16px; }
 .project-body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 6vw, 96px); margin-top: clamp(32px, 4vw, 56px); align-items: start; }
@@ -519,4 +504,25 @@ details p, .roles { color: var(--ink-muted); padding: var(--space-2) 0 var(--spa
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .bar.tucked { transform: none; } /* the bar stays put rather than jumping */
+}
+
+/* ---------- Glass fallbacks ----------
+   Last in the file so they win over every component above: a solid surface whenever transparency could hurt
+   legibility (reduced transparency, increased contrast) or isn't supported at all. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass, .bar-group, .bar-panel { background: var(--glass-solid); }
+  .pill-cta { background: var(--accent-strong); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .bar-group, .bar-panel { background: var(--glass-solid); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .glass::before { display: none; }
+  .pill-cta { background: var(--accent-strong); }
+}
+@media (prefers-contrast: more) {
+  .glass, .bar-group, .bar-panel {
+    background: var(--glass-solid); -webkit-backdrop-filter: none; backdrop-filter: none;
+    box-shadow: 0 0 0 1.5px var(--glass-solid-border);
+  }
+  .glass::before { display: none; }
+  .pill-cta { background: var(--accent-strong); }
 }

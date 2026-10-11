@@ -341,6 +341,7 @@ function initSession() {
       session.userPaused = true;
       v.pause();
     }
+    syncSession(); // relabel at once instead of waiting for the media event
   });
   ["play", "pause", "ended", "timeupdate"].forEach((type) => v.addEventListener(type, syncSession));
 
