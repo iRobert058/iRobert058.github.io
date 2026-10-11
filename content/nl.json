@@ -23,7 +23,8 @@
     "video_pause": "Intro pauzeren",
     "video_play": "Intro afspelen",
     "video_replay": "Intro opnieuw afspelen",
-    "now": "Op dit moment"
+    "now": "Op dit moment",
+    "session_title": "Sessielog · intro"
   },
   "highlights": {
     "eyebrow": "Hoogtepunten",
@@ -71,7 +72,8 @@
     "label_result": "Resultaat",
     "watch_trailer": "Bekijk de trailer",
     "label_tech": "Technieken en methoden",
-    "read_more": "Lees meer"
+    "read_more": "Lees meer",
+    "project_page": "Projectpagina"
   },
   "experience": {
     "eyebrow": "Ervaring & opleiding",

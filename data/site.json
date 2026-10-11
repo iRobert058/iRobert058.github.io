@@ -9,5 +9,18 @@
   ],
   "interludes": [
     { "src": "", "alt": { "nl": "", "en": "" } }
-  ]
+  ],
+  "heroVideo": {
+    "av1": "assets/video/hero-intro-av1.mp4",
+    "h264": "assets/video/hero-intro.mp4",
+    "poster": "assets/img/hero-end.webp",
+    "width": 1920,
+    "height": 1080,
+    "cues": [
+      { "at": 0.5, "label": { "nl": "cursor komt in beeld", "en": "cursor enters" } },
+      { "at": 2.5, "label": { "nl": "trekt een tekstvak", "en": "draws a text box" } },
+      { "at": 4.5, "label": { "nl": "zet de punt", "en": "places the full stop" } },
+      { "at": 6.8, "label": { "nl": "typt een rol eronder", "en": "types a role beneath" } }
+    ]
+  }
 }

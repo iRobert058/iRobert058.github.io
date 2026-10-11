@@ -23,7 +23,8 @@
     "video_pause": "Pause intro",
     "video_play": "Play intro",
     "video_replay": "Replay intro",
-    "now": "Right now"
+    "now": "Right now",
+    "session_title": "Session log · intro"
   },
   "highlights": {
     "eyebrow": "Highlights",
@@ -71,7 +72,8 @@
     "label_result": "Outcome",
     "watch_trailer": "Watch the trailer",
     "label_tech": "Techniques and methods",
-    "read_more": "Read more"
+    "read_more": "Read more",
+    "project_page": "Project page"
   },
   "experience": {
     "eyebrow": "Experience & education",
