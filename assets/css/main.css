@@ -179,9 +179,19 @@ a.glass:active, button.glass:active { transform: scale(.97); }
 /* ---------- Hero ---------- */
 .hero { padding: calc(var(--nav-h) + clamp(32px, 6vw, 88px)) 0 var(--section-pad); }
 .hero-field { margin-bottom: var(--space-5); }
+/* Two lines on every screen wide enough for the forced break: the size is capped so the longest line fits the column.
+   --hero-em is the width of the longest headline line in em (measured: Dutch 10.13, English 11.46, plus a small margin).
+   If hero.title changes in content/*.json, re-measure these two values. */
+.hero > .wrap { container-type: inline-size; }
 .hero-title {
+  --hero-em: 10.35;
   font-family: var(--font-display); font-size: var(--fs-hero); font-weight: 650;
   letter-spacing: var(--track-hero); line-height: var(--lh-display); text-wrap: balance;
+}
+.hero-title:lang(en) { --hero-em: 11.7; }
+/* Behind @supports: with var() inside, an unsupported value would drop the headline to body size instead of the size above */
+@supports (font-size: 1cqi) {
+  .hero-title { font-size: min(var(--fs-hero), 100cqi / var(--hero-em)); }
 }
 .hero-title em { font-style: normal; color: var(--accent); position: relative; white-space: nowrap; }
 /* The drawn underline: a hand-drawn stroke that draws once on load, sits still under reduced motion */
@@ -253,6 +263,7 @@ a.glass:active, button.glass:active { transform: scale(.97); }
 }
 @media (max-width: 560px) {
   .hero-title br { display: none; } /* the forced break suits wide screens; on phones the line wraps on its own */
+  .hero-title, .hero-title:lang(en) { font-size: var(--fs-hero); }
   .actions .btn { flex: 1 1 auto; }
   .honest { flex-wrap: wrap; border-radius: var(--radius); padding: var(--space-3) var(--space-4); }
   .session-stage { border-radius: var(--radius); }
