@@ -252,6 +252,7 @@ The page says: *this is someone who studies how people actually use interfaces, 
 - **Display size:** the hero goes up to 124 px, above the craft floor's 96 px guideline, because the brief asks for Apple-scale headlines; it stays two lines at 1440 and wraps cleanly on phones.
 - **Menu sheet opacity** 93 % (light) / 92 % (dark), thicker than the other glass, because it's the largest glass surface and must stay legible even where a browser draws no blur.
 - **Portrait on the right with its own reveal** (your request after the run): the clip sits on the `<img>`, not on the observed `<figure>`, because Chromium's IntersectionObserver counts an element's own `clip-path`; a fully clipped figure never intersected, so the photo stayed hidden in Chromium (WebKit didn't show the problem). Verified in Chromium and WebKit at 1440 and 390, and under reduced motion.
+- **New thesis illustration** (your request after the run): `assets/img/project-thesis-habit.svg`, hand-written SVG in the site's dark-stage colours. It shows the mechanism the thesis studies (two visits, the button moved, the cursor still clicking the old spot), not results. It has no text inside, because fonts don't load in an `<img>`. The old `project-thesis.svg` stays in `assets/img/`. The content-preservation test now has an explicit `retired` list with a reason per string for the old path and the old alt text, so any other lost string still fails.
 - **Impeccable's surface brief** (`.impeccable/surfaces/index-html.md`, local only) was written after the build instead of before it; the direction itself was settled in this file and confirmed by you before any code.
 
 ## Skills used
@@ -275,6 +276,7 @@ Commands from the brief I didn't run by name: `craft` (deprecated alias in this 
 | `site.heroVideo.cues[1]` | trekt een tekstvak | draws a text box |
 | `site.heroVideo.cues[2]` | zet de punt | places the full stop |
 | `site.heroVideo.cues[3]` | typt een rol eronder | types a role beneath |
+| `projects[thesis].imageAlt` (replaces "Screenshot van de experimentomgeving") | Illustratie: twee bezoeken aan dezelfde productpagina. Bij het tweede bezoek staat de winkelwagenknop ergens anders, maar de cursor klikt nog op de oude plek. | Illustration: two visits to the same product page. On the second visit the add-to-cart button has moved, but the cursor still clicks where it used to be. |
 
 ## TODOs for you
 

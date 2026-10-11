@@ -11,10 +11,10 @@
       "nl": "Mijn bachelorthesis onderzoekt hoe webshops procedureel geheugen (de \"automatische piloot\" van gebruikers) kunnen verstoren en uitbuiten door interface-elementen te verplaatsen.",
       "en": "My bachelor's thesis investigates how web shops can disrupt and exploit procedural memory (users' \"autopilot\") by relocating interface elements."
     },
-    "image": "assets/img/project-thesis.svg",
-    "imageWidth": 1800,
-    "imageHeight": 1240,
-    "imageAlt": { "nl": "Screenshot van de experimentomgeving", "en": "Screenshot of the experiment environment" },
+    "image": "assets/img/project-thesis-habit.svg",
+    "imageWidth": 1460,
+    "imageHeight": 820,
+    "imageAlt": { "nl": "Illustratie: twee bezoeken aan dezelfde productpagina. Bij het tweede bezoek staat de winkelwagenknop ergens anders, maar de cursor klikt nog op de oude plek.", "en": "Illustration: two visits to the same product page. On the second visit the add-to-cart button has moved, but the cursor still clicks where it used to be." },
     "problem": {
       "nl": "Deceptive patterns worden vooral bestudeerd als visueel ontwerp, maar veel manipulatie werkt via gewoontes: je klikt waar je gisteren ook klikte. Over dat cognitieve mechanisme bestaat nog weinig empirisch onderzoek.",
       "en": "Deceptive patterns are mostly studied as visual design, but much of the manipulation works through habit: you click where you've clicked yesterday. Little empirical research exists on that cognitive mechanism."

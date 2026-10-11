@@ -18,9 +18,20 @@ for (const dir of ["data", "content"]) {
   }
 }
 
+// Strings that were retired on purpose, each with the reason. Anything else that disappears fails the test.
+const retired = new Map([
+  ["assets/img/project-thesis.svg", "V3.0: the thesis illustration was replaced (the old file stays in assets/img/)"],
+  ["Screenshot van de experimentomgeving", "V3.0: alt text of the replaced thesis illustration"],
+  ["Screenshot of the experiment environment", "V3.0: alt text of the replaced thesis illustration"],
+]);
+
 test("every V2.1 content string still exists in the JSON", () => {
-  const missing = baseline.filter((s) => !current.has(s));
+  const missing = baseline.filter((s) => !current.has(s) && !retired.has(s));
   assert.deepEqual(missing, [], `${missing.length} string(s) from V2.1 are gone`);
+});
+
+test("retired strings really were in the V2.1 snapshot", () => {
+  for (const s of retired.keys()) assert.ok(baseline.includes(s), `not in the snapshot: ${s}`);
 });
 
 test("the baseline snapshot is not empty", () => {

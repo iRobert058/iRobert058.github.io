@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="70 90 1460 820" width="1460" height="820">
+  <!-- Thesis illustration: two visits to the same product page. On the second visit the add-to-cart
+       button has moved, but the cursor clicks where it used to be. Colours follow the site's dark stage. -->
+  <defs>
+    <pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.6" fill="#FFFFFF" fill-opacity=".05"/>
+    </pattern>
+    <path id="cursor" d="M0 0V40L10.5 30.5L17.5 46L24.5 43L17.5 28H32Z" fill="#F4F4F6" stroke="#0B0B0D" stroke-width="2.5" stroke-linejoin="round"/>
+    <marker id="head" viewBox="0 0 12 12" refX="7" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+      <path d="M1 1.5L9.5 6L1 10.5" fill="none" stroke="#FF5C63" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <!-- One product page, drawn once and placed twice -->
+    <g id="page">
+      <rect x="0" y="0" width="580" height="660" rx="28" fill="#1C1C20" stroke="#2E2E34" stroke-width="2"/>
+      <rect x="1" y="1" width="578" height="56" rx="27" fill="#232328"/>
+      <rect x="0" y="56" width="580" height="2" fill="#2E2E34"/>
+      <rect x="160" y="18" width="260" height="20" rx="10" fill="#2E2E34"/>
+      <rect x="40" y="98" width="240" height="240" rx="18" fill="#2A2A30"/>
+      <path d="M100 280l50-62 40 46 24-28 46 44z" fill="#34343B"/>
+      <circle cx="210" cy="168" r="18" fill="#34343B"/>
+      <rect x="310" y="112" width="210" height="18" rx="9" fill="#3E3E46"/>
+      <rect x="310" y="146" width="160" height="18" rx="9" fill="#3E3E46"/>
+      <rect x="310" y="204" width="110" height="28" rx="14" fill="#5A5A63"/>
+      <rect x="40" y="398" width="500" height="12" rx="6" fill="#2E2E34"/>
+      <rect x="40" y="430" width="460" height="12" rx="6" fill="#2E2E34"/>
+      <rect x="40" y="462" width="380" height="12" rx="6" fill="#2E2E34"/>
+    </g>
+  </defs>
+
+  <rect width="1600" height="1000" fill="#121215"/>
+  <rect width="1600" height="1000" fill="url(#dots)"/>
+
+  <!-- Visit 1: the button sits beside the price, and that's where the click lands -->
+  <use href="#page" x="150" y="170"/>
+  <rect x="460" y="430" width="230" height="60" rx="30" fill="#FF5C63"/>
+  <rect x="520" y="454" width="110" height="12" rx="6" fill="#0B0B0D" fill-opacity=".55"/>
+
+  <!-- Visit 2: same page, button moved below the description; the old spot is empty -->
+  <use href="#page" x="870" y="170"/>
+  <rect x="910" y="694" width="230" height="60" rx="30" fill="#FF5C63"/>
+  <rect x="970" y="718" width="110" height="12" rx="6" fill="#0B0B0D" fill-opacity=".55"/>
+  <rect x="1180" y="430" width="230" height="60" rx="30" fill="none" stroke="#FF5C63" stroke-opacity=".6" stroke-width="2.5" stroke-dasharray="10 9"/>
+
+  <!-- The habit: a guide line between the two click points, at the same place on both pages -->
+  <path d="M600 466H1320" stroke="#F4F4F6" stroke-opacity=".22" stroke-width="2" stroke-dasharray="4 10" stroke-linecap="round"/>
+
+  <!-- Clicks: a ripple where the cursor presses -->
+  <circle cx="575" cy="460" r="22" fill="none" stroke="#F4F4F6" stroke-opacity=".5" stroke-width="2"/>
+  <circle cx="1295" cy="460" r="22" fill="none" stroke="#F4F4F6" stroke-opacity=".55" stroke-width="2"/>
+  <circle cx="1295" cy="460" r="40" fill="none" stroke="#F4F4F6" stroke-opacity=".22" stroke-width="2"/>
+  <use href="#cursor" x="575" y="460"/>
+  <use href="#cursor" x="1295" y="460"/>
+
+  <!-- Where the button went -->
+  <path d="M1272 520C1236 610 1170 660 1102 684" fill="none" stroke="#FF5C63" stroke-width="3" stroke-dasharray="12 10" stroke-linecap="round" marker-end="url(#head)"/>
+</svg>
