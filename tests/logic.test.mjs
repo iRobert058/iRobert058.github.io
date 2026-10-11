@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   pick, esc, lookup, isCurrent, periodLabel, groupTimeline, assignInterludes, skillGroups, softSkills, currentRoles,
+  langFromSearch, withLang, cueIndex, timecode, projectLinkKey, storyParagraphs,
 } from "../assets/js/logic.mjs";
 
 test("pick returns the language, falls back to nl, passes plain strings through", () => {
@@ -87,4 +88,54 @@ test("currentRoles keeps only running roles, in file order", () => {
   const items = [job("Senior", "2026", "present", "amac"), job("Old", "2019", "2024"), job("Study", "2026", "present")];
   assert.deepEqual(currentRoles(items).map((i) => i.title), ["Senior", "Study"]);
   assert.deepEqual(currentRoles(undefined), []);
+});
+
+test("langFromSearch: English only for ?lang=en, Dutch otherwise", () => {
+  assert.equal(langFromSearch("?lang=en"), "en");
+  assert.equal(langFromSearch("?x=1&lang=en"), "en");
+  assert.equal(langFromSearch("?lang=de"), "nl");
+  assert.equal(langFromSearch(""), "nl");
+  assert.equal(langFromSearch(undefined), "nl");
+});
+
+test("withLang adds or removes ?lang=en on internal links and leaves the rest alone", () => {
+  assert.equal(withLang("privacy.html", "en"), "privacy.html?lang=en");
+  assert.equal(withLang("privacy.html?lang=en", "nl"), "privacy.html");
+  assert.equal(withLang("projecten/thesis/", "en"), "projecten/thesis/?lang=en");
+  assert.equal(withLang("./#projecten", "en"), "./?lang=en#projecten");
+  assert.equal(withLang("/?a=1", "en"), "/?a=1&lang=en");
+  assert.equal(withLang("#contact", "en"), "#contact");
+  assert.equal(withLang("https://github.com/x", "en"), "https://github.com/x");
+  assert.equal(withLang("mailto:x@example.com", "en"), "mailto:x@example.com");
+});
+
+test("cueIndex finds the cue that has started, -1 before the first", () => {
+  const cues = [{ at: 0.5 }, { at: 2.5 }, { at: 4.5 }];
+  assert.equal(cueIndex(cues, 0), -1);
+  assert.equal(cueIndex(cues, 0.5), 0);
+  assert.equal(cueIndex(cues, 3), 1);
+  assert.equal(cueIndex(cues, 99), 2);
+  assert.equal(cueIndex(undefined, 3), -1);
+});
+
+test("timecode formats seconds as mm:ss.t", () => {
+  assert.equal(timecode(0.25), "00:00.3");
+  assert.equal(timecode(2.3), "00:02.3");
+  assert.equal(timecode(75), "01:15.0");
+  assert.equal(timecode(-1), "00:00.0");
+  assert.equal(timecode("x"), "00:00.0");
+});
+
+test("projectLinkKey: 'read more' only when there is a story", () => {
+  assert.equal(projectLinkKey({}, "nl"), "project_page");
+  assert.equal(projectLinkKey({ story: "" }, "nl"), "project_page");
+  assert.equal(projectLinkKey({ story: { nl: ["Alinea"] } }, "en"), "read_more"); // falls back to Dutch
+  assert.equal(projectLinkKey({ story: { nl: ["  "] } }, "nl"), "project_page");
+  assert.equal(projectLinkKey({ story: "Plain text" }, "nl"), "read_more");
+});
+
+test("storyParagraphs returns the story per language as paragraphs", () => {
+  assert.deepEqual(storyParagraphs({ story: { nl: ["A", " ", "B"], en: "C" } }, "nl"), ["A", "B"]);
+  assert.deepEqual(storyParagraphs({ story: { nl: ["A"], en: "C" } }, "en"), ["C"]);
+  assert.deepEqual(storyParagraphs({}, "nl"), []);
 });

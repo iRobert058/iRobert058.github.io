@@ -5,7 +5,7 @@
     "experience": "Ervaring",
     "skills": "Vaardigheden",
     "contact": "Contact",
-    "skip": "Ga naar de inhoud",
+    "skip": "Sla over",
     "label": "Hoofdmenu",
     "menu": "Menu",
     "theme": "Donker thema",
@@ -20,23 +20,24 @@
     "cta_github": "Bekijk mijn GitHub ↗",
     "honest": "Deze site gebruikt geen cookies, geen trackers en geen deceptive patterns en dat laatste is toevallig mijn onderzoeksgebied ;).",
     "honest_btn": "Duidelijk",
-    "video_pause": "Intro pauzeren",
-    "video_play": "Intro afspelen",
+    "video_pause": "Pauzeer intro",
+    "video_play": "Speel intro af",
     "video_replay": "Intro opnieuw afspelen",
-    "now": "Op dit moment"
+    "now": "Nu",
+    "session_title": "Intrologs"
   },
   "highlights": {
     "eyebrow": "Hoogtepunten",
     "title": "In het kort",
-    "lead": "Vier momenten die mijn profiel het best samenvatten."
+    "lead": "Vier van mijn hoogtepunten."
   },
   "about": {
     "eyebrow": "Over mij",
     "title": "Waar mens en technologie elkaar raken",
     "paragraphs": [
       "Ik ben Robert Karzijn. Mijn interesse ligt op het snijvlak van mens en technologie: hoe mensen interfaces gebruiken, welke gewoontes daarbij ontstaan en hoe ontwerp daar (zowel bewust of onbewust) op inspeelt. In mijn bachelorthesis onderzocht ik experimenteel hoe webshops procedureel geheugen kunnen verstoren door interface elementen te verplaatsen.",
-      "Naast mijn studie werk ik bij Amac in Apeldoorn, waar ik in twee jaar doorgroeide van Junior Sales Associate naar Daily Operations Lead en in verschillende filialen meedraaide om kennis en ervaring te delen. Die combinatie houdt me scherp: theorie over gebruikersgedrag in de collegezaal, en elke dag echte gebruikers tegenover me op de winkelvloer.",
-      "Momenteel volg ik de master Human-Computer Interaction, met focus op cognitieve UX en ethisch interface-ontwerp. Buiten studie en werk: fotografie, audio en af en toe een avond gamen."
+      "Naast mijn studie werk ik parttime bij Amac in Apeldoorn, waar ik in twee jaar doorgroeide van Junior Sales Associate naar Senior Sales Associate met dagverantwoordelijkheid en in verschillende filialen meedraaide om kennis en ervaring te delen. Die combinatie houdt me scherp: theorie over gebruikersgedrag in de collegezaal en parttime echte gebruikers tegenover me op de winkelvloer.",
+      "Momenteel volg ik de master Human-Computer Interaction. Buiten studie en werk: fotografie, sporten en af en toe een avond gamen."
     ],
     "portrait_alt": "Portretfoto van Robert Karzijn",
     "facts": [
@@ -46,7 +47,7 @@
       },
       {
         "k": "Werk",
-        "v": "Daily Operations Lead bij Amac, Apeldoorn"
+        "v": "Senior Sales Associate met dagverantwoordelijkheid bij Amac, Apeldoorn"
       },
       {
         "k": "Onderzoek",
@@ -58,7 +59,7 @@
       },
       {
         "k": "Daarbuiten",
-        "v": "Fotografie, audio en af en toe gamen"
+        "v": "Fotografie, sporten en af en toe gamen"
       }
     ]
   },
@@ -71,7 +72,8 @@
     "label_result": "Resultaat",
     "watch_trailer": "Bekijk de trailer",
     "label_tech": "Technieken en methoden",
-    "read_more": "Lees meer"
+    "read_more": "Lees meer",
+    "project_page": "Projectpagina"
   },
   "experience": {
     "eyebrow": "Ervaring & opleiding",
@@ -124,7 +126,7 @@
       {
         "id": "research",
         "name": "Onderzoeken",
-        "promise": "Uitzoeken hoe mensen zich echt gedragen, niet hoe we denken dat ze dat doen.",
+        "promise": "Uitzoeken hoe mensen zich echt gedragen, niet hoe we als designers denken dat ze dat doen.",
         "text": "Van literatuurstudie en experimenteel ontwerp tot dataverzameling en statistische analyse. In mijn bachelorthesis onderzocht ik met 40 deelnemers hoe het verplaatsen van interface-elementen gewoontegedrag in webshops verstoort."
       },
       {

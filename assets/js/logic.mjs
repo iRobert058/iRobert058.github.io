@@ -88,3 +88,62 @@ export function softSkills(skills) {
   if (Array.isArray(skills?.soft)) return skills.soft;
   return (skills?.bars ?? []).map((b) => b.label);
 }
+
+/* ---------- Language in the URL ----------
+   Nothing is stored: the language lives in the address (?lang=en), Dutch has no parameter. */
+
+/** "en" when the query string asks for English, otherwise the default "nl". */
+export function langFromSearch(search) {
+  return new URLSearchParams(search ?? "").get("lang") === "en" ? "en" : "nl";
+}
+
+/**
+ * Carry the language along on a link to another page of this site: "privacy.html" → "privacy.html?lang=en".
+ * External links, mailto and pure #anchors are returned unchanged; Dutch removes the parameter.
+ */
+export function withLang(href, lang) {
+  if (!href || /^(https?:|mailto:|#)/i.test(href)) return href;
+  const [beforeHash, hash = ""] = href.split("#");
+  const [path, query = ""] = beforeHash.split("?");
+  const params = new URLSearchParams(query);
+  if (lang === "en") params.set("lang", "en");
+  else params.delete("lang");
+  const qs = params.toString();
+  return `${path}${qs ? `?${qs}` : ""}${hash ? `#${hash}` : ""}`;
+}
+
+/* ---------- Hero session log ---------- */
+
+/** Index of the cue that is playing at `time` (seconds): the last cue that has started, or -1 before the first. */
+export function cueIndex(cues, time) {
+  let index = -1;
+  (Array.isArray(cues) ? cues : []).forEach((cue, i) => {
+    if (Number(cue.at) <= time) index = i;
+  });
+  return index;
+}
+
+/** Seconds as a session timecode with tenths, like a recording log: 2.3 → "00:02.3", 75 → "01:15.0". */
+export function timecode(seconds) {
+  const tenths = Math.max(0, Math.round((Number(seconds) || 0) * 10));
+  const s = Math.floor(tenths / 10);
+  return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}.${tenths % 10}`;
+}
+
+/* ---------- Projects ---------- */
+
+/**
+ * Honest link label for a project card: "Lees meer" only when the project page has extra `story` content,
+ * otherwise just "Projectpagina", because the page repeats the card.
+ */
+export function projectLinkKey(project, lang) {
+  const story = pick(project?.story, lang);
+  const hasStory = Array.isArray(story) ? story.some((p) => String(p).trim()) : Boolean(story && String(story).trim());
+  return hasStory ? "read_more" : "project_page";
+}
+
+/** A project's story as a list of paragraphs (a string or an array, per language). */
+export function storyParagraphs(project, lang) {
+  const story = pick(project?.story, lang);
+  return [].concat(story ?? []).map(String).filter((p) => p.trim());
+}

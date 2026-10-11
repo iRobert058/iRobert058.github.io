@@ -1,7 +1,7 @@
 /* =============================================================
    DESIGN TOKENS — change the entire visual identity here.
-   Fonts, colours, type and spacing scales, radii and motion are
-   defined only in this file; main.css only refers to them.
+   Fonts, colours, type and spacing scales, radii, materials and
+   motion are defined only in this file; main.css only refers to them.
    ============================================================= */
 
 /* ---------- Fonts (self-hosted, OFL — see assets/fonts/LICENSE-OFL.txt) ---------- */
@@ -25,54 +25,75 @@
 :root {
   color-scheme: light;
 
-  /* Colours — light theme (the paper) */
-  --bg: #F6F6F3;
-  --surface: #FFFFFF;
-  --ink: #131417;
-  --muted: #5B5F67;
-  --line: #E2E2DC;
-  --line-strong: #C9C9C2;
-  --accent: #E23C46;          /* brand red: large text, underlines, numerals, dots */
-  --accent-strong: #C42D38;   /* the same red, deepened to pass WCAG AA for small text and behind white text */
-  --accent-contrast: #FFFFFF; /* text on a filled accent */
-  --accent-soft: #FCEDEE;
-  --ok: #1E7A46;
+  /* ---------- Colour roles: light ---------- */
+  --canvas: #FFFFFF;          /* page ground */
+  --canvas-alt: #F4F4F6;      /* alternate sections and flat tiles */
+  --ink: #111114;             /* text */
+  --ink-muted: #55555C;       /* secondary text, 7.4:1 on white */
+  --hairline: #E3E3E8;
+  --hairline-strong: #C8C8CF;
+  --accent: #E23C46;          /* brand red: large text, underline, numerals, dots */
+  --accent-strong: #C42D38;   /* the same red, deepened to pass AA for small text and behind white text */
+  --on-accent: #FFFFFF;       /* text on a red fill */
+  --ok: #1D7A45;
   --err: #B42318;
 
-  /* Ink band — the dark sections (projects, contact). Dark in both themes. */
-  --band-bg: #131417;
-  --band-surface: #1B1C20;
-  --band-ink: #EDEDEA;
-  --band-muted: #A4A8AF;
-  --band-line: #2B2D32;
-  --band-line-strong: #3E4047;
-  --band-accent: #FF5C63;
-  --band-accent-contrast: #0E0F12;
-  --band-ok: #6FD49A;
-  --band-err: #FF9C93;
+  /* Stage: the dark bands (projects, contact). Dark in both themes; in dark mode it lifts above the page. */
+  --stage: #0B0B0D;
+  --stage-raised: #18181B;    /* inputs and tiles on the stage */
+  --stage-ink: #F4F4F6;
+  --stage-muted: #A3A3AB;     /* 8:1 on the stage */
+  --stage-hairline: #2A2A2F;
+  --stage-hairline-strong: #44444B;
+  --stage-accent: #FF5C63;    /* red on dark: 6.3:1 */
+  --stage-on-accent: #0B0B0D;
+  --stage-ok: #6FD49A;
+  --stage-err: #FF9C93;
 
-  /* Effects */
-  --shadow-window: 0 1px 2px rgba(19, 20, 23, .06), 0 18px 48px -12px rgba(19, 20, 23, .18);
-  --focus-ring: 2px solid var(--accent);
+  /* ---------- Materials: Liquid Glass, only on the functional layer ---------- */
+  --glass-tint: rgba(255, 255, 255, .72);         /* behind nav text: keeps ink at AA over any band */
+  --glass-tint-strong: rgba(255, 255, 255, .86);  /* small controls */
+  --glass-sheet: rgba(255, 255, 255, .93);        /* large glass (the mobile menu): legible even where blur isn't drawn */
+  --glass-blur: blur(20px) saturate(170%);
+  --glass-edge: inset 0 1px 0 rgba(255, 255, 255, .9), inset 0 0 0 1px rgba(17, 17, 20, .08);
+  --glass-shadow: 0 1px 1px rgba(17, 17, 20, .04), 0 8px 24px -10px rgba(17, 17, 20, .22);
+  --glass-solid: #FFFFFF;     /* reduced transparency, increased contrast, no backdrop-filter */
+  --glass-solid-border: #8A8A92;
+  --glass-highlight: rgba(255, 255, 255, .55);    /* the light that follows the pointer */
+  --glass-ink-muted: #55555C;  /* secondary text on glass: ≥4.5:1 over the worst background that can scroll beneath */
+  /* Glass that sits on a photo (the trailer chip): always light, in both themes */
+  --photo-chip-ink: #111114;
+  --photo-chip-tint: rgba(255, 255, 255, .86);
+  --photo-chip-highlight: rgba(255, 255, 255, .55);
+  --photo-chip-solid: #FFFFFF;
 
-  /* Typography */
+  /* ---------- Shadows ---------- */
+  --shadow-media: 0 1px 2px rgba(17, 17, 20, .06), 0 24px 60px -24px rgba(17, 17, 20, .28);
+
+  /* ---------- Typography ---------- */
   --font-display: "Bricolage Grotesque", system-ui, sans-serif;
   --font-body: "Hanken Grotesk", system-ui, sans-serif;
   --font-mono: "Spline Sans Mono", ui-monospace, monospace;
-  --fs-xs: 12.5px;   /* mono labels */
-  --fs-sm: 15px;
-  --fs-body: 17px;
-  --fs-lg: 19px;
-  --fs-h3: clamp(20px, 1.6vw + 12px, 26px);
-  --fs-h2: clamp(34px, 4.2vw + 14px, 60px);
-  --fs-h1: clamp(42px, 6vw + 14px, 92px);
-  --fs-figure: clamp(44px, 4vw + 20px, 72px); /* big numerals */
-  --lh-body: 1.65;
-  --lh-tight: 1.04;
-  --tracking-display: -.025em;
-  --tracking-label: .08em;
 
-  /* Spacing scale */
+  /* Seven sizes, no more */
+  --fs-label: 12px;                                 /* mono labels, uppercase */
+  --fs-small: 14px;
+  --fs-body: 16.5px;
+  --fs-lead: clamp(18px, .9rem + .4vw, 21px);
+  --fs-title: clamp(21px, .85rem + 1vw, 30px);
+  --fs-headline: clamp(34px, 1rem + 3.4vw, 72px);
+  --fs-hero: clamp(40px, 1rem + 5.3vw, 96px);
+
+  --lh-body: 1.6;
+  --lh-lead: 1.42;
+  --lh-title: 1.12;
+  --lh-display: 1;
+  --track-hero: -.04em;
+  --track-headline: -.035em;
+  --track-title: -.02em;
+  --track-label: .07em;
+
+  /* ---------- Spacing: 4-px base ---------- */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -82,66 +103,96 @@
   --space-7: 48px;
   --space-8: 64px;
   --space-9: 96px;
-  --section-gap: clamp(72px, 7vw, 112px);
+  --space-10: 128px;
+  --section-pad: clamp(88px, 12vw, 176px);
 
-  /* Shape & layout */
-  --radius: 14px;
-  --radius-sm: 8px;
+  /* ---------- Layout ---------- */
+  --maxw: 1280px;
+  --measure: 980px;           /* reading width for narrative */
+  --gutter: clamp(20px, 4vw, 48px);
+  --nav-h: 60px;
+
+  /* ---------- Shape ---------- */
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 28px;
   --radius-pill: 999px;
-  --maxw: 1200px;
-  --gutter: clamp(16px, 4vw, 40px);
-  --nav-h: 64px;
-  --rail: 200px;      /* left margin column of section heads (labels) */
-  --rail-gap: clamp(24px, 4vw, 64px);
+  --icon-lg: 20px;            /* arrows in tiles */
 
-  /* Motion */
-  --ease: cubic-bezier(.2, .7, .2, 1);
-  --dur-fast: .18s;
-  --dur: .45s;
-  --dur-slow: .8s;
+  /* ---------- Motion ---------- */
+  --ease-settle: cubic-bezier(.22, 1, .36, 1);      /* arrivals: close to a critically damped spring */
+  --ease-exit: cubic-bezier(.4, 0, 1, 1);
+  --dur-press: .12s;
+  --dur-state: .22s;
+  --dur-reveal: .48s;
+  --dur-scale: .72s;
 }
 
-/* Dark theme. It follows the system unless the visitor picked a theme with the toggle,
+/* A critically damped spring (no overshoot) where linear() is supported; the cubic-bezier above is the fallback */
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --ease-settle: linear(0, .068, .209, .364, .507, .627, .723, .797, .853, .895, .925, .947, .963, .974, .982, .987, .991, .994, .996, .997, 1);
+  }
+}
+
+/* ---------- Dark theme ----------
+   It follows the system unless the visitor picked a theme with the toggle,
    so the same values appear twice: once for the media query, once for the explicit choice. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --bg: #111214;
-    --surface: #18191C;
-    --ink: #ECECE8;
-    --muted: #A2A6AD;
-    --line: #26282C;
-    --line-strong: #3A3C42;
+    --canvas: #000000;
+    --canvas-alt: #121214;
+    --ink: #F4F4F6;
+    --ink-muted: #A3A3AB;
+    --hairline: #26262A;
+    --hairline-strong: #3C3C42;
     --accent: #FF5C63;
     --accent-strong: #FF5C63;
-    --accent-contrast: #0E0F12;
-    --accent-soft: #2A1D1F;
+    --on-accent: #0B0B0D;
     --ok: #6FD49A;
     --err: #FF9C93;
-    --band-bg: #08090A;
-    --band-surface: #111214;
-    --band-line: #222428;
-    --band-line-strong: #34363C;
-    --shadow-window: 0 1px 2px rgba(0, 0, 0, .4), 0 18px 48px -12px rgba(0, 0, 0, .6);
+    --stage: #1A1A1D;
+    --stage-raised: #242428;
+    --stage-hairline: #313136;
+    --stage-hairline-strong: #4A4A51;
+    --glass-tint: rgba(22, 22, 25, .68);
+    --glass-tint-strong: rgba(34, 34, 38, .82);
+    --glass-sheet: rgba(28, 28, 31, .92);
+    --glass-edge: inset 0 1px 0 rgba(255, 255, 255, .14), inset 0 0 0 1px rgba(255, 255, 255, .08);
+    --glass-shadow: 0 1px 1px rgba(0, 0, 0, .3), 0 10px 28px -10px rgba(0, 0, 0, .7);
+    --glass-solid: #1C1C1F;
+    --glass-solid-border: #8E8E96;
+    --glass-highlight: rgba(255, 255, 255, .12);
+    --glass-ink-muted: #C4C4CC;
+    --shadow-media: 0 1px 2px rgba(0, 0, 0, .5), 0 24px 60px -24px rgba(0, 0, 0, .8);
   }
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #111214;
-  --surface: #18191C;
-  --ink: #ECECE8;
-  --muted: #A2A6AD;
-  --line: #26282C;
-  --line-strong: #3A3C42;
+  --canvas: #000000;
+  --canvas-alt: #121214;
+  --ink: #F4F4F6;
+  --ink-muted: #A3A3AB;
+  --hairline: #26262A;
+  --hairline-strong: #3C3C42;
   --accent: #FF5C63;
   --accent-strong: #FF5C63;
-  --accent-contrast: #0E0F12;
-  --accent-soft: #2A1D1F;
+  --on-accent: #0B0B0D;
   --ok: #6FD49A;
   --err: #FF9C93;
-  --band-bg: #08090A;
-  --band-surface: #111214;
-  --band-line: #222428;
-  --band-line-strong: #34363C;
-  --shadow-window: 0 1px 2px rgba(0, 0, 0, .4), 0 18px 48px -12px rgba(0, 0, 0, .6);
+  --stage: #1A1A1D;
+  --stage-raised: #242428;
+  --stage-hairline: #313136;
+  --stage-hairline-strong: #4A4A51;
+  --glass-tint: rgba(22, 22, 25, .68);
+  --glass-tint-strong: rgba(34, 34, 38, .82);
+  --glass-sheet: rgba(28, 28, 31, .92);
+  --glass-edge: inset 0 1px 0 rgba(255, 255, 255, .14), inset 0 0 0 1px rgba(255, 255, 255, .08);
+  --glass-shadow: 0 1px 1px rgba(0, 0, 0, .3), 0 10px 28px -10px rgba(0, 0, 0, .7);
+  --glass-solid: #1C1C1F;
+  --glass-solid-border: #8E8E96;
+  --glass-highlight: rgba(255, 255, 255, .12);
+  --glass-ink-muted: #C4C4CC;
+  --shadow-media: 0 1px 2px rgba(0, 0, 0, .5), 0 24px 60px -24px rgba(0, 0, 0, .8);
 }
