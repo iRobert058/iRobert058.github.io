@@ -495,11 +495,13 @@ details p, .roles { color: var(--ink-muted); padding: var(--space-2) 0 var(--spa
 }
 
 /* ---------- Simple pages (404, privacy) ---------- */
+.simple .bar .seg { margin-left: auto; }
 .simple { min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; }
 .simple-main { padding: calc(var(--nav-h) + clamp(40px, 7vw, 96px)) 0 var(--section-pad); }
 .simple-main h1 { font-family: var(--font-display); font-size: var(--fs-headline); font-weight: 650; letter-spacing: var(--track-headline); line-height: 1.02; margin: var(--space-4) 0 var(--space-5); max-width: 16ch; text-wrap: balance; }
 .simple-main .lead { margin-bottom: var(--space-7); }
 .prose { max-width: 68ch; }
+.prose > .label { display: block; margin-bottom: var(--space-6); }
 .prose h2 { font-family: var(--font-display); font-size: var(--fs-title); font-weight: 600; letter-spacing: var(--track-title); line-height: var(--lh-title); margin: var(--space-7) 0 var(--space-3); }
 .prose p { color: var(--ink-muted); }
 .prose a { color: var(--ink); }

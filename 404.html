@@ -9,37 +9,28 @@
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/img/favicon-48.png">
 <!-- Absolute paths: GitHub Pages serves this page at whatever URL was missing -->
 <link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/hanken-grotesk-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/tokens.css">
 <link rel="stylesheet" href="/assets/css/main.css">
-<style>
-  .nf { min-height: calc(100svh - var(--nav-h)); display: grid; align-content: center; padding: var(--space-8) 0; }
-  .topbar .lang-switch { margin-left: auto; }
-  .nf .label { color: var(--accent-strong); }
-  .nf h1 {
-    font-family: var(--font-display); font-weight: 600; letter-spacing: var(--tracking-display);
-    font-size: var(--fs-h2); line-height: 1.05; margin: var(--space-4) 0 var(--space-5); max-width: 18ch;
-  }
-  .nf p { color: var(--muted); font-size: var(--fs-lg); max-width: 52ch; margin-bottom: var(--space-7); }
-</style>
 </head>
-<body>
+<body class="simple">
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <a class="wordmark" href="/"><span class="wordmark-mark" aria-hidden="true">RK</span><span>Robert Karzijn</span></a>
-    <div class="lang-switch" role="group" aria-label="Taal / Language">
+<header class="bar">
+  <div class="bar-inner">
+    <a class="wordmark bar-group" href="/" data-home><span class="wordmark-mark" aria-hidden="true">RK</span><span>Robert Karzijn</span></a>
+    <div class="seg glass" role="group" aria-label="Taal / Language">
       <button type="button" data-lang="nl" lang="nl" aria-pressed="true">NL</button>
       <button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
     </div>
   </div>
 </header>
 
-<main class="nf">
+<main class="simple-main">
   <div class="wrap">
     <p class="label" data-t="code">Foutcode 404</p>
     <h1 data-t="title">Deze pagina bestaat niet.</h1>
-    <p data-t="lead">Een interface-element dat zich niet gedraagt zoals verwacht - toevallig mijn onderzoeksgebied.</p>
-    <a class="btn btn-primary" href="/" data-t="btn">Terug naar home</a>
+    <p class="lead" data-t="lead">Een interface-element dat zich niet gedraagt zoals verwacht - toevallig mijn onderzoeksgebied.</p>
+    <a class="btn btn-primary" href="/" data-home data-t="btn">Terug naar home</a>
   </div>
 </main>
 
@@ -75,9 +66,21 @@
       });
     }
 
+    // English lives in the URL (?lang=en), like on the other pages; nothing is stored
+    function homeLinks(lang) {
+      document.querySelectorAll("[data-home]").forEach(function (a) {
+        a.setAttribute("href", lang === "en" ? "/?lang=en" : "/");
+      });
+    }
+    var initial = new URLSearchParams(location.search).get("lang") === "en" ? "en" : "nl";
+    if (initial === "en") applyLang("en");
+    homeLinks(initial);
+
     langBtns.forEach(function (btn) {
       btn.addEventListener("click", function () {
         applyLang(btn.dataset.lang);
+        homeLinks(btn.dataset.lang);
+        history.replaceState(null, "", location.pathname + (btn.dataset.lang === "en" ? "?lang=en" : "") + location.hash);
       });
     });
   })();
