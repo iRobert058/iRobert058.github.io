@@ -123,10 +123,11 @@ export function cueIndex(cues, time) {
   return index;
 }
 
-/** Seconds as a session timecode: 6.8 → "00:06". */
+/** Seconds as a session timecode with tenths, like a recording log: 2.3 → "00:02.3", 75 → "01:15.0". */
 export function timecode(seconds) {
-  const s = Math.max(0, Math.floor(Number(seconds) || 0));
-  return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+  const tenths = Math.max(0, Math.round((Number(seconds) || 0) * 10));
+  const s = Math.floor(tenths / 10);
+  return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}.${tenths % 10}`;
 }
 
 /* ---------- Projects ---------- */

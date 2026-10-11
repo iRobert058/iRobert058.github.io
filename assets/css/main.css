@@ -235,7 +235,7 @@ a.glass:active, button.glass:active { transform: scale(.97); }
 .session-log .label { margin-bottom: var(--space-4); }
 .session-log ol { list-style: none; display: grid; gap: var(--space-1); }
 .session-log li {
-  display: grid; grid-template-columns: 5.2ch 1fr; gap: var(--space-3); align-items: baseline;
+  display: grid; grid-template-columns: 7.2ch 1fr; gap: var(--space-3); align-items: baseline;
   padding: var(--space-2) 0; border-top: 1px solid var(--hairline); color: var(--ink-muted);
   transition: color var(--dur-state) var(--ease-settle);
 }

@@ -326,7 +326,10 @@ function initSession() {
   if (!video || !v) return;
   $("#session").hidden = false;
   v.poster = video.poster; // the final frame: before playback (and under reduced motion) the stage shows the result
-  v.innerHTML = `<source src="${esc(video.av1)}" type='video/mp4; codecs="av01.0.08M.08"'><source src="${esc(video.h264)}" type="video/mp4">`;
+  // AV1 first when there is one (smaller), H.264 as the fallback every browser plays
+  v.innerHTML =
+    (video.av1 ? `<source src="${esc(video.av1)}" type='video/mp4; codecs="av01.0.08M.08"'>` : "") +
+    `<source src="${esc(video.h264)}" type="video/mp4">`;
 
   const play = () => {
     session.started = true;

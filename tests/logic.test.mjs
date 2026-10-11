@@ -118,11 +118,12 @@ test("cueIndex finds the cue that has started, -1 before the first", () => {
   assert.equal(cueIndex(undefined, 3), -1);
 });
 
-test("timecode formats seconds as mm:ss", () => {
-  assert.equal(timecode(0.5), "00:00");
-  assert.equal(timecode(6.8), "00:06");
-  assert.equal(timecode(75), "01:15");
-  assert.equal(timecode("x"), "00:00");
+test("timecode formats seconds as mm:ss.t", () => {
+  assert.equal(timecode(0.25), "00:00.3");
+  assert.equal(timecode(2.3), "00:02.3");
+  assert.equal(timecode(75), "01:15.0");
+  assert.equal(timecode(-1), "00:00.0");
+  assert.equal(timecode("x"), "00:00.0");
 });
 
 test("projectLinkKey: 'read more' only when there is a story", () => {
