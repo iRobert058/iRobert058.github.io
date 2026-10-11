@@ -2,7 +2,7 @@
 
 Branch `redesign/v3-apple`, cut from local `main` at `68373a2` (V2.1 plus the `.gitignore` commit for `PRODUCT.md` and `.impeccable/`). The pre-push hook on this machine blocks pushing `main`, so that commit reaches `main` through this branch's PR.
 
-Status: **section 1 (study and brief). No design code until you've answered the hero and stack question.**
+Status: **sections 1–4 done; finish review results and fixes at the end of this file.** Hero: concept A (your pick). Stack: vanilla (your pick).
 
 ---
 
@@ -104,7 +104,7 @@ All three keep your headline ("Goede techniek begint met een goed *gesprek*.") a
 
 **Recommendation: A.** It is the only concept that shows your research in the first screen, it uses your own strongest material, and the observation framing makes the video clearly yours instead of a name-with-roles title card. B is the fallback if you'd rather not have motion in the hero.
 
-*Your pick:* (pending)
+*Your pick:* **A**, with your own new 5-second intro video (`assets/video/robert-intro-5s.mp4`), which is now wired in.
 
 ---
 
@@ -158,19 +158,163 @@ The page says: *this is someone who studies how people actually use interfaces, 
   - **from the mezzotint plate:** the hero video emerges from its dark poster frame instead of fading in from white.
 - The decision page (`serve-question`) runs on localhost, which you can't reach from your phone, so the hero/stack round goes through the normal question tool. No image generation is available, so the build is code-led.
 
+## Report
+
+### What changed and why
+
+- **Design system** (`assets/css/tokens.css`): cool neutrals (white / #F4F4F6, black in dark mode), dark stages for rhythm, your red as the only colour, seven type sizes in your three fonts, a 4-px spacing scale, radii 10/18/28, Liquid Glass materials with their fallbacks, and motion tokens with a critically damped spring curve (`linear()`, cubic-bezier fallback, no overshoot).
+- **Navigation:** floating glass groups (wordmark, links, NL/EN, theme, a red Contact pill). The bar tucks away while scrolling down and comes back on scroll up, near the top, when the menu is open, and whenever anything in it has keyboard focus. Below 900 px the links and preferences fold into a glass sheet under a menu button (`aria-expanded`, focus moves in, Esc closes and returns focus, tabbing out closes).
+- **Hero (concept A):** your headline with a hand-drawn underline that draws once; the intro and "Op dit moment"; three actions; the honest note on glass; then the session: your intro video on a rounded dark stage with a mono session log whose lines light up as the cursor acts. It plays once when it scrolls into view and holds the last frame; a glass button pauses, plays and replays. Under reduced motion it doesn't play and the poster shows the final frame.
+- **About:** portrait in a large rounded tile that stays put while the narrative and the fact table scroll beside it.
+- **Highlights:** a bento: the thesis as a large dark tile, the other three as flat tiles, the last spanning two columns.
+- **Pillars:** three columns with large red numerals on a hairline. The numerals carry information: the skills section uses the same numbers.
+- **Projects:** on a dark stage that widens from an inset panel to full bleed as it scrolls in (only the ground scales, never the text). Each project opens with a large visual, then a sticky title column (meta, title, intro, techniques, actions) beside the problem / role / result case in lead-size type.
+- **Experience:** one left-aligned ledger with the "Nu" marker and native `<details>`. The Amac roles are a featured card with the Junior → Medior → Senior progression as three steps on one line, the current step in red.
+- **Skills:** capabilities as three flat tiles under the pillar numbers, soft skills as pills, languages as a table. `bars` stays in the data, unrendered.
+- **Contact:** dark stage, your contact copy as the closing statement, socials, the form with `_gotcha`; the submit button disables while sending.
+- **Project pages, 404, privacy:** rebuilt in the new look; privacy text untouched.
+- **Language in the URL:** `?lang=en` (rebuilt; it only existed on `redesign/v2`). Every internal link carries it; switching updates the address without a reload; nothing is stored.
+- **Honest project links:** "Projectpagina / Project page" until a project has a `story`, then "Lees meer / Read more". Project pages render the optional `story`.
+- **Content-preservation test:** a snapshot of every string in the V2.1 JSON, checked against today's JSON.
+
+### Checks that ran
+
+- **`node --test`:** 25 tests, all passing (logic helpers, JSON validity and parity, project fields, terminology, project pages, content preservation).
+- **Browser passes (Playwright, local Python server):** homepage at 390 and 1440 in both themes and both languages, plus WebKit at 390 and 1440 with and without reduced motion. No console errors, no horizontal overflow, no requests to other hosts, and 0 reveal blocks left hidden after scrolling, in Chromium and in WebKit.
+- **Behaviour script, Chromium (34 checks) and WebKit (31), all passing:**
+  - mobile menu: opens with focus on the first link, Esc closes and returns focus, tabbing out closes
+  - keyboard: skip link first and focuses `<main>`, every stop has a focus style (in WebKit with Option-Tab, Safari's default for links), `<details>` open with Enter
+  - nav: tucks on scroll down, returns on scroll up and when something in it gets focus
+  - language: `?lang=en`, `<html lang>`, `aria-pressed`, every internal link carries the language, project page opens in English, switching back drops the parameter
+  - theme toggle with `aria-pressed`
+  - video: plays in view, the log follows, pause/play relabels, plays once and offers replay, no autoplay under reduced motion
+  - form against a fake local endpoint (every outside request was intercepted; nothing reached Formspree): empty submit marks all fields and focuses the name, an invalid e-mail marks only that field, a valid submit shows the thank-you
+  - no cookies, `localStorage` or `sessionStorage`
+  - certificates hidden with `[]` and shown with an injected certificate; interludes render nothing while empty and one full-bleed photo with alt and size when injected
+  - glass fallbacks (Chromium media emulation): translucent by default, solid without blur under reduced transparency, solid with a border under increased contrast
+- **Lighthouse 13.5** (local server without compression):
+
+  | Page | Performance | Accessibility | Best practices | SEO |
+  |---|---|---|---|---|
+  | Home, mobile | 97 | 100 | 100 | 100 |
+  | Home, desktop | 100 | 100 | 100 | 100 |
+  | Thesis page, mobile | 97 | 100 | 100 | 100 |
+  | MobiPad page, desktop | 100 | 100 | 100 | 100 |
+  | Privacy, mobile | 99 | 100 | 100 | 100 |
+  | 404, mobile | 99 | 100 | 100 | 54 (it's `noindex` on purpose) |
+
+  CLS 0.003–0.012 everywhere (the project page started at 0.21; fixed by reserving height while loading).
+- **axe-core** (WCAG 2.0–2.2 A/AA and best practice): 0 violations on the homepage (NL and EN, menu open, all `<details>` open), two project pages, privacy and 404, at 390 and 1280, in both themes: 24 runs.
+- **Glass contrast, computed against the worst background that can scroll beneath** (white, black, both stages, the red, mid grey, a bright photo): nav text ≥ 9.5:1 light / 5.7:1 dark; controls ≥ 13.7:1 / 8.1:1; muted text on glass ≥ 5.4:1 / 5.1:1 (the dark-mode value failed at 3.5:1 first and got its own token); Contact pill ≥ 4.9:1 / 5.6:1; menu sheet ≥ 16:1 / 12:1.
+- **Impeccable detect** on the served page at 1280 and 390: only `kicker-above-heading` on the seven section labels. Those are your existing eyebrow texts and the brief explicitly allows small mono labels, so they stay; not suppressed in config.
+- **JS size:** 31.4 KB uncompressed (`app.js` 24.7 KB, `logic.mjs` 6.8 KB; about 5 KB of that is explanatory comments), **11.2 KB gzipped**, which is what Pages transfers. See "Decisions for you".
+- **Originality:** script comparison with `/tmp/reference-jopmors` (class names, IDs, data attributes, custom properties, keyframes, identical strings of 40+ characters). No shared IDs, data attributes, keyframes or strings; the only shared custom property is `--font-mono`, already on `main` before V3; the 17 "shared class" hits are regex false positives on JS property names (`.textContent`, `.currentTime`) and file extensions. The repo contains no Apple fonts, icons, logos or apple.com text.
+- **Distance test, per section** (his 1440 captures against mine):
+  - **Hero:** photo room, skyline and laptop with a giant name vs. a light page with your headline, intro, current roles and a recorded session with a coding log. Pass.
+  - **About:** dark, portrait with facts beneath and a serif-italic subtitle vs. light, sticky portrait tile beside narrative and a ruled fact table. Pass.
+  - **Pillars:** stacked glass cards with italic one-liners vs. three open columns with large red numerals. Pass.
+  - **Projects:** glass cards with a Launched/Ongoing split vs. a dark stage with full-width visuals and a sticky title column beside the case study. Pass.
+  - **Skills:** glass cards over a skyline with a logo strip vs. flat tiles on grey and pills. Pass.
+  - **Timeline:** centre spine with year numerals and monograms vs. a left-aligned ledger with a featured progression card. Pass.
+  - **Contact:** photo backdrop with a glass form vs. a dark stage with a plain form. Pass.
+- **Hardening intact:** `og:*` and `twitter:*` tags, canonical, JSON-LD `Person`, `<noscript>` fallback, `robots.txt`, `sitemap.xml` (5 URLs), styled 404 and privacy, the honeypot. Meta, OG and Twitter descriptions start with the current hero line.
+- **Untouched (checked with `git diff main`):** `CNAME`, the CV, `og-image.png`, the favicons, the portrait, the old intro videos, `formEndpoint` and `socials`.
+
+### Unverified
+
+- **Liquid Glass blur in real Safari:** Playwright's headless WebKit doesn't render `backdrop-filter` at all (it failed on a bare test page too), so the blur was only seen in Chromium. Legibility doesn't depend on it: every glass surface keeps AA contrast with no blur at all. Check by hand: open the site in Safari on the Mac and the iPhone, scroll so the nav passes over the dark project stage and the MobiPad image, and open the mobile menu over the hero headline.
+- **Scroll smoothness on a real phone** with the glass and the stage widening (my checks ran on a desktop machine). Check by hand: scroll the homepage on your iPhone quickly from top to bottom; it should never stutter.
+- **A real screen reader:** VoiceOver on the session log, the Amac step list and the menu.
+- **The live form:** never submitted, on purpose. After merging, send one test message.
+- **GitHub Pages:** that `/projecten/thesis/?lang=en` and the 404 page behave the same as locally. Check on the live site after merging.
+
+### Small fixes, workarounds, dependencies, abstractions
+
+- **Small fixes:** the project page's layout shift while loading; the submit button now disables while a message is sending, against double submits (a code change: the form test passed, but the disabled moment itself wasn't measured).
+- **Workarounds:** none in the code.
+- **New dependencies:** none in the site. Playwright (1.62 and 1.63 to match the browsers already cached on this Mac), Lighthouse 13.5 and axe-core ran from the session scratchpad; nothing in the repo.
+- **Abstractions:** the dark stage re-points the colour tokens, so every component works on light and dark ground without duplicate styles (carried over from V2). `logic.mjs` gained `langFromSearch`, `withLang`, `cueIndex`, `timecode`, `projectLinkKey` and `storyParagraphs`, to keep the testable logic out of the DOM code.
+- **New files:**
+  - `assets/video/robert-intro-5s.mp4` (yours)
+  - `assets/img/robert-intro-5s-end.webp`: its last frame, exported from the video in WebKit and converted with `cwebp -q 82` (13 KB)
+  - `assets/img/og-image-v3.png`: the stretch item, a 1200×630 Playwright screenshot of the redesigned hero (light, NL). `og:image` / `twitter:image` now point at it; the old `og-image.png` is untouched. Link previews only show it once it's live on `main`.
+
 ## Decisions log
 
 - **Base commit:** your preflight answer was "push main first", but the pre-push hook blocks pushing `main`. I didn't work around it; the branch includes `68373a2` instead.
-- **Positioning:** your preflight answer: both, the headline leads. The bridge-builder headline stays the lead message; the hero visual and subhead show the research.
-- **`?lang=` and the "Projectpagina" rule:** the brief says `main` has the language in `?lang=` and a card link that says "Projectpagina" until a project has `story` content. Neither is on `main`: both exist only on `redesign/v2`. I'll rebuild both on this branch (new code, same behaviour as described). That adds one new copy key, `projects.project_page` ("Projectpagina" / "Project page"), listed under copy to review.
-- **UI/UX Pro Max design system overridden** (see section 2).
-- **Playwright:** the browsers cached on this machine match Playwright 1.62 (Chromium) and 1.63 (WebKit), so both were installed in the session scratchpad instead of downloading new browsers. Nothing in the repo.
-- **Reference screenshots** are in `_review/v3-apple/ref/` (git-ignored). The Jop clone for the originality check will go to `/tmp/reference-jopmors` in section 4.
+- **Positioning:** your preflight answer: both, the headline leads. The bridge-builder headline stays the lead message; the hero visual and the session log show the research.
+- **`?lang=` and the "Projectpagina" rule:** the brief says `main` has both; they only existed on `redesign/v2`. Rebuilt on this branch with new code.
+- **Hero video:** play once and hold the last frame (not a loop): calmer, and no content that keeps moving. The new 5-second video replaced the old one in the hero; the old files stay untouched in `assets/video/` and are no longer referenced. AV1 is optional (your new clip is H.264 only and only 136 KB).
+- **Session log timecodes** show tenths (00:02.3), because whole seconds were too coarse for a 5-second clip.
+- **Header and footer stay in each HTML file** instead of being rendered by `app.js` from one template (which I had proposed in the stack section). Rendering them in JS would have added code against the JS budget and made the bar appear only after the script ran. Six short copies are the smaller cost.
+- **Floating glass groups instead of one full-width bar:** glass on glass hurts legibility (the `apple-design` skill warns against stacking translucent layers), so each group is its own glass object and no group sits on another.
+- **Section labels kept** above the headlines despite Impeccable's craft floor (which bans eyebrows): they are your existing copy, and the brief allows small mono labels. They appear only as mono labels, never as decoration.
+- **Display size:** the hero goes up to 124 px, above the craft floor's 96 px guideline, because the brief asks for Apple-scale headlines; it stays two lines at 1440 and wraps cleanly on phones.
+- **Menu sheet opacity** 93 % (light) / 92 % (dark), thicker than the other glass, because it's the largest glass surface and must stay legible even where a browser draws no blur.
+- **Impeccable's surface brief** (`.impeccable/surfaces/index-html.md`, local only) was written after the build instead of before it; the direction itself was settled in this file and confirmed by you before any code.
+
+## Skills used
+
+| Skill | Used for | Applied | Overrode |
+|---|---|---|---|
+| `apple-design` | Materials, typography, motion, reduced-motion guidance | Glass only on the functional layer, no stacked translucent layers, bigger surfaces thicker; size-specific tracking (−0.04em display, +0.07em labels); critically damped motion with no overshoot; separate handling of reduced motion, reduced transparency and increased contrast | "Prefer the system font": your three fonts stay (brief) |
+| UI/UX Pro Max (`ui-ux-pro-max`) | Design-system generation, Liquid Glass style data, quick-reference rules | Scroll-storytelling pattern that stays readable without effects; Liquid Glass checklist (nav and controls only, test reduced transparency and contrast); 44 px targets, focus states, no horizontal scroll, CLS < 0.1, `prefers-reduced-motion` | Its generated system (Brutalism, Caveat/Quicksand from Google Fonts, blue accent, GSAP from a CDN) broke the brief and wasn't used; Phosphor/Heroicons not used (three hand-written SVG icons instead) |
+| Impeccable | Product context, direction, craft floor, detector, finish review | `PRODUCT.md`; `concept-seed` (seed `bbf08dd3`) to stress-test the hero concepts; craft floor (contrast, spacing, themed selection and caret, focus rings, tabular numerals); `detect` on the served page; the finish reviewer subagent for the critique | Brief-pinned world beats the roll; kicker ban and 6rem display cap overridden by the brief; the decision page (`serve-question`) replaced by the question tool because you were on your phone; code-led because no image generation is available |
+| Other design skills | Not used separately | `design:accessibility-review` and `web-design-guidelines` overlap with the axe, Lighthouse and keyboard checks that ran; running them too would have repeated those checks | |
+
+Commands from the brief I didn't run by name: `craft` (deprecated alias in this Impeccable version; I built per its new-work flow), and the separate `typeset` / `layout` / `colorize` / `animate` / `audit` / `harden` / `adapt` / `optimize` / `polish` passes. Their concerns were covered by the token design, the batched visual reviews (desktop/mobile, light/dark, NL/EN, Chromium/WebKit), the behaviour script, Lighthouse, axe and the finish review below, rather than as eleven separate passes. Say so if you want any of them run individually.
 
 ## Copy to review
 
-(Filled in as new copy is added.)
+| Key | NL | EN |
+|---|---|---|
+| `hero.session_title` | Sessielog · intro | Session log · intro |
+| `projects.project_page` | Projectpagina | Project page |
+| `site.heroVideo.cues[0]` | cursor komt in beeld | cursor enters |
+| `site.heroVideo.cues[1]` | trekt een tekstvak | draws a text box |
+| `site.heroVideo.cues[2]` | zet de punt | places the full stop |
+| `site.heroVideo.cues[3]` | typt een rol eronder | types a role beneath |
 
 ## TODOs for you
 
-- `privacy.html`: parts of the English text match the reference site's privacy page word for word, and it shows your e-mail address. Both left as they are (see the brief).
+- **Photos for the interludes** (`data/site.json` → `interludes`), each **2400 × 1029 px (21:9)**, WebP, about 300–400 KB, subject centred (phones crop to 4:3):
+  1. after the pillars, before the projects: a wide, quiet photo of a place where you work or study (a lecture hall, the shop floor before opening), to open the "work" part of the page
+  2. after the timeline, before the skills: people in the middle of something (exec(ut) backstage, a team at work), to echo "between parties"
+  3. after the skills, before contact: a calm closing image, light or dark, with space in the centre.
+- **`privacy.html`:** parts of the English text match the reference site's privacy page word for word, and it shows your e-mail address. Both left as they are (brief).
+- **Optional:** an AV1 version of the new intro (`heroVideo.av1`); not needed at 136 KB.
+- **Optional:** a `story` for any project, which turns its card link into "Lees meer".
+
+## Decisions for you (skipped or left open)
+
+- **JS budget:** 31.4 KB uncompressed, 11.2 KB gzipped. If the 30 KB is meant uncompressed, I can trim the comments in `app.js` (about 3.7 KB), but they're there to explain the code to you.
+- **The old intro videos** (`hero-intro.mp4`, `hero-intro-av1.mp4`) and `hero-start.webp` / `hero-end.webp` are no longer used. Left untouched (brief); delete them yourself if you want.
+- **Glyphs in your copy:** the finish review asked for one drawn icon set instead of text arrows. The arrows the code adds (tiles, project links, socials, the `<details>` plus) are now drawn SVG. The arrows that are part of your copy ("Bekijk mijn GitHub ↗", "← Alle projecten", the "→" at the end of the project CTA labels) are left as text, because existing copy stays as it is. If you're fine with removing them from the JSON, I'd draw those too, so every arrow on the page matches.
+- **Impeccable telemetry:** `concept-seed` asks for an anonymous ping after a direction round. Skipped: it would send data to an outside service you didn't ask for.
+- **Real-device checks** listed under "Unverified".
+
+## Updates the repo's CLAUDE.md needs
+
+- **Run/test:** `node --test` exists now (logic, content checks, content preservation); the "no test suite" line is outdated.
+- **Architecture:** add `logic.mjs`, `tests/`, the project pages, `privacy.html`, `404.html`; the nav is `.bar` with glass groups; the language lives in `?lang=en` and internal links carry it (`data-keep-lang` / `withLang`).
+- **Content model:** add `site.interludes`, `site.heroVideo` (`av1`, `h264`, `poster`, `cues[{at, label}]`), `projects.page`, `projects.story`, `projects.imageWidth/Height`, `projects.video`, `timeline.group`, `skills.groups` / `soft` (and that `bars` is no longer rendered); highlights: the first tile is the large one.
+- **Styling:** the glass materials and their fallbacks live in `tokens.css` and at the end of `main.css`; glass only on the functional layer; muted text on glass uses `--glass-ink-muted`.
+- **Backlog:** done: og/canonical, JSON-LD, noscript, honeypot, privacy page, robots, 404, self-hosted fonts, mobile navigation. Still open: the two privacy-page issues above.
+- **Local tooling:** `PRODUCT.md`, `DESIGN.md`, `.impeccable/`, `.agents/` are git-ignored on purpose (Pages would publish them).
+
+## Finish review (Impeccable)
+
+The shipped finish-reviewer subagent reviewed the homepage from full-page and scroll-stop captures (desktop light and dark, mobile), the direction contract, `PRODUCT.md` and the code. It didn't read the project, 404 and privacy pages.
+
+**Disposition: fix.**
+- **Pass:** persistence; type, material and ground (the reviewer sampled #FFFFFF / #F4F4F6 / #0B0B0D in light and #000 / #121214 / #1A1A1D in dark, no drift); the first viewport, session stage, story order, stages, ledger and contact all match the contract. The section eyebrows count as a cited, brief-sanctioned adaptation.
+- **Material fixes, and what I did:**
+  1. **Glyph icons next to drawn SVG icons:** fixed in code (one drawn set: arrow, arrow-out, plus). The glyphs inside your copy stay; see "Decisions for you".
+  2. **The thesis tile was a mostly empty black slab spanning two rows:** fixed. The bento is now asymmetric (the thesis wide on top, the last highlight wide below), so no tile reads as a void.
+  3. **Capabilities repeated the pillar numbers in a second set of cards:** fixed. They're now open columns on a hairline, named but not numbered.
+  4. **A generic fade-up on every block diluted the authored motion:** fixed. Reveals stay only on the project case studies. The underline draw, the session stage, the log lighting and the stage widening are the page's motion.
+  5. **Three stacked labels above each timeline title:** fixed. One meta line per entry ("2024 – heden · Werk"), with "Nu" beneath.
+- **Keep (not diluted):** the first viewport, the glass only on the functional layer, the session stage with its log, and the exact grounds.
+- **After the fixes:** `node --test` 25/25; the behaviour script 34/34 in Chromium; a dark desktop scroll pass with no console errors, hidden blocks or overflow. I didn't run a second reviewer round.
+
+**Hook triage:** the design hook's static `nested-cards` finding on `index.html` is a false positive: the NL/EN control inside the mobile menu sheet, which is a control, not a card. Rendered-page scans at 1280 and 390 don't report it. I recorded a file-scoped ignore with that reason in the local `.impeccable/config.json`.
