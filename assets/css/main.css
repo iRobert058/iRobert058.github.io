@@ -16,7 +16,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 input, textarea { font: inherit; color: inherit; caret-color: var(--accent); }
 :focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 3px; border-radius: 4px; }
 main:focus, h1:focus { outline: none; } /* focused only as skip-link / dismissal targets */
-main.is-loading { visibility: hidden; } /* until app.js has rendered once: appear in one go instead of shifting */
+/* Until app.js has rendered once: appear in one go instead of shifting, and keep the footer below the fold meanwhile */
+main.is-loading { visibility: hidden; min-height: 100svh; }
 
 .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
 .hidden, [hidden] { display: none !important; } /* components that set display must still hide */
@@ -134,7 +135,7 @@ a.glass:active, button.glass:active { transform: scale(.97); }
 .seg { display: inline-flex; padding: 3px; height: 44px; border-radius: var(--radius-pill); align-items: center; }
 .seg button {
   height: 38px; min-width: 40px; padding: 0 var(--space-3); border: 0; border-radius: var(--radius-pill);
-  background: none; font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; letter-spacing: .04em; color: var(--ink-muted);
+  background: none; font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; letter-spacing: .04em; color: var(--glass-ink-muted);
   transition: background-color var(--dur-state) var(--ease-settle), color var(--dur-state);
 }
 .seg button[aria-pressed="true"] { background: var(--ink); color: var(--canvas); }
@@ -158,7 +159,7 @@ a.glass:active, button.glass:active { transform: scale(.97); }
     position: absolute; top: calc(100% + var(--space-2)); left: var(--gutter); right: var(--gutter);
     flex-direction: column; align-items: stretch; gap: var(--space-4); padding: var(--space-4);
     border-radius: var(--radius-lg); margin: 0;
-    background: var(--glass-tint-strong); box-shadow: var(--glass-edge), var(--glass-shadow);
+    background: var(--glass-sheet); box-shadow: var(--glass-edge), var(--glass-shadow);
     -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
     opacity: 0; visibility: hidden; transform: translateY(-8px) scale(.98); transform-origin: top right;
     transition: opacity var(--dur-state) var(--ease-exit), transform var(--dur-state) var(--ease-exit), visibility 0s var(--dur-state);
