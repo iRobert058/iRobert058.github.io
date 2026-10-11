@@ -8,8 +8,8 @@
 <title>Deceptive patterns &amp; gewoontegedrag in webshops — Robert Karzijn</title>
 <meta name="description" content="Mijn bachelorthesis onderzoekt hoe webshops procedureel geheugen (de &quot;automatische piloot&quot; van gebruikers) kunnen verstoren en uitbuiten door interface-elementen te verplaatsen.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#F6F6F3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <meta property="og:site_name" content="Robert Karzijn">
 <meta property="og:locale" content="nl_NL">
 <meta property="og:title" content="Deceptive patterns &amp; gewoontegedrag in webshops — Robert Karzijn">
@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="assets/css/main.css">
 <link rel="modulepreload" href="assets/js/logic.mjs">
 <script type="module" src="assets/js/app.js"></script>
-<noscript><style>.topbar, main, footer { display: none; }</style></noscript>
+<noscript><style>.bar, main, footer { display: none; }</style></noscript>
 </head>
 <body data-page="project" data-project="thesis">
 <noscript>
@@ -40,55 +40,58 @@
 <!-- With <base href="/">, a bare "#main" would point at the homepage, so the skip link names this page -->
 <a class="skip-link" href="projecten/thesis/#main" data-t="nav.skip"></a>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <a class="wordmark" href="./"><span class="wordmark-mark" aria-hidden="true">RK</span><span data-site="name">Robert Karzijn</span></a>
-    <div class="topbar-panel" id="topbarPanel">
-      <nav class="topbar-nav" data-t-aria="nav.label">
-        <ul>
-          <li><a href="#over" data-t="nav.about"></a></li>
-          <li><a href="#projecten" data-t="nav.projects"></a></li>
-          <li><a href="#ervaring" data-t="nav.experience"></a></li>
-          <li><a href="#vaardigheden" data-t="nav.skills"></a></li>
+<header class="bar" id="bar">
+  <div class="bar-inner">
+    <a class="wordmark bar-group" href="./" data-keep-lang><span class="wordmark-mark" aria-hidden="true">RK</span><span data-site="name">Robert Karzijn</span></a>
+    <div class="bar-panel" id="barPanel">
+      <nav class="bar-nav" data-t-aria="nav.label">
+        <ul class="bar-group">
+          <li><a href="./#over" data-keep-lang data-t="nav.about"></a></li>
+          <li><a href="./#projecten" data-keep-lang data-t="nav.projects"></a></li>
+          <li><a href="./#ervaring" data-keep-lang data-t="nav.experience"></a></li>
+          <li><a href="./#vaardigheden" data-keep-lang data-t="nav.skills"></a></li>
         </ul>
       </nav>
       <div class="prefs">
-        <div class="lang-switch" role="group" data-t-aria="nav.lang_group">
+        <div class="seg glass" role="group" data-t-aria="nav.lang_group">
           <button type="button" data-lang="nl" lang="nl">NL</button>
           <button type="button" data-lang="en" lang="en">EN</button>
         </div>
-        <button type="button" class="theme-toggle" id="themeBtn" data-t-aria="nav.theme">
+        <button type="button" class="icon-btn glass" id="themeBtn" data-t-aria="nav.theme">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 3.75a8.25 8.25 0 0 1 0 16.5z" fill="currentColor"/></svg>
         </button>
       </div>
     </div>
-    <a class="contact-pill" href="#contact" data-t="nav.contact"></a>
-    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="topbarPanel" data-t-aria="nav.menu">
+    <a class="pill-cta glass" href="./#contact" data-keep-lang data-t="nav.contact"></a>
+    <button type="button" class="icon-btn glass menu-btn" id="menuBtn" aria-expanded="false" aria-controls="barPanel" data-t-aria="nav.menu">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
     </button>
   </div>
 </header>
 
 <main id="main" tabindex="-1" class="is-loading">
-  <article class="project-page" aria-labelledby="ppTitle">
+  <article class="pp" aria-labelledby="ppTitle">
     <div class="wrap">
-      <a class="back-link" href="#projecten" data-t="project_page.back"></a>
-      <header class="project-page-head">
-        <p class="label project-meta" id="ppMeta"></p>
+      <a class="back-link" href="./#projecten" data-keep-lang data-t="project_page.back"></a>
+      <header class="pp-head">
+        <p class="label" id="ppMeta"></p>
         <h1 id="ppTitle"></h1>
         <p class="lead" id="ppIntro"></p>
       </header>
       <div id="ppVisual"></div>
-      <div class="project-page-body">
-        <dl class="case" id="ppCase"></dl>
-        <div class="project-page-side">
+      <div class="pp-body">
+        <div>
+          <dl class="case" id="ppCase"></dl>
+          <div class="pp-story" id="ppStory"></div>
+        </div>
+        <div class="pp-side">
           <ul class="chips" id="ppTech"></ul>
           <a class="btn btn-primary" id="ppCta"></a>
         </div>
       </div>
     </div>
   </article>
-  <nav class="more-projects" aria-labelledby="moreTitle">
+  <nav class="more" aria-labelledby="moreTitle">
     <div class="wrap">
       <h2 class="label" id="moreTitle" data-t="project_page.more"></h2>
       <ul id="ppMore"></ul>
@@ -96,10 +99,10 @@
   </nav>
 </main>
 
-<footer>
+<footer class="foot">
   <div class="wrap">
-    <div>© <span id="year"></span> <span data-site="name">Robert Karzijn</span> · <span data-t="footer.location"></span> · <a href="privacy.html">Privacy</a></div>
-    <div class="foot-note" data-t="footer.note"></div>
+    <p>© <span id="year"></span> <span data-site="name">Robert Karzijn</span> · <span data-t="footer.location"></span> · <a href="privacy.html" data-keep-lang>Privacy</a></p>
+    <p class="foot-note" data-t="footer.note"></p>
   </div>
 </footer>
 
