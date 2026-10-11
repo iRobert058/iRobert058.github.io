@@ -12,3 +12,5 @@ _review/
 # Impeccable design tooling (local only)
 PRODUCT.md
 .impeccable/
+DESIGN.md
+.agents/
