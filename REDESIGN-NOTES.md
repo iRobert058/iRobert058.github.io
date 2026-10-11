@@ -244,7 +244,7 @@ The page says: *this is someone who studies how people actually use interfaces, 
 - **Base commit:** your preflight answer was "push main first", but the pre-push hook blocks pushing `main`. I didn't work around it; the branch includes `68373a2` instead.
 - **Positioning:** your preflight answer: both, the headline leads. The bridge-builder headline stays the lead message; the hero visual and the session log show the research.
 - **`?lang=` and the "Projectpagina" rule:** the brief says `main` has both; they only existed on `redesign/v2`. Rebuilt on this branch with new code.
-- **Hero video:** play once and hold the last frame (not a loop): calmer, and no content that keeps moving. The new 5-second video replaced the old one in the hero; the old files stay untouched in `assets/video/` and are no longer referenced. AV1 is optional (your new clip is H.264 only and only 136 KB).
+- **Hero video:** play once and hold the last frame (not a loop): calmer, and no content that keeps moving. The new 5-second video replaced the old one in the hero; the old files were deleted later at your request (still in git history). AV1 is optional (your new clip is H.264 only and only 136 KB).
 - **Session log timecodes** show tenths (00:02.3), because whole seconds were too coarse for a 5-second clip.
 - **Header and footer stay in each HTML file** instead of being rendered by `app.js` from one template (which I had proposed in the stack section). Rendering them in JS would have added code against the JS budget and made the bar appear only after the script ran. Six short copies are the smaller cost.
 - **Floating glass groups instead of one full-width bar:** glass on glass hurts legibility (the `apple-design` skill warns against stacking translucent layers), so each group is its own glass object and no group sits on another.
@@ -293,7 +293,7 @@ Commands from the brief I didn't run by name: `craft` (deprecated alias in this 
 ## Decisions for you (skipped or left open)
 
 - **JS budget:** 31.4 KB uncompressed, 11.2 KB gzipped. If the 30 KB is meant uncompressed, I can trim the comments in `app.js` (about 3.7 KB), but they're there to explain the code to you.
-- **The old intro videos** (`hero-intro.mp4`, `hero-intro-av1.mp4`) and `hero-start.webp` / `hero-end.webp` are no longer used. Left untouched (brief); delete them yourself if you want.
+- **Unused files:** at your request, the old intro videos (`assets/robert-portfolio-intro.mp4`, `assets/video/hero-intro.mp4`, `hero-intro-av1.mp4`) and their posters (`hero-start.webp`, `hero-end.webp`) are deleted, about 5.5 MB; they're still in git history. Kept on purpose: `project-thesis.svg` (the old thesis illustration) and `og-image.png` (the live site uses it until this PR is merged; delete it in a later commit if you want).
 - **Glyphs in your copy:** the finish review asked for one drawn icon set instead of text arrows. The arrows the code adds (tiles, project links, socials, the `<details>` plus) are now drawn SVG. The arrows that are part of your copy ("Bekijk mijn GitHub ↗", "← Alle projecten", the "→" at the end of the project CTA labels) are left as text, because existing copy stays as it is. If you're fine with removing them from the JSON, I'd draw those too, so every arrow on the page matches.
 - **Impeccable telemetry:** `concept-seed` asks for an anonymous ping after a direction round. Skipped: it would send data to an outside service you didn't ask for.
 - **Real-device checks** listed under "Unverified".
