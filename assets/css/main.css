@@ -422,7 +422,24 @@ details p, .roles { color: var(--ink-muted); padding: var(--space-2) 0 var(--spa
 @media (max-width: 760px) {
   .row { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
   .row-side { flex-direction: row; align-items: center; gap: var(--space-3); }
-  .steps { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+
+  /* Phones: a climbing rail. The list stays oldest → newest in the DOM (that's how it's read aloud), but is shown
+     bottom to top, so the current role sits at the top. Each step draws the rail down to the step below it:
+     red for the path already walked, grey above the current role (only when a later step exists). */
+  .steps { display: flex; flex-direction: column-reverse; gap: 0; padding-left: 32px; margin-top: var(--space-6); }
+  .steps li { border-top: 0; padding: 0 0 var(--space-6); gap: 2px; }
+  .steps li:first-child { padding-bottom: 0; }
+  .steps li::before { top: calc(.6em - 6px); left: -32px; z-index: 1; box-shadow: inset 0 0 0 2px var(--accent); }
+  .steps li::after {
+    content: ""; position: absolute; left: -27px; width: 2px;
+    top: .6em; bottom: -.6em; background: var(--accent);
+  }
+  .steps li:first-child::after { display: none; }
+  .steps li[aria-current="step"] ~ li::before { box-shadow: inset 0 0 0 2px var(--hairline-strong); }
+  .steps li[aria-current="step"] ~ li::after { background: var(--hairline-strong); }
+  .steps li[aria-current="step"]::before { box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 22%, transparent); }
+  .steps li[aria-current="step"] .step-title { font-family: var(--font-display); font-size: var(--fs-lead); letter-spacing: var(--track-title); line-height: 1.2; }
+  .steps li:not([aria-current="step"]) .step-title { font-weight: 500; color: var(--ink-muted); }
 }
 
 /* ---------- Skills ---------- */
