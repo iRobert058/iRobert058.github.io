@@ -76,13 +76,13 @@
   --font-mono: "Spline Sans Mono", ui-monospace, monospace;
 
   /* Seven sizes, no more */
-  --fs-label: 12.5px;                               /* mono labels, uppercase */
-  --fs-small: 15px;
-  --fs-body: 17.5px;
-  --fs-lead: clamp(19px, 1rem + .55vw, 25px);
-  --fs-title: clamp(24px, 1rem + 1.35vw, 38px);
-  --fs-headline: clamp(40px, 1.2rem + 4.6vw, 92px);
-  --fs-hero: clamp(46px, 1rem + 6.6vw, 124px);
+  --fs-label: 12px;                                 /* mono labels, uppercase */
+  --fs-small: 14px;
+  --fs-body: 16.5px;
+  --fs-lead: clamp(18px, .9rem + .4vw, 21px);
+  --fs-title: clamp(21px, .85rem + 1vw, 30px);
+  --fs-headline: clamp(34px, 1rem + 3.4vw, 72px);
+  --fs-hero: clamp(40px, 1rem + 5.3vw, 96px);
 
   --lh-body: 1.6;
   --lh-lead: 1.42;
@@ -117,7 +117,7 @@
   --radius: 18px;
   --radius-lg: 28px;
   --radius-pill: 999px;
-  --icon-lg: 22px;            /* arrows in tiles */
+  --icon-lg: 20px;            /* arrows in tiles */
 
   /* ---------- Motion ---------- */
   --ease-settle: cubic-bezier(.22, 1, .36, 1);      /* arrivals: close to a critically damped spring */
