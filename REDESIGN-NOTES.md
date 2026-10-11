@@ -67,7 +67,7 @@ Values are the starting point for `tokens.css`; the build may tune them, and `DE
 **Radii:** 10 (small controls), 18 (tiles, inputs), 28 (large media and stages), pill.
 
 **Materials** (all hand-written CSS, all on the functional layer):
-- `glass-bar` (nav): `backdrop-filter: blur(20px) saturate(170%)`, a 72 % canvas tint, a 1-px inner highlight on the top edge, and a soft shadow only once the page has scrolled.
+- `glass-bar` (nav): `backdrop-filter: blur(20px) saturate(170%)`, a 72 % canvas tint, a 1-px inner highlight on the top edge, and a soft shadow. (The brief stage planned the shadow only after scrolling; as built, the nav groups float from the start, so they always carry it.)
 - `glass-control` (toggles, Contact pill, video controls, honest banner): a smaller blur, a stronger tint, the same light edge; on hover the highlight shifts and the surface brightens; on press it dims and scales to 0.97.
 - Fallbacks: a solid surface under `prefers-reduced-transparency`, without `backdrop-filter` support (`@supports`), and under `prefers-contrast: more` (plus a stronger border). `-webkit-backdrop-filter` is set alongside for WebKit.
 
