@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   pick, esc, lookup, isCurrent, periodLabel, groupTimeline, assignInterludes, skillGroups, softSkills, currentRoles,
-  langFromSearch, withLang, cueIndex, timecode, projectLinkKey, storyParagraphs,
+  langFromSearch, withLang, cueIndex, timecode, logLineStates, projectLinkKey, storyParagraphs,
 } from "../assets/js/logic.mjs";
 
 test("pick returns the language, falls back to nl, passes plain strings through", () => {
@@ -116,6 +116,22 @@ test("cueIndex finds the cue that has started, -1 before the first", () => {
   assert.equal(cueIndex(cues, 3), 1);
   assert.equal(cueIndex(cues, 99), 2);
   assert.equal(cueIndex(undefined, 3), -1);
+});
+
+test("logLineStates: the whole log reads as done before playback and after the end", () => {
+  const cues = [{ at: 0.25 }, { at: 0.75 }, { at: 2 }, { at: 2.3 }];
+  const all = cues.map(() => ({ done: true, now: false }));
+  assert.deepEqual(logLineStates(cues, { started: false, ended: false, time: 0 }), all); // poster / reduced motion
+  assert.deepEqual(logLineStates(cues, { started: true, ended: true, time: 5 }), all);
+});
+
+test("logLineStates: while playing, earlier lines are done and the reached line is current", () => {
+  const cues = [{ at: 0.25 }, { at: 0.75 }, { at: 2 }];
+  assert.deepEqual(logLineStates(cues, { started: true, ended: false, time: 1 }), [
+    { done: true, now: false }, { done: false, now: true }, { done: false, now: false },
+  ]);
+  assert.deepEqual(logLineStates(cues, { started: true, ended: false, time: 0 }).map((l) => l.now), [false, false, false]);
+  assert.deepEqual(logLineStates(undefined, { started: false, ended: false, time: 0 }), []);
 });
 
 test("timecode formats seconds as mm:ss.t", () => {

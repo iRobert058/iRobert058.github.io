@@ -7,7 +7,7 @@
 
 import {
   pick, esc, lookup, assignInterludes, groupTimeline, periodLabel, isCurrent, skillGroups, softSkills, currentRoles,
-  langFromSearch, withLang, cueIndex, timecode, projectLinkKey, storyParagraphs,
+  langFromSearch, withLang, timecode, logLineStates, projectLinkKey, storyParagraphs,
 } from "./logic.mjs";
 
 const page = document.body.dataset.page ?? "home"; // "home" or "project" (the pages in /projecten/<id>/)
@@ -312,11 +312,10 @@ function renderSessionLog() {
 function syncSession() {
   const v = session.el;
   if (!v || !video) return;
-  // Before playback (and under reduced motion) the poster shows the end state, so the whole log applies
-  const reached = session.started ? cueIndex(video.cues, v.currentTime) : (video.cues ?? []).length - 1;
+  const lines = logLineStates(video.cues, { started: session.started, ended: v.ended, time: v.currentTime });
   document.querySelectorAll("#sessionLog li").forEach((li, i) => {
-    li.classList.toggle("is-done", i < reached);
-    li.classList.toggle("is-now", i === reached && session.started && !v.ended);
+    li.classList.toggle("is-done", lines[i].done);
+    li.classList.toggle("is-now", lines[i].now);
   });
   const L = ui[state.lang].hero;
   const mode = v.ended ? "replay" : v.paused ? "play" : "pause";

@@ -123,6 +123,17 @@ export function cueIndex(cues, time) {
   return index;
 }
 
+/**
+ * Per log line: has the recording reached it (`done`), and is it the line playing now (`now`)?
+ * Before playback (and under reduced motion) and after the end the poster shows the final frame, so every line is done.
+ */
+export function logLineStates(cues, { started, ended, time }) {
+  const list = Array.isArray(cues) ? cues : [];
+  if (!started || ended) return list.map(() => ({ done: true, now: false }));
+  const reached = cueIndex(list, time);
+  return list.map((_, i) => ({ done: i < reached, now: i === reached }));
+}
+
 /** Seconds as a session timecode with tenths, like a recording log: 2.3 → "00:02.3", 75 → "01:15.0". */
 export function timecode(seconds) {
   const tenths = Math.max(0, Math.round((Number(seconds) || 0) * 10));
