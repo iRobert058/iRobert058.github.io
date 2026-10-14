@@ -21,7 +21,7 @@ for (const dir of ["data", "content"]) {
 // Strings that were retired on purpose, each with the reason. Anything else that disappears fails the test.
 const COPY_EDIT_08F0158 = "copy and translation edit by Robert in 08f0158";
 const retired = new Map([
-  ["assets/img/project-thesis.svg", "V3.0: the thesis illustration was replaced (the old file stays in assets/img/)"],
+  ["assets/img/project-thesis.svg", "V3.0: the thesis illustration was replaced (old file deleted after V3 shipped)"],
   ["Screenshot van de experimentomgeving", "V3.0: alt text of the replaced thesis illustration"],
   ["Screenshot of the experiment environment", "V3.0: alt text of the replaced thesis illustration"],
   // Copy and translation edits Robert made himself after V3.0
