@@ -7,7 +7,7 @@
 
 import {
   pick, esc, lookup, assignInterludes, groupTimeline, periodLabel, isCurrent, skillGroups, softSkills, currentRoles,
-  langFromSearch, withLang, timecode, logLineStates, projectLinkKey, storyParagraphs,
+  langFromSearch, withLang, timecode, logLineStates, projectLinkKey, storyParagraphs, textList,
 } from "./logic.mjs";
 
 const page = document.body.dataset.page ?? "home"; // "home" or "project" (the pages in /projecten/<id>/)
@@ -136,9 +136,15 @@ function projectVisual(p, L, { lazy = true } = {}) {
     : `<div class="project-visual">${img}</div>`;
 }
 
+// A field with several entries (the thesis findings) becomes a list; one entry stays a plain answer
+const caseAnswer = (value) => {
+  const items = textList(value, state.lang);
+  return items.length > 1 ? `<ul class="case-list">${items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>` : esc(items[0] ?? "");
+};
+
 const projectCase = (p, L) =>
   [[L.label_problem, p.problem], [L.label_role, p.role], [L.label_result, p.result]]
-    .map(([label, text]) => `<div><dt class="label">${esc(label)}</dt><dd>${esc(t(text))}</dd></div>`)
+    .map(([label, value]) => `<div><dt class="label">${esc(label)}</dt><dd>${caseAnswer(value)}</dd></div>`)
     .join("");
 
 const projectTech = (p) => p.tech.map((c) => `<li>${esc(t(c))}</li>`).join("");

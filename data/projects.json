@@ -24,12 +24,22 @@
       "en": "Independently conducted research: literature review, experimental design (within-subjects), building the study environment, data collection and statistical analysis."
     },
     "result": {
-      "nl": "Afsluitend onderzoek van mijn bachelor Information Sciences: experiment met 40 deelnemers, beoordeeld met een 8,5.",
-      "en": "Capstone research for my Information Sciences bachelor's: an experiment with 40 participants, graded 8.5 out of 10."
+      "nl": [
+        "Een veelgebruikt interface-element verplaatsen leidt betrouwbaar tot onbedoelde interacties: 62,5% van de deelnemers klikte minstens één keer mis in de aangepaste interface, tegenover 0% in de standaardinterface (p < 0,001). Dat past bij action slips vanuit routines in het procedureel geheugen.",
+        "De verstoring maakte gebruikers niet trager: de taaktijd verschilde niet significant tussen de condities (p = 0,38, d = 0,04). Automatische verwerking lijkt de snelheid te behouden, ook als die tot fouten leidt.",
+        "Gebruikers merkten de verandering nauwelijks op: slechts 20% zag hem spontaan, 62,5% pas toen ernaar gevraagd werd. Minder aandacht en meer gewoonteklikken hingen samen met meer fouten.",
+        "Afsluitend onderzoek van mijn bachelor Informatiekunde: experiment met 40 deelnemers, beoordeeld met een 8,5."
+      ],
+      "en": [
+        "Moving a frequently used UI element reliably triggers unintended interactions. 62.5% of participants made at least one wrong click in the modified interface, against 0% in the standard interface (p < .001). This fits action slips driven by routines stored in procedural memory.",
+        "The disruption did not make users slower. Task execution time did not differ significantly between conditions (p = .38, d = 0.04). Automatic processing seems to preserve speed even when it produces errors.",
+        "Users were barely aware of the change. Only 20% noticed it spontaneously, rising to 62.5% when asked directly. Lower attention and more habit-clicking were associated with more errors.",
+        "Capstone research for my Information Sciences bachelor's: an experiment with 40 participants, graded 8.5 out of 10."
+      ]
     },
     "tech": ["ShopLab", "Qualtrics", { "nl": "Experimenteel design", "en": "Experimental design" }, { "nl": "Statistische analyse", "en": "Statistical analysis" }, "LaTeX"],
     "cta": {
-      "label": { "nl": "Vraag me naar de resultaten →", "en": "Ask me about the results →" },
+      "label": { "nl": "Praat met me over het onderzoek →", "en": "Talk to me about the research →" },
       "url": "#contact"
     }
   },

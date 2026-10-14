@@ -153,8 +153,10 @@ export function projectLinkKey(project, lang) {
   return hasStory ? "read_more" : "project_page";
 }
 
-/** A project's story as a list of paragraphs (a string or an array, per language). */
-export function storyParagraphs(project, lang) {
-  const story = pick(project?.story, lang);
-  return [].concat(story ?? []).map(String).filter((p) => p.trim());
+/** A bilingual field that may hold one string or several (an array, per language), as a list of non-empty strings. */
+export function textList(value, lang) {
+  return [].concat(pick(value, lang) ?? []).map(String).filter((p) => p.trim());
 }
+
+/** A project's story as a list of paragraphs (a string or an array, per language). */
+export const storyParagraphs = (project, lang) => textList(project?.story, lang);

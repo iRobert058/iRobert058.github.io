@@ -369,6 +369,11 @@ a.project-visual img { transition: transform var(--dur-scale) var(--ease-settle)
 .case { display: grid; gap: clamp(32px, 4vw, 56px); }
 .case div { display: grid; gap: var(--space-3); }
 .case dd { font-size: var(--fs-lead); line-height: var(--lh-lead); text-wrap: pretty; }
+/* Several findings: hairline-ruled entries, the last one (the context line) quieter */
+.case-list { list-style: none; display: grid; }
+.case-list li { padding: var(--space-4) 0; border-top: 1px solid var(--hairline); }
+.case-list li:first-child { padding-top: 0; border-top: 0; }
+.case-list li:last-child { padding-bottom: 0; color: var(--ink-muted); }
 @media (max-width: 860px) {
   .project-body { grid-template-columns: minmax(0, 1fr); }
   .project-side { position: static; }

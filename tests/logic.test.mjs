@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   pick, esc, lookup, isCurrent, periodLabel, groupTimeline, assignInterludes, skillGroups, softSkills, currentRoles,
-  langFromSearch, withLang, cueIndex, timecode, logLineStates, projectLinkKey, storyParagraphs,
+  langFromSearch, withLang, cueIndex, timecode, logLineStates, projectLinkKey, storyParagraphs, textList,
 } from "../assets/js/logic.mjs";
 
 test("pick returns the language, falls back to nl, passes plain strings through", () => {
@@ -154,4 +154,11 @@ test("storyParagraphs returns the story per language as paragraphs", () => {
   assert.deepEqual(storyParagraphs({ story: { nl: ["A", " ", "B"], en: "C" } }, "nl"), ["A", "B"]);
   assert.deepEqual(storyParagraphs({ story: { nl: ["A"], en: "C" } }, "en"), ["C"]);
   assert.deepEqual(storyParagraphs({}, "nl"), []);
+});
+
+test("textList turns one string or a list per language into a list of non-empty strings", () => {
+  assert.deepEqual(textList("One", "en"), ["One"]);
+  assert.deepEqual(textList({ nl: ["Een", " ", "Twee"], en: ["One", "Two"] }, "nl"), ["Een", "Twee"]);
+  assert.deepEqual(textList({ nl: ["Een"] }, "en"), ["Een"]); // missing translation falls back to Dutch
+  assert.deepEqual(textList(undefined, "nl"), []);
 });

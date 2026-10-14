@@ -49,6 +49,9 @@ const retired = new Map([
   ["Three projects that show how I work: empirical research, designing and building an app myself, and organising against a deadline.", COPY_EDIT_08F0158],
   ["Uitzoeken hoe mensen zich echt gedragen, niet hoe we denken dat ze dat doen.", COPY_EDIT_08F0158],
   ["Vier momenten die mijn profiel het best samenvatten.", COPY_EDIT_08F0158],
+  ["Afsluitend onderzoek van mijn bachelor Information Sciences: experiment met 40 deelnemers, beoordeeld met een 8,5.", "V3.1: the thesis result now leads with the findings"],
+  ["Ask me about the results →", "V3.1: the thesis result now leads with the findings"],
+  ["Vraag me naar de resultaten →", "V3.1: the thesis result now leads with the findings"],
 ]);
 
 test("every V2.1 content string still exists in the JSON", () => {
