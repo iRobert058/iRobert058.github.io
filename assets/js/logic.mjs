@@ -123,6 +123,17 @@ export function cueIndex(cues, time) {
   return index;
 }
 
+/**
+ * Per log line: has the recording reached it (`done`), and is it the line playing now (`now`)?
+ * Before playback (and under reduced motion) and after the end the poster shows the final frame, so every line is done.
+ */
+export function logLineStates(cues, { started, ended, time }) {
+  const list = Array.isArray(cues) ? cues : [];
+  if (!started || ended) return list.map(() => ({ done: true, now: false }));
+  const reached = cueIndex(list, time);
+  return list.map((_, i) => ({ done: i < reached, now: i === reached }));
+}
+
 /** Seconds as a session timecode with tenths, like a recording log: 2.3 → "00:02.3", 75 → "01:15.0". */
 export function timecode(seconds) {
   const tenths = Math.max(0, Math.round((Number(seconds) || 0) * 10));
@@ -142,8 +153,22 @@ export function projectLinkKey(project, lang) {
   return hasStory ? "read_more" : "project_page";
 }
 
+/** A bilingual field that may hold one string or several (an array, per language), as a list of non-empty strings. */
+export function textList(value, lang) {
+  return [].concat(pick(value, lang) ?? []).map(String).filter((p) => p.trim());
+}
+
 /** A project's story as a list of paragraphs (a string or an array, per language). */
-export function storyParagraphs(project, lang) {
-  const story = pick(project?.story, lang);
-  return [].concat(story ?? []).map(String).filter((p) => p.trim());
+export const storyParagraphs = (project, lang) => textList(project?.story, lang);
+
+/* ---------- Contact form ---------- */
+
+/**
+ * The content key (under contact.*) of the message for a form field, from its ValidityState, or null when it is valid.
+ * Each field says what is wrong with it, so the visitor never has to guess from a red outline.
+ */
+export function fieldErrorKey(name, validity) {
+  if (!validity || validity.valid) return null;
+  if (name === "email") return validity.valueMissing ? "err_email_missing" : "err_email_invalid";
+  return name === "name" ? "err_name" : "err_message";
 }

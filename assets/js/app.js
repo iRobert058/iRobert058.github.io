@@ -7,7 +7,7 @@
 
 import {
   pick, esc, lookup, assignInterludes, groupTimeline, periodLabel, isCurrent, skillGroups, softSkills, currentRoles,
-  langFromSearch, withLang, cueIndex, timecode, projectLinkKey, storyParagraphs,
+  langFromSearch, withLang, timecode, logLineStates, projectLinkKey, storyParagraphs, textList, fieldErrorKey,
 } from "./logic.mjs";
 
 const page = document.body.dataset.page ?? "home"; // "home" or "project" (the pages in /projecten/<id>/)
@@ -48,6 +48,7 @@ try {
   ui = { nl, en };
 } catch (err) {
   $("#main").classList.remove("is-loading");
+  $("#main").removeAttribute("aria-busy");
   $("#main").insertAdjacentHTML(
     "afterbegin",
     '<p class="load-error">Content could not be loaded. Serve the site through a (local) web server, ' +
@@ -82,21 +83,24 @@ function applyUIStrings() {
 }
 
 /* ---------- Icons: one drawn set, same stroke as the nav icons ---------- */
-const ICONS = { arrow: "M5 12h14M13 6l6 6-6 6", out: "M7 17 17 7M9 7h8v8" };
+const ICONS = { arrow: "M5 12h14M13 6l6 6-6 6", out: "M7 17 17 7M9 7h8v8", down: "M12 5v14M6 13l6 6 6-6" };
 const icon = (name) =>
   `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[name]}" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
 /* ---------- Section renderers ---------- */
+/* The hero's proof strip: four highlights, each linking to where the evidence is on the page */
 function renderHighlights() {
-  $("#highlightsGrid").innerHTML = highlights
+  $("#proofList").innerHTML = highlights
     .map((h) => {
       const external = h.link && h.link.startsWith("http");
-      const inner = `<span class="label">${esc(h.year)}</span>
-        <h3 class="tile-title">${esc(t(h.title))}</h3>
-        <p>${esc(t(h.text))}</p>`;
-      return h.link
-        ? `<a class="tile" href="${esc(h.link)}"${external ? ' target="_blank" rel="noopener"' : ""}>${inner}<span class="tile-arrow">${icon(external ? "out" : "arrow")}</span></a>`
-        : `<div class="tile">${inner}</div>`;
+      const inner = `<span class="when">${esc(h.year)}</span>
+        <span class="proof-title">${esc(t(h.title))}</span>
+        <span class="proof-text">${esc(t(h.text))}</span>`;
+      return `<li>${
+        h.link
+          ? `<a href="${esc(h.link)}"${external ? ' target="_blank" rel="noopener"' : ""}>${inner}<span class="proof-arrow">${icon(external ? "out" : "arrow")}</span></a>`
+          : `<div>${inner}</div>`
+      }</li>`;
     })
     .join("");
 }
@@ -106,19 +110,6 @@ function renderAbout() {
   $("#aboutText").innerHTML = A.paragraphs.map((p) => `<p>${esc(p)}</p>`).join("");
   $("#aboutFacts").innerHTML = (A.facts ?? []).map((f) => `<div><dt class="label">${esc(f.k)}</dt><dd>${esc(f.v)}</dd></div>`).join("");
   $("#portraitImg").src = site.portraitImage;
-}
-
-function renderPillars() {
-  $("#pillarList").innerHTML = ui[state.lang].pillars.items
-    .map(
-      (p, i) => `<li class="pillar">
-        <span class="pillar-no" aria-hidden="true">${i + 1}</span>
-        <h3 class="title">${esc(p.name)}</h3>
-        <p class="pillar-promise">${esc(p.promise)}</p>
-        <p>${esc(p.text)}</p>
-      </li>`
-    )
-    .join("");
 }
 
 const linkAttrs = (url) => (url.startsWith("http") ? ' target="_blank" rel="noopener"' : "");
@@ -136,9 +127,15 @@ function projectVisual(p, L, { lazy = true } = {}) {
     : `<div class="project-visual">${img}</div>`;
 }
 
+// A field with several entries (the thesis findings) becomes a list; one entry stays a plain answer
+const caseAnswer = (value) => {
+  const items = textList(value, state.lang);
+  return items.length > 1 ? `<ul class="case-list">${items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>` : esc(items[0] ?? "");
+};
+
 const projectCase = (p, L) =>
   [[L.label_problem, p.problem], [L.label_role, p.role], [L.label_result, p.result]]
-    .map(([label, text]) => `<div><dt class="label">${esc(label)}</dt><dd>${esc(t(text))}</dd></div>`)
+    .map(([label, value]) => `<div><dt class="label">${esc(label)}</dt><dd>${caseAnswer(value)}</dd></div>`)
     .join("");
 
 const projectTech = (p) => p.tech.map((c) => `<li>${esc(t(c))}</li>`).join("");
@@ -229,7 +226,7 @@ function renderTimeline() {
           <div class="row-main">
             <h3 class="row-title">${esc(t(item.title))}</h3>
             <p class="row-org">${esc(item.org)}</p>
-            <details><summary>${esc(L.details)}</summary><p>${esc(t(item.description))}</p></details>
+            <details><summary>${esc(L.details)}<span class="sr-only">: ${esc(t(item.title))}</span></summary><p>${esc(t(item.description))}</p></details>
           </div>
         </li>`;
       }
@@ -255,16 +252,28 @@ function renderTimeline() {
     .join("");
 }
 
-/* Capabilities grouped under the three pillars; the old percentage bars in skills.json are no longer rendered */
+/* Skills: the three ways of working (pillars in content/*.json), each with its methods and tools from skills.json.
+   A group without a matching pillar still renders, as a column without the pillar text.
+   The old percentage bars in skills.json are no longer rendered. */
 function renderSkills() {
-  const pillars = ui[state.lang].pillars.items;
-  $("#capabilityList").innerHTML = skillGroups(skills)
-    .map((g) => {
-      const index = pillars.findIndex((p) => p.id === g.pillar);
-      const head = index >= 0 ? `<h4 class="cap-head">${esc(pillars[index].name)}</h4>` : "";
-      return `<div class="capability">${head}<ul>${g.items.map((c) => `<li>${esc(t(c))}</li>`).join("")}</ul></div>`;
-    })
-    .join("");
+  const L = ui[state.lang];
+  const groups = skillGroups(skills);
+  const tools = (items) =>
+    items.length
+      ? `<h4 class="label tools-label">${esc(L.skills.tools)}</h4><ul class="tools">${items.map((c) => `<li>${esc(t(c))}</li>`).join("")}</ul>`
+      : "";
+  const columns = L.pillars.items.map((p, i) => {
+    const group = groups.find((g) => g.pillar === p.id);
+    return `<li class="pillar">
+        <span class="pillar-no" aria-hidden="true">${i + 1}</span>
+        <h3 class="title">${esc(p.name)}</h3>
+        <p class="pillar-promise">${esc(p.promise)}</p>
+        <p class="pillar-text">${esc(p.text)}</p>
+        ${tools(group?.items ?? [])}
+      </li>`;
+  });
+  const loose = groups.filter((g) => !L.pillars.items.some((p) => p.id === g.pillar));
+  $("#pillarList").innerHTML = [...columns, ...loose.map((g) => `<li class="pillar">${tools(g.items)}</li>`)].join("");
   $("#softList").innerHTML = softSkills(skills).map((s) => `<li>${esc(t(s))}</li>`).join("");
   $("#languageList").innerHTML = skills.languages
     .map((l) => `<div><dt>${esc(t(l.name))}</dt><dd>${esc(t(l.level))}</dd></div>`)
@@ -284,10 +293,11 @@ function renderCertificates() {
     .join("");
 }
 
+// The CV sits with the socials, so a visitor who has scrolled to the end doesn't have to go back to the hero for it
 function renderSocials() {
-  $("#socialLinks").innerHTML = (site.socials || [])
-    .map((s) => `<li><a class="text-link" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}${icon("out")}</a></li>`)
-    .join("");
+  const cv = site.cvFile ? `<li><a class="text-link" href="${esc(site.cvFile)}" download>${esc(ui[state.lang].contact.cv)}${icon("down")}</a></li>` : "";
+  $("#socialLinks").innerHTML =
+    cv + (site.socials || []).map((s) => `<li><a class="text-link" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}${icon("out")}</a></li>`).join("");
 }
 
 function renderHeroNow() {
@@ -312,11 +322,10 @@ function renderSessionLog() {
 function syncSession() {
   const v = session.el;
   if (!v || !video) return;
-  // Before playback (and under reduced motion) the poster shows the end state, so the whole log applies
-  const reached = session.started ? cueIndex(video.cues, v.currentTime) : (video.cues ?? []).length - 1;
+  const lines = logLineStates(video.cues, { started: session.started, ended: v.ended, time: v.currentTime });
   document.querySelectorAll("#sessionLog li").forEach((li, i) => {
-    li.classList.toggle("is-done", i < reached);
-    li.classList.toggle("is-now", i === reached && session.started && !v.ended);
+    li.classList.toggle("is-done", lines[i].done);
+    li.classList.toggle("is-now", lines[i].now);
   });
   const L = ui[state.lang].hero;
   const mode = v.ended ? "replay" : v.paused ? "play" : "pause";
@@ -421,7 +430,6 @@ function renderAll() {
   } else {
     renderAbout();
     renderHighlights();
-    renderPillars();
     renderProjects();
     renderInterludes();
     renderTimeline();
@@ -430,6 +438,7 @@ function renderAll() {
     renderSocials();
     renderHeroNow();
     renderSessionLog();
+    renderFormMessages();
   }
   renderPrefs();
   observeReveals();
@@ -441,9 +450,23 @@ document.querySelectorAll("[data-lang]").forEach((btn) =>
     state.lang = btn.dataset.lang;
     // Keep the choice in the address (shareable, survives a reload, stored nowhere)
     history.replaceState(null, "", withLang(location.pathname + location.search + location.hash, state.lang));
+    // The other language has different text lengths: keep the section being read at the same spot on screen
+    const anchor = sectionAtTop();
+    const before = anchor?.getBoundingClientRect().top;
     renderAll();
+    if (anchor) window.scrollBy(0, anchor.getBoundingClientRect().top - before);
+    if (panel.classList.contains("open")) setMenu(false, { returnFocus: true }); // choice made: back to the page
   })
 );
+
+// The section (or other top-level block, which re-renders never replace) under the top of the screen
+function sectionAtTop() {
+  const y = (bar.offsetHeight || 0) + 1;
+  return [...document.querySelectorAll("main > *, .pp > *")].find((el) => {
+    const r = el.getBoundingClientRect();
+    return r.top <= y && r.bottom > y;
+  });
+}
 
 $("#themeBtn").addEventListener("click", () => {
   const dark = state.theme ? state.theme === "dark" : darkQuery.matches;
@@ -510,6 +533,27 @@ window.addEventListener(
 );
 bar.addEventListener("focusin", () => bar.classList.remove("tucked"));
 
+/* ---------- Where am I ----------
+   The nav link of the section crossing the middle of the screen gets aria-current, so the long page has a "you are here". */
+const navLinks = [...document.querySelectorAll('.bar-nav a[href^="#"]')];
+if (navLinks.length && "IntersectionObserver" in window) {
+  const byId = new Map(navLinks.map((a) => [a.getAttribute("href").slice(1), a]));
+  const spy = new IntersectionObserver(
+    (entries) =>
+      entries.forEach((e) => {
+        const link = byId.get(e.target.id);
+        if (e.isIntersecting) {
+          navLinks.forEach((a) => a.removeAttribute("aria-current"));
+          link?.setAttribute("aria-current", "location");
+        } else if (link?.hasAttribute("aria-current")) {
+          link.removeAttribute("aria-current"); // e.g. scrolled back up into the hero
+        }
+      }),
+    { rootMargin: "-50% 0px -50% 0px" }
+  );
+  document.querySelectorAll("main > section[id]").forEach((s) => spy.observe(s));
+}
+
 /* ---------- Dark stages ----------
    The dark ground behind projects and contact starts as a rounded, inset panel and widens to full bleed as it
    scrolls into view. Only the ground (a pseudo-element) scales, never the content, and only with the scroll
@@ -526,6 +570,33 @@ function updateStages() {
   }
 }
 
+/* ---------- Contact form messages ----------
+   Messages are stored as content keys (data-err / data-key), so a language switch re-renders them in the new language. */
+const FORM_FIELDS = ["name", "email", "message"];
+const formFields = () => FORM_FIELDS.map((n) => $("#contactForm").elements[n]); // not form.name: that's the form's own name
+
+// Show or clear one field's message; true when the field is valid
+function checkField(f) {
+  const key = fieldErrorKey(f.name, f.validity);
+  f.setAttribute("aria-invalid", String(Boolean(key)));
+  f.dataset.err = key ?? "";
+  $(`#${f.id}-err`).textContent = key ? ui[state.lang].contact[key] : "";
+  return !key;
+}
+
+function setFormStatus(key, kind = "") {
+  const status = $("#formStatus");
+  status.dataset.key = key ?? "";
+  status.className = `form-status${kind ? ` ${kind}` : ""}`;
+  status.textContent = key ? ui[state.lang].contact[key] : "";
+}
+
+function renderFormMessages() {
+  for (const f of formFields()) if (f.dataset.err) $(`#${f.id}-err`).textContent = ui[state.lang].contact[f.dataset.err];
+  const status = $("#formStatus");
+  if (status.dataset.key) status.textContent = ui[state.lang].contact[status.dataset.key];
+}
+
 /* ---------- Home only ---------- */
 function initHome() {
   /* Honest banner */
@@ -534,33 +605,39 @@ function initHome() {
     $("#heroTitle").focus({ preventScroll: true }); // the button is gone; keep focus in the hero instead of losing it
   });
 
-  /* Contact form */
+  /* Contact form: each field says what is wrong with it. A field is checked when the visitor leaves it after
+     typing, and re-checked while they fix it; empty fields are only flagged on submit, so nothing nags early. */
   const form = $("#contactForm");
-  const status = $("#formStatus");
-  form.addEventListener("input", (e) => e.target.removeAttribute("aria-invalid")); // re-checked on the next submit
+  form.addEventListener("focusout", (e) => {
+    const f = e.target;
+    if (FORM_FIELDS.includes(f.name) && (f.value.trim() || f.getAttribute("aria-invalid") === "true")) checkField(f);
+  });
+  form.addEventListener("input", (e) => {
+    if (e.target.getAttribute("aria-invalid") !== "true") return;
+    checkField(e.target);
+    // Every flagged field is fixed: the summary has done its job
+    if ($("#formStatus").dataset.key === "status_invalid" && formFields().every((f) => f.getAttribute("aria-invalid") !== "true")) setFormStatus(null);
+  });
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const L = ui[state.lang].contact;
-    status.className = "form-status";
+    setFormStatus(null);
 
     if (form.elements._gotcha.value) return; // honeypot: bots fill this hidden field, humans never do
 
-    const fields = ["name", "email", "message"].map((n) => form.elements[n]); // not form.name: that's the form's own name
-    fields.forEach((f) => f.setAttribute("aria-invalid", String(!f.validity.valid)));
-    if (!form.checkValidity()) {
-      status.textContent = L.status_invalid;
-      status.classList.add("err");
-      fields.find((f) => !f.validity.valid).focus();
+    const fields = formFields();
+    const invalid = fields.filter((f) => !checkField(f));
+    if (invalid.length) {
+      setFormStatus("status_invalid", "err");
+      invalid[0].focus();
       return;
     }
     if (!site.formEndpoint) {
-      status.textContent = L.status_unconfigured;
-      status.classList.add("err");
+      setFormStatus("status_unconfigured", "err");
       return;
     }
     const submit = form.querySelector("[type=submit]");
     submit.disabled = true;
-    status.textContent = L.status_sending;
+    setFormStatus("status_sending");
     try {
       const res = await fetch(site.formEndpoint, {
         method: "POST",
@@ -569,21 +646,16 @@ function initHome() {
       });
       if (!res.ok) throw new Error(`Form endpoint answered ${res.status}`);
       form.reset();
-      status.textContent = L.status_ok;
-      status.classList.add("ok");
+      setFormStatus("status_ok", "ok");
     } catch (err) {
       console.error(err);
-      status.textContent = L.status_err;
-      status.classList.add("err");
+      setFormStatus("status_err", "err");
     } finally {
       submit.disabled = false;
     }
   });
 
   $("#cvBtn").href = site.cvFile;
-  const github = (site.socials || []).find((s) => s.label === "GitHub");
-  if (github) $("#githubBtn").href = github.url;
-  else $("#githubBtn").remove();
 
   initSession();
 }
@@ -595,5 +667,6 @@ try {
   renderAll();
 } finally {
   $("#main").classList.remove("is-loading"); // also after a render error, which still surfaces in the console
+  $("#main").removeAttribute("aria-busy");
   updateStages();
 }

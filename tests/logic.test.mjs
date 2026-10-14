@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   pick, esc, lookup, isCurrent, periodLabel, groupTimeline, assignInterludes, skillGroups, softSkills, currentRoles,
-  langFromSearch, withLang, cueIndex, timecode, projectLinkKey, storyParagraphs,
+  langFromSearch, withLang, cueIndex, timecode, logLineStates, projectLinkKey, storyParagraphs, textList, fieldErrorKey,
 } from "../assets/js/logic.mjs";
 
 test("pick returns the language, falls back to nl, passes plain strings through", () => {
@@ -118,6 +118,22 @@ test("cueIndex finds the cue that has started, -1 before the first", () => {
   assert.equal(cueIndex(undefined, 3), -1);
 });
 
+test("logLineStates: the whole log reads as done before playback and after the end", () => {
+  const cues = [{ at: 0.25 }, { at: 0.75 }, { at: 2 }, { at: 2.3 }];
+  const all = cues.map(() => ({ done: true, now: false }));
+  assert.deepEqual(logLineStates(cues, { started: false, ended: false, time: 0 }), all); // poster / reduced motion
+  assert.deepEqual(logLineStates(cues, { started: true, ended: true, time: 5 }), all);
+});
+
+test("logLineStates: while playing, earlier lines are done and the reached line is current", () => {
+  const cues = [{ at: 0.25 }, { at: 0.75 }, { at: 2 }];
+  assert.deepEqual(logLineStates(cues, { started: true, ended: false, time: 1 }), [
+    { done: true, now: false }, { done: false, now: true }, { done: false, now: false },
+  ]);
+  assert.deepEqual(logLineStates(cues, { started: true, ended: false, time: 0 }).map((l) => l.now), [false, false, false]);
+  assert.deepEqual(logLineStates(undefined, { started: false, ended: false, time: 0 }), []);
+});
+
 test("timecode formats seconds as mm:ss.t", () => {
   assert.equal(timecode(0.25), "00:00.3");
   assert.equal(timecode(2.3), "00:02.3");
@@ -138,4 +154,20 @@ test("storyParagraphs returns the story per language as paragraphs", () => {
   assert.deepEqual(storyParagraphs({ story: { nl: ["A", " ", "B"], en: "C" } }, "nl"), ["A", "B"]);
   assert.deepEqual(storyParagraphs({ story: { nl: ["A"], en: "C" } }, "en"), ["C"]);
   assert.deepEqual(storyParagraphs({}, "nl"), []);
+});
+
+test("textList turns one string or a list per language into a list of non-empty strings", () => {
+  assert.deepEqual(textList("One", "en"), ["One"]);
+  assert.deepEqual(textList({ nl: ["Een", " ", "Twee"], en: ["One", "Two"] }, "nl"), ["Een", "Twee"]);
+  assert.deepEqual(textList({ nl: ["Een"] }, "en"), ["Een"]); // missing translation falls back to Dutch
+  assert.deepEqual(textList(undefined, "nl"), []);
+});
+
+test("fieldErrorKey names what is wrong per field, null when valid", () => {
+  assert.equal(fieldErrorKey("name", { valid: true }), null);
+  assert.equal(fieldErrorKey("name", { valid: false, valueMissing: true }), "err_name");
+  assert.equal(fieldErrorKey("email", { valid: false, valueMissing: true }), "err_email_missing");
+  assert.equal(fieldErrorKey("email", { valid: false, typeMismatch: true }), "err_email_invalid");
+  assert.equal(fieldErrorKey("message", { valid: false, valueMissing: true }), "err_message");
+  assert.equal(fieldErrorKey("email", undefined), null);
 });

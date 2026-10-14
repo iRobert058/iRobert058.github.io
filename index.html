@@ -58,10 +58,14 @@
 </head>
 <body>
 <noscript>
+  <!-- Without JavaScript: who this is, the CV and the socials. Hardcoded, like the meta tags above. -->
   <div class="noscript">
-    <p lang="nl">Deze pagina heeft JavaScript nodig om de content te tonen. Je kunt me ondertussen vinden op
+    <h1>Robert Karzijn</h1>
+    <p lang="nl">Masterstudent Human-Computer Interaction aan de Universiteit Utrecht, op zoek naar een stage in HCI en UX-onderzoek.
+      De rest van deze pagina heeft JavaScript nodig. Mijn <a href="assets/cv-robert-karzijn.pdf" download>CV (PDF)</a> werkt zonder, en je vindt me op
       <a href="https://www.linkedin.com/in/robert-karzijn-260696279">LinkedIn</a> en <a href="https://github.com/iRobert058">GitHub</a>.</p>
-    <p lang="en">This page needs JavaScript to show its content. In the meantime, find me on
+    <p lang="en">Master's student in Human-Computer Interaction at Utrecht University, looking for an internship in HCI and UX research.
+      The rest of this page needs JavaScript. My <a href="assets/cv-robert-karzijn.pdf" download>CV (PDF)</a> works without it, and you can find me on
       <a href="https://www.linkedin.com/in/robert-karzijn-260696279">LinkedIn</a> and <a href="https://github.com/iRobert058">GitHub</a>.</p>
   </div>
 </noscript>
@@ -74,8 +78,8 @@
     <div class="bar-panel" id="barPanel">
       <nav class="bar-nav" data-t-aria="nav.label">
         <ul class="bar-group">
-          <li><a href="#over" data-t="nav.about"></a></li>
           <li><a href="#projecten" data-t="nav.projects"></a></li>
+          <li><a href="#over" data-t="nav.about"></a></li>
           <li><a href="#ervaring" data-t="nav.experience"></a></li>
           <li><a href="#vaardigheden" data-t="nav.skills"></a></li>
         </ul>
@@ -97,19 +101,18 @@
   </div>
 </header>
 
-<main id="main" tabindex="-1" class="is-loading">
+<main id="main" tabindex="-1" class="is-loading" aria-busy="true">
 
 <section class="hero" aria-labelledby="heroTitle">
   <div class="wrap">
-    <p class="label hero-field" data-t="hero.eyebrow"></p>
     <h1 class="hero-title" id="heroTitle" tabindex="-1" data-t-html="hero.title"></h1>
+    <p class="hero-seeking"><span class="hero-seeking-dot" aria-hidden="true"></span><span data-t="hero.seeking"></span></p>
     <div class="hero-body">
       <div class="hero-copy">
         <p class="lead" data-t="hero.sub"></p>
         <div class="actions">
           <a class="btn btn-primary" href="#projecten" data-t="hero.cta_projects"></a>
           <a class="btn btn-quiet" id="cvBtn" download data-t="hero.cta_cv"></a>
-          <a class="btn btn-quiet" id="githubBtn" target="_blank" rel="noopener" data-t="hero.cta_github"></a>
         </div>
       </div>
       <!-- What Robert is doing right now: built from the timeline entries that run until "present" -->
@@ -118,6 +121,9 @@
         <ul id="heroNow"></ul>
       </aside>
     </div>
+
+    <!-- Four highlights from data/highlights.json as a strip of proof under the hero -->
+    <ul class="proof" id="proofList" data-t-aria="highlights.title"></ul>
 
     <div class="honest glass" id="honest">
       <span class="honest-dot" aria-hidden="true"></span>
@@ -139,11 +145,24 @@
   </figure>
 </section>
 
-<section id="over" class="sect" aria-labelledby="aboutTitle">
+<section id="projecten" class="sect stage" aria-labelledby="projectsTitle">
+  <div class="stage-inner">
+    <div class="wrap">
+      <header class="sect-head">
+        <h2 class="headline" id="projectsTitle"><span data-t="projects.name"></span> <span class="headline-rest" data-t="projects.title"></span></h2>
+        <p class="lead" data-t="projects.lead"></p>
+      </header>
+      <ol class="projects" id="projectsList"></ol>
+    </div>
+  </div>
+</section>
+
+<div class="interlude-slot" data-slot="0" hidden></div>
+
+<section id="over" class="sect sect-alt" aria-labelledby="aboutTitle">
   <div class="wrap">
     <header class="sect-head">
-      <p class="label" data-t="about.eyebrow"></p>
-      <h2 class="headline" id="aboutTitle" data-t="about.title"></h2>
+      <h2 class="headline" id="aboutTitle"><span data-t="about.name"></span> <span class="headline-rest" data-t="about.title"></span></h2>
     </header>
     <div class="about">
       <figure class="portrait reveal-photo">
@@ -157,47 +176,10 @@
   </div>
 </section>
 
-<section id="hoogtepunten" class="sect sect-alt" aria-labelledby="highlightsTitle">
-  <div class="wrap">
-    <header class="sect-head">
-      <p class="label" data-t="highlights.eyebrow"></p>
-      <h2 class="headline" id="highlightsTitle" data-t="highlights.title"></h2>
-      <p class="lead" data-t="highlights.lead"></p>
-    </header>
-    <div class="bento" id="highlightsGrid"></div>
-  </div>
-</section>
-
-<section id="werkwijze" class="sect" aria-labelledby="pillarsTitle">
-  <div class="wrap">
-    <header class="sect-head">
-      <p class="label" data-t="pillars.eyebrow"></p>
-      <h2 class="headline" id="pillarsTitle" data-t="pillars.title"></h2>
-    </header>
-    <ol class="pillars" id="pillarList"></ol>
-  </div>
-</section>
-
-<div class="interlude-slot" data-slot="0" hidden></div>
-
-<section id="projecten" class="sect stage" aria-labelledby="projectsTitle">
-  <div class="stage-inner">
-    <div class="wrap">
-      <header class="sect-head">
-        <p class="label" data-t="projects.eyebrow"></p>
-        <h2 class="headline" id="projectsTitle" data-t="projects.title"></h2>
-        <p class="lead" data-t="projects.lead"></p>
-      </header>
-      <ol class="projects" id="projectsList"></ol>
-    </div>
-  </div>
-</section>
-
 <section id="ervaring" class="sect" aria-labelledby="experienceTitle">
   <div class="wrap">
     <header class="sect-head">
-      <p class="label" data-t="experience.eyebrow"></p>
-      <h2 class="headline" id="experienceTitle" data-t="experience.title"></h2>
+      <h2 class="headline" id="experienceTitle"><span data-t="experience.name"></span> <span class="headline-rest" data-t="experience.title"></span></h2>
       <p class="lead" data-t="experience.lead"></p>
     </header>
     <ol class="ledger" id="timelineList"></ol>
@@ -209,11 +191,9 @@
 <section id="vaardigheden" class="sect sect-alt" aria-labelledby="skillsTitle">
   <div class="wrap">
     <header class="sect-head">
-      <p class="label" data-t="skills.eyebrow"></p>
-      <h2 class="headline" id="skillsTitle" data-t="skills.title"></h2>
+      <h2 class="headline" id="skillsTitle"><span data-t="skills.name"></span> <span class="headline-rest" data-t="pillars.title"></span></h2>
     </header>
-    <h3 class="sub-label label" data-t="skills.tools"></h3>
-    <div class="capabilities" id="capabilityList"></div>
+    <ol class="pillars" id="pillarList"></ol>
     <div class="skills-extra">
       <div>
         <h3 class="sub-label label" data-t="skills.soft"></h3>
@@ -230,7 +210,6 @@
 <section id="certificaten" class="sect hidden" aria-labelledby="certTitle">
   <div class="wrap">
     <header class="sect-head">
-      <p class="label" data-t="certificates.eyebrow"></p>
       <h2 class="headline" id="certTitle" data-t="certificates.title"></h2>
     </header>
     <ul class="ledger" id="certList"></ul>
@@ -243,10 +222,10 @@
   <div class="stage-inner">
     <div class="wrap contact">
       <div class="contact-intro">
-        <p class="label" data-t="contact.eyebrow"></p>
         <h2 class="headline" id="contactTitle" data-t="contact.title"></h2>
         <p class="lead" data-t="contact.lead"></p>
         <ul class="socials" id="socialLinks"></ul>
+        <p class="contact-privacy"><span data-t="contact.privacy"></span> <a href="privacy.html" data-keep-lang data-t="contact.privacy_link"></a></p>
       </div>
       <form class="contact-form" id="contactForm" novalidate>
         <div class="hp-field" aria-hidden="true">
@@ -255,15 +234,18 @@
         </div>
         <div class="field">
           <label for="cf-name" data-t="contact.name"></label>
-          <input id="cf-name" name="name" type="text" required autocomplete="name">
+          <input id="cf-name" name="name" type="text" required autocomplete="name" aria-describedby="cf-name-err">
+          <p class="field-error" id="cf-name-err"></p>
         </div>
         <div class="field">
           <label for="cf-email" data-t="contact.email"></label>
-          <input id="cf-email" name="email" type="email" required autocomplete="email">
+          <input id="cf-email" name="email" type="email" required autocomplete="email" aria-describedby="cf-email-err">
+          <p class="field-error" id="cf-email-err"></p>
         </div>
         <div class="field">
           <label for="cf-message" data-t="contact.message"></label>
-          <textarea id="cf-message" name="message" rows="6" required></textarea>
+          <textarea id="cf-message" name="message" rows="6" required aria-describedby="cf-message-err"></textarea>
+          <p class="field-error" id="cf-message-err"></p>
         </div>
         <button class="btn btn-primary" type="submit" data-t="contact.send"></button>
         <p class="form-status" id="formStatus" role="status"></p>

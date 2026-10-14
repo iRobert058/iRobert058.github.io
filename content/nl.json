@@ -12,30 +12,27 @@
     "lang_group": "Taal"
   },
   "hero": {
-    "eyebrow": "Human-Computer Interaction · UX-onderzoek",
     "title": "Goede techniek begint <br>met een goed <em>gesprek</em>.",
-    "sub": "Masterstudent Human-Computer Interaction, met een bachelor Informatiekunde van Universiteit Utrecht. Ik voel me het meest thuis tussen partijen: stakeholders en gebruikers begrijpen, eisen vertalen naar ontwerp en mensen meenemen in het verhaal van onderzoek en sprekersacquisitie tot de winkelvloer bij Amac.",
+    "seeking": "Op zoek naar een stage in HCI en UX-onderzoek",
+    "sub": "Ik ben Robert Karzijn, masterstudent Human-Computer Interaction aan de Universiteit Utrecht. Ik voel me het meest thuis tussen partijen: gebruikers en stakeholders begrijpen, eisen vertalen naar ontwerp en mensen meenemen.",
     "cta_projects": "Bekijk mijn projecten",
     "cta_cv": "Download CV (PDF)",
-    "cta_github": "Bekijk mijn GitHub ↗",
-    "honest": "Deze site gebruikt geen cookies, geen trackers en geen deceptive patterns en dat laatste is toevallig mijn onderzoeksgebied ;).",
+    "honest": "Deze site gebruikt geen cookies, geen trackers en geen deceptive patterns, en dat laatste is toevallig mijn onderzoeksgebied ;).",
     "honest_btn": "Duidelijk",
     "video_pause": "Pauzeer intro",
     "video_play": "Speel intro af",
     "video_replay": "Intro opnieuw afspelen",
     "now": "Nu",
-    "session_title": "Intrologs"
+    "session_title": "Sessielog · intro"
   },
   "highlights": {
-    "eyebrow": "Hoogtepunten",
-    "title": "In het kort",
-    "lead": "Vier van mijn hoogtepunten."
+    "title": "In het kort"
   },
   "about": {
-    "eyebrow": "Over mij",
+    "name": "Over mij.",
     "title": "Waar mens en technologie elkaar raken",
     "paragraphs": [
-      "Ik ben Robert Karzijn. Mijn interesse ligt op het snijvlak van mens en technologie: hoe mensen interfaces gebruiken, welke gewoontes daarbij ontstaan en hoe ontwerp daar (zowel bewust of onbewust) op inspeelt. In mijn bachelorthesis onderzocht ik experimenteel hoe webshops procedureel geheugen kunnen verstoren door interface elementen te verplaatsen.",
+      "Ik ben Robert Karzijn. Mijn interesse ligt op het snijvlak van mens en technologie: hoe mensen interfaces gebruiken, welke gewoontes daarbij ontstaan en hoe ontwerp daar (zowel bewust als onbewust) op inspeelt. In mijn bachelorthesis onderzocht ik experimenteel hoe webshops procedureel geheugen kunnen verstoren door interface-elementen te verplaatsen.",
       "Naast mijn studie werk ik parttime bij Amac in Apeldoorn, waar ik in twee jaar doorgroeide van Junior Sales Associate naar Senior Sales Associate met dagverantwoordelijkheid en in verschillende filialen meedraaide om kennis en ervaring te delen. Die combinatie houdt me scherp: theorie over gebruikersgedrag in de collegezaal en parttime echte gebruikers tegenover me op de winkelvloer.",
       "Momenteel volg ik de master Human-Computer Interaction. Buiten studie en werk: fotografie, sporten en af en toe een avond gamen."
     ],
@@ -64,7 +61,7 @@
     ]
   },
   "projects": {
-    "eyebrow": "Uitgelichte projecten",
+    "name": "Projecten.",
     "title": "Van onderzoek tot podium",
     "lead": "Drie projecten die laten zien hoe ik werk: empirisch onderzoek, zelf een app ontwerpen en bouwen, en organiseren met een deadline.",
     "label_problem": "Probleem",
@@ -76,7 +73,7 @@
     "project_page": "Projectpagina"
   },
   "experience": {
-    "eyebrow": "Ervaring & opleiding",
+    "name": "Ervaring & opleiding.",
     "title": "Mijn route tot nu toe",
     "lead": "Studie en werk lopen bij mij bewust parallel: onderzoek en theorie aan de universiteit, verantwoordelijkheid in de praktijk.",
     "present": "heden",
@@ -91,28 +88,32 @@
     "group_steps": "Doorgroei"
   },
   "skills": {
-    "eyebrow": "Vaardigheden",
-    "title": "Waar ik goed in ben",
+    "name": "Vaardigheden.",
     "tools": "Methoden & tools",
     "languages": "Talen",
     "soft": "Persoonlijke vaardigheden"
   },
   "certificates": {
-    "eyebrow": "Certificaten",
     "title": "Certificaten & erkenningen"
   },
   "contact": {
-    "eyebrow": "Contact",
     "title": "Neem contact op",
     "lead": "Interesse in een samenwerking, stage of project? Stuur een bericht via het formulier; ik reageer doorgaans binnen een paar dagen.",
     "name": "Naam",
     "email": "E-mailadres",
     "message": "Bericht",
+    "privacy": "Je naam, e-mailadres en bericht gaan via Formspree naar mijn inbox; ik gebruik ze alleen om je te antwoorden.",
+    "privacy_link": "Lees de privacyverklaring",
+    "cv": "CV (PDF)",
     "send": "Verstuur bericht",
     "status_sending": "Versturen…",
     "status_ok": "Bedankt voor je bericht. Ik neem zo snel mogelijk contact met je op.",
     "status_err": "Versturen is niet gelukt. Probeer het later opnieuw of stuur een bericht via LinkedIn.",
-    "status_invalid": "Vul alle velden in met een geldig e-mailadres.",
+    "status_invalid": "Controleer de gemarkeerde velden.",
+    "err_name": "Vul je naam in.",
+    "err_email_missing": "Vul je e-mailadres in, zodat ik je kan antwoorden.",
+    "err_email_invalid": "Dit lijkt geen geldig e-mailadres. Controleer bijvoorbeeld de @ en de punt.",
+    "err_message": "Schrijf een bericht.",
     "status_unconfigured": "Het formulier is nog niet gekoppeld aan een verwerkingsdienst. Zie de README voor de configuratie."
   },
   "footer": {
@@ -120,7 +121,6 @@
     "note": "Gebouwd zonder frameworks, cookies of deceptive patterns."
   },
   "pillars": {
-    "eyebrow": "Werkwijze",
     "title": "Onderzoeken, ontwerpen, organiseren",
     "items": [
       {
