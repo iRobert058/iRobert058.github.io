@@ -20,7 +20,7 @@
       { "at": 0.25, "label": { "nl": "cursor verschijnt", "en": "cursor appears" } },
       { "at": 0.75, "label": { "nl": "tekstvak komt naar voren", "en": "draws a text box" } },
       { "at": 2.0, "label": { "nl": "punt wordt geplaatst", "en": "places a period" } },
-      { "at": 2.3, "label": { "nl": "typt een rol", "en": "types a banner" } }
+      { "at": 2.3, "label": { "nl": "typt een rol", "en": "types a role" } }
     ]
   }
 }

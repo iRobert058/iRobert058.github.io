@@ -10,29 +10,29 @@
   },
   {
     "year": "2026",
-    "title": { "nl": "BSc Information Sciences", "en": "BSc Information Sciences" },
+    "title": { "nl": "BSc Informatiekunde", "en": "BSc Information Sciences" },
     "text": {
-      "nl": "Bachelordiploma behaald aan de Universiteit Utrecht, hoofdtrack: Mens-technologie interactie. 2de track: Informatiesystemen. ",
-      "en": "Bachelor's degree obtained at Utrecht University, Main track: Human-Technology Interaction. Second track: Information Systems."
+      "nl": "Behaald aan de Universiteit Utrecht, met Mens-technologie-interactie als hoofdtrack en Informatiesystemen als tweede track.",
+      "en": "Obtained at Utrecht University, with Human-Technology Interaction as main track and Information Systems as second track."
     },
     "link": "#ervaring"
   },
   {
-    "year": "2024 - 2026",
+    "year": "2024–2026",
     "title": { "nl": "Doorgroei bij Amac", "en": "Growth at Amac" },
     "text": {
-      "nl": "In twee jaar van Junior Verkoopmedewerker naar Senior Verkoopmedewerker met dagverantwoording.",
+      "nl": "In twee jaar van Junior Verkoopmedewerker naar Senior Verkoopmedewerker met dagverantwoordelijkheid.",
       "en": "From Junior Sales Associate to Senior Sales Associate and Daily Operations Lead in two years."
     },
     "link": "#ervaring"
   },
   {
-    "year": "2026",
+    "year": "2025–2026",
     "title": { "nl": "exec(ut) 2026", "en": "exec(ut) 2026" },
     "text": {
       "nl": "Verantwoordelijk voor het sprekersprogramma van de studenten-techconferentie in Utrecht.",
       "en": "Responsible for the speaker programme of the student tech conference in Utrecht."
     },
-    "link": "https://execut.nl"
+    "link": "#projecten"
   }
 ]

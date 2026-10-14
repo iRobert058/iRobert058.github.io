@@ -12,13 +12,12 @@
     "lang_group": "Language"
   },
   "hero": {
-    "eyebrow": "Human-Computer Interaction · UX Research",
     "title": "Good technology starts <br>with a good <em>conversation</em>.",
-    "sub": "Master's student in Human-Computer Interaction, with a bachelor's degree in Information Sciences at Utrecht University. I'm at my best in between the lines: understanding stakeholders and users, translating requirements into design and bringing people along together along the way. From research and speaker acquisition to the shop floor at Amac.",
+    "seeking": "Looking for an internship in HCI and UX research",
+    "sub": "I'm Robert Karzijn, a master's student in Human-Computer Interaction at Utrecht University. I'm at my best between parties: understanding users and stakeholders, translating requirements into design and bringing people along.",
     "cta_projects": "View my projects",
     "cta_cv": "Download CV (PDF)",
-    "cta_github": "View my GitHub ↗",
-    "honest": "This site uses no cookies, no trackers and no deceptive patterns, the last one happens to be my field of research ;).",
+    "honest": "This site uses no cookies, no trackers and no deceptive patterns, and that last one happens to be my field of research ;).",
     "honest_btn": "Got it",
     "video_pause": "Pause",
     "video_play": "Play",
@@ -27,12 +26,10 @@
     "session_title": "Session log · intro"
   },
   "highlights": {
-    "eyebrow": "Highlights",
-    "title": "At a glance",
-    "lead": "Four moments that best summarise my profile."
+    "title": "At a glance"
   },
   "about": {
-    "eyebrow": "About me",
+    "name": "About me.",
     "title": "Where people and technology meet",
     "paragraphs": [
       "I'm Robert Karzijn. My interest is at the intersection of people and technology: how people use interfaces, which habits form along the way and how design (deliberately or not) plays into that. In my bachelor's thesis I experimentally investigated how web shops can disrupt procedural memory by relocating interface elements.",
@@ -64,7 +61,7 @@
     ]
   },
   "projects": {
-    "eyebrow": "Featured projects",
+    "name": "Projects.",
     "title": "From research to the stage",
     "lead": "Three projects that show how I work: empirical research, designing and building an app myself and organising against a deadline.",
     "label_problem": "Problem",
@@ -76,7 +73,7 @@
     "project_page": "Project page"
   },
   "experience": {
-    "eyebrow": "Experience & education",
+    "name": "Experience & education.",
     "title": "My route so far",
     "lead": "Study and work deliberately run in parallel for me: research and theory at university, responsibility in practice.",
     "present": "present",
@@ -85,24 +82,21 @@
       "education": "Education",
       "extracurricular": "Extracurricular"
     },
-    "now": "Current",
+    "now": "Now",
     "details": "Details",
     "group_details": "What I did in each role",
     "group_steps": "Progression"
   },
   "skills": {
-    "eyebrow": "Skills",
-    "title": "What I'm good at",
+    "name": "Skills.",
     "tools": "Methods & tools",
     "languages": "Languages",
     "soft": "Soft skills"
   },
   "certificates": {
-    "eyebrow": "Certificates",
     "title": "Certificates & recognition"
   },
   "contact": {
-    "eyebrow": "Contact",
     "title": "Get in touch",
     "lead": "Interested in working together, an internship or a project? Send a message through the form; I usually reply within a few days.",
     "name": "Name",
@@ -120,7 +114,6 @@
     "note": "Built without frameworks, cookies or deceptive patterns."
   },
   "pillars": {
-    "eyebrow": "How I work",
     "title": "Research, design, organise",
     "items": [
       {

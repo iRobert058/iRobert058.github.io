@@ -87,16 +87,19 @@ const icon = (name) =>
   `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[name]}" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
 /* ---------- Section renderers ---------- */
+/* The hero's proof strip: four highlights, each linking to where the evidence is on the page */
 function renderHighlights() {
-  $("#highlightsGrid").innerHTML = highlights
+  $("#proofList").innerHTML = highlights
     .map((h) => {
       const external = h.link && h.link.startsWith("http");
-      const inner = `<span class="label">${esc(h.year)}</span>
-        <h3 class="tile-title">${esc(t(h.title))}</h3>
-        <p>${esc(t(h.text))}</p>`;
-      return h.link
-        ? `<a class="tile" href="${esc(h.link)}"${external ? ' target="_blank" rel="noopener"' : ""}>${inner}<span class="tile-arrow">${icon(external ? "out" : "arrow")}</span></a>`
-        : `<div class="tile">${inner}</div>`;
+      const inner = `<span class="when">${esc(h.year)}</span>
+        <span class="proof-title">${esc(t(h.title))}</span>
+        <span class="proof-text">${esc(t(h.text))}</span>`;
+      return `<li>${
+        h.link
+          ? `<a href="${esc(h.link)}"${external ? ' target="_blank" rel="noopener"' : ""}>${inner}<span class="proof-arrow">${icon(external ? "out" : "arrow")}</span></a>`
+          : `<div>${inner}</div>`
+      }</li>`;
     })
     .join("");
 }
@@ -106,19 +109,6 @@ function renderAbout() {
   $("#aboutText").innerHTML = A.paragraphs.map((p) => `<p>${esc(p)}</p>`).join("");
   $("#aboutFacts").innerHTML = (A.facts ?? []).map((f) => `<div><dt class="label">${esc(f.k)}</dt><dd>${esc(f.v)}</dd></div>`).join("");
   $("#portraitImg").src = site.portraitImage;
-}
-
-function renderPillars() {
-  $("#pillarList").innerHTML = ui[state.lang].pillars.items
-    .map(
-      (p, i) => `<li class="pillar">
-        <span class="pillar-no" aria-hidden="true">${i + 1}</span>
-        <h3 class="title">${esc(p.name)}</h3>
-        <p class="pillar-promise">${esc(p.promise)}</p>
-        <p>${esc(p.text)}</p>
-      </li>`
-    )
-    .join("");
 }
 
 const linkAttrs = (url) => (url.startsWith("http") ? ' target="_blank" rel="noopener"' : "");
@@ -261,16 +251,28 @@ function renderTimeline() {
     .join("");
 }
 
-/* Capabilities grouped under the three pillars; the old percentage bars in skills.json are no longer rendered */
+/* Skills: the three ways of working (pillars in content/*.json), each with its methods and tools from skills.json.
+   A group without a matching pillar still renders, as a column without the pillar text.
+   The old percentage bars in skills.json are no longer rendered. */
 function renderSkills() {
-  const pillars = ui[state.lang].pillars.items;
-  $("#capabilityList").innerHTML = skillGroups(skills)
-    .map((g) => {
-      const index = pillars.findIndex((p) => p.id === g.pillar);
-      const head = index >= 0 ? `<h4 class="cap-head">${esc(pillars[index].name)}</h4>` : "";
-      return `<div class="capability">${head}<ul>${g.items.map((c) => `<li>${esc(t(c))}</li>`).join("")}</ul></div>`;
-    })
-    .join("");
+  const L = ui[state.lang];
+  const groups = skillGroups(skills);
+  const tools = (items) =>
+    items.length
+      ? `<h4 class="label tools-label">${esc(L.skills.tools)}</h4><ul class="tools">${items.map((c) => `<li>${esc(t(c))}</li>`).join("")}</ul>`
+      : "";
+  const columns = L.pillars.items.map((p, i) => {
+    const group = groups.find((g) => g.pillar === p.id);
+    return `<li class="pillar">
+        <span class="pillar-no" aria-hidden="true">${i + 1}</span>
+        <h3 class="title">${esc(p.name)}</h3>
+        <p class="pillar-promise">${esc(p.promise)}</p>
+        <p class="pillar-text">${esc(p.text)}</p>
+        ${tools(group?.items ?? [])}
+      </li>`;
+  });
+  const loose = groups.filter((g) => !L.pillars.items.some((p) => p.id === g.pillar));
+  $("#pillarList").innerHTML = [...columns, ...loose.map((g) => `<li class="pillar">${tools(g.items)}</li>`)].join("");
   $("#softList").innerHTML = softSkills(skills).map((s) => `<li>${esc(t(s))}</li>`).join("");
   $("#languageList").innerHTML = skills.languages
     .map((l) => `<div><dt>${esc(t(l.name))}</dt><dd>${esc(t(l.level))}</dd></div>`)
@@ -426,7 +428,6 @@ function renderAll() {
   } else {
     renderAbout();
     renderHighlights();
-    renderPillars();
     renderProjects();
     renderInterludes();
     renderTimeline();
@@ -586,9 +587,6 @@ function initHome() {
   });
 
   $("#cvBtn").href = site.cvFile;
-  const github = (site.socials || []).find((s) => s.label === "GitHub");
-  if (github) $("#githubBtn").href = github.url;
-  else $("#githubBtn").remove();
 
   initSession();
 }
