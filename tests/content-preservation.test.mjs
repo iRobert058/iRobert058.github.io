@@ -79,6 +79,12 @@ const retired = new Map([
   ["What I'm good at", "V3.1 critique: hero, highlights strip, two-tone headlines, Werkwijze merged into Skills, copy fixes"],
   ["Please fill in all fields with a valid email address.", "V3.1: the form names what is wrong per field"],
   ["Vul alle velden in met een geldig e-mailadres.", "V3.1: the form names what is wrong per field"],
+  ["A fully booked speaker programme for the 2026 edition - from first email to speaker on stage.", "V3.1: en dashes instead of hyphens; exec(ut) image alt describes the photo"],
+  ["Een gevuld sprekersprogramma voor de editie van 2026 - van eerste mail tot spreker op het podium.", "V3.1: en dashes instead of hyphens; exec(ut) image alt describes the photo"],
+  ["MobiPad - je iPhone als gamecontroller", "V3.1: en dashes instead of hyphens; exec(ut) image alt describes the photo"],
+  ["MobiPad - your iPhone as a game controller", "V3.1: en dashes instead of hyphens; exec(ut) image alt describes the photo"],
+  ["exec(ut) 2026 - speakers & programme", "V3.1: en dashes instead of hyphens; exec(ut) image alt describes the photo"],
+  ["exec(ut) 2026 - sprekers & programma", "V3.1: en dashes instead of hyphens; exec(ut) image alt describes the photo"],
 ]);
 
 test("every V2.1 content string still exists in the JSON", () => {

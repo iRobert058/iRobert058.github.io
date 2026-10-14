@@ -48,8 +48,8 @@
     "page": "projecten/mobipad/",
     "tag": { "nl": "Eigen project · 2026", "en": "Personal project · 2026" },
     "title": {
-      "nl": "MobiPad - je iPhone als gamecontroller",
-      "en": "MobiPad - your iPhone as a game controller"
+      "nl": "MobiPad – je iPhone als gamecontroller",
+      "en": "MobiPad – your iPhone as a game controller"
     },
     "intro": {
       "nl": "MobiPad maakt van een iPhone een draadloze gamecontroller voor emulators op de Mac. Tot vier telefoons kunnen tegelijk meespelen, elk als eigen speler.",
@@ -86,8 +86,8 @@
     "page": "projecten/execut/",
     "tag": { "nl": "Studenten-techconferentie · 2025–2026", "en": "Student tech conference · 2025–2026" },
     "title": {
-      "nl": "exec(ut) 2026 - sprekers & programma",
-      "en": "exec(ut) 2026 - speakers & programme"
+      "nl": "exec(ut) 2026 – sprekers & programma",
+      "en": "exec(ut) 2026 – speakers & programme"
     },
     "intro": {
       "nl": "Voor exec(ut), de studenten-ICT-conferentie in Utrecht, was ik binnen de commissie verantwoordelijk voor het werven en begeleiden van sprekers.",
@@ -96,7 +96,7 @@
     "image": "assets/img/project-execut.webp",
     "imageWidth": 1600,
     "imageHeight": 814,
-    "imageAlt": { "nl": "exec(ut) 2026 - sprekers & programma", "en": "exec(ut) 2026 - speakers & programme" },
+    "imageAlt": { "nl": "Een spreker op het podium van exec(ut), voor een volle zaal studenten in oranje licht.", "en": "A speaker on the exec(ut) stage, in front of a full hall of students in orange light." },
     "problem": {
       "nl": "Een conferentie staat of valt met het programma: interessante sprekers vinden, overtuigen en begeleiden en ook nog binnen de tijd en het budget van een studentencommissie.",
       "en": "A conference stands or falls with its programme: finding, convincing and supporting interesting speakers and also within the time and budget of a student committee."
@@ -106,8 +106,8 @@
       "en": "Scouting and approaching speakers, maintaining relationships, coordinating arrangements and contributing to the planning and execution of the event."
     },
     "result": {
-      "nl": "Een gevuld sprekersprogramma voor de editie van 2026 - van eerste mail tot spreker op het podium.",
-      "en": "A fully booked speaker programme for the 2026 edition - from first email to speaker on stage."
+      "nl": "Een gevuld sprekersprogramma voor de editie van 2026, van eerste mail tot spreker op het podium.",
+      "en": "A fully booked speaker programme for the 2026 edition, from first email to speaker on stage."
     },
     "tech": [{ "nl": "Acquisitie", "en": "Acquisition" }, { "nl": "Relatiebeheer", "en": "Relationship management" }, { "nl": "Planning", "en": "Planning" }, "Events"],
     "cta": {
