@@ -160,3 +160,15 @@ export function textList(value, lang) {
 
 /** A project's story as a list of paragraphs (a string or an array, per language). */
 export const storyParagraphs = (project, lang) => textList(project?.story, lang);
+
+/* ---------- Contact form ---------- */
+
+/**
+ * The content key (under contact.*) of the message for a form field, from its ValidityState, or null when it is valid.
+ * Each field says what is wrong with it, so the visitor never has to guess from a red outline.
+ */
+export function fieldErrorKey(name, validity) {
+  if (!validity || validity.valid) return null;
+  if (name === "email") return validity.valueMissing ? "err_email_missing" : "err_email_invalid";
+  return name === "name" ? "err_name" : "err_message";
+}

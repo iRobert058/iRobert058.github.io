@@ -77,6 +77,8 @@ const retired = new Map([
   ["Waar ik goed in ben", "V3.1 critique: hero, highlights strip, two-tone headlines, Werkwijze merged into Skills, copy fixes"],
   ["Werkwijze", "V3.1 critique: hero, highlights strip, two-tone headlines, Werkwijze merged into Skills, copy fixes"],
   ["What I'm good at", "V3.1 critique: hero, highlights strip, two-tone headlines, Werkwijze merged into Skills, copy fixes"],
+  ["Please fill in all fields with a valid email address.", "V3.1: the form names what is wrong per field"],
+  ["Vul alle velden in met een geldig e-mailadres.", "V3.1: the form names what is wrong per field"],
 ]);
 
 test("every V2.1 content string still exists in the JSON", () => {

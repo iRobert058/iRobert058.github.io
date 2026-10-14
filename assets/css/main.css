@@ -481,7 +481,9 @@ details p, .roles { color: var(--ink-muted); padding: var(--space-2) 0 var(--spa
 .contact { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(40px, 7vw, 112px); align-items: start; }
 .contact-intro { display: grid; gap: var(--space-4); }
 .contact-intro .headline { max-width: 10ch; }
-.socials { list-style: none; display: flex; gap: var(--space-5); margin-top: var(--space-4); }
+.socials { list-style: none; display: flex; flex-wrap: wrap; gap: 0 var(--space-5); margin-top: var(--space-4); }
+.contact-privacy { font-size: var(--fs-small); color: var(--ink-muted); max-width: 46ch; }
+.contact-privacy a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); font-weight: 600; }
 .contact-form { display: grid; gap: var(--space-4); }
 .field { display: grid; gap: var(--space-2); }
 .field label { font-size: var(--fs-small); font-weight: 600; }
@@ -494,6 +496,8 @@ details p, .roles { color: var(--ink-muted); padding: var(--space-2) 0 var(--spa
 .field input:hover, .field textarea:hover { border-color: var(--ink-muted); }
 .field input:focus-visible, .field textarea:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent); }
 .field [aria-invalid="true"] { border-color: var(--err); }
+.field-error { font-size: var(--fs-small); font-weight: 600; line-height: 1.4; color: var(--err); }
+.field-error:empty { display: none; }
 .contact-form .btn { justify-self: start; min-height: 50px; padding: 0 var(--space-6); }
 .form-status { min-height: 1.6em; font-size: var(--fs-small); }
 .form-status.ok { color: var(--ok); }

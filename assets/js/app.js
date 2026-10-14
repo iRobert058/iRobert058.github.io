@@ -7,7 +7,7 @@
 
 import {
   pick, esc, lookup, assignInterludes, groupTimeline, periodLabel, isCurrent, skillGroups, softSkills, currentRoles,
-  langFromSearch, withLang, timecode, logLineStates, projectLinkKey, storyParagraphs, textList,
+  langFromSearch, withLang, timecode, logLineStates, projectLinkKey, storyParagraphs, textList, fieldErrorKey,
 } from "./logic.mjs";
 
 const page = document.body.dataset.page ?? "home"; // "home" or "project" (the pages in /projecten/<id>/)
@@ -82,7 +82,7 @@ function applyUIStrings() {
 }
 
 /* ---------- Icons: one drawn set, same stroke as the nav icons ---------- */
-const ICONS = { arrow: "M5 12h14M13 6l6 6-6 6", out: "M7 17 17 7M9 7h8v8" };
+const ICONS = { arrow: "M5 12h14M13 6l6 6-6 6", out: "M7 17 17 7M9 7h8v8", down: "M12 5v14M6 13l6 6 6-6" };
 const icon = (name) =>
   `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[name]}" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
@@ -292,10 +292,11 @@ function renderCertificates() {
     .join("");
 }
 
+// The CV sits with the socials, so a visitor who has scrolled to the end doesn't have to go back to the hero for it
 function renderSocials() {
-  $("#socialLinks").innerHTML = (site.socials || [])
-    .map((s) => `<li><a class="text-link" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}${icon("out")}</a></li>`)
-    .join("");
+  const cv = site.cvFile ? `<li><a class="text-link" href="${esc(site.cvFile)}" download>${esc(ui[state.lang].contact.cv)}${icon("down")}</a></li>` : "";
+  $("#socialLinks").innerHTML =
+    cv + (site.socials || []).map((s) => `<li><a class="text-link" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}${icon("out")}</a></li>`).join("");
 }
 
 function renderHeroNow() {
@@ -436,6 +437,7 @@ function renderAll() {
     renderSocials();
     renderHeroNow();
     renderSessionLog();
+    renderFormMessages();
   }
   renderPrefs();
   observeReveals();
@@ -532,6 +534,33 @@ function updateStages() {
   }
 }
 
+/* ---------- Contact form messages ----------
+   Messages are stored as content keys (data-err / data-key), so a language switch re-renders them in the new language. */
+const FORM_FIELDS = ["name", "email", "message"];
+const formFields = () => FORM_FIELDS.map((n) => $("#contactForm").elements[n]); // not form.name: that's the form's own name
+
+// Show or clear one field's message; true when the field is valid
+function checkField(f) {
+  const key = fieldErrorKey(f.name, f.validity);
+  f.setAttribute("aria-invalid", String(Boolean(key)));
+  f.dataset.err = key ?? "";
+  $(`#${f.id}-err`).textContent = key ? ui[state.lang].contact[key] : "";
+  return !key;
+}
+
+function setFormStatus(key, kind = "") {
+  const status = $("#formStatus");
+  status.dataset.key = key ?? "";
+  status.className = `form-status${kind ? ` ${kind}` : ""}`;
+  status.textContent = key ? ui[state.lang].contact[key] : "";
+}
+
+function renderFormMessages() {
+  for (const f of formFields()) if (f.dataset.err) $(`#${f.id}-err`).textContent = ui[state.lang].contact[f.dataset.err];
+  const status = $("#formStatus");
+  if (status.dataset.key) status.textContent = ui[state.lang].contact[status.dataset.key];
+}
+
 /* ---------- Home only ---------- */
 function initHome() {
   /* Honest banner */
@@ -540,33 +569,39 @@ function initHome() {
     $("#heroTitle").focus({ preventScroll: true }); // the button is gone; keep focus in the hero instead of losing it
   });
 
-  /* Contact form */
+  /* Contact form: each field says what is wrong with it. A field is checked when the visitor leaves it after
+     typing, and re-checked while they fix it; empty fields are only flagged on submit, so nothing nags early. */
   const form = $("#contactForm");
-  const status = $("#formStatus");
-  form.addEventListener("input", (e) => e.target.removeAttribute("aria-invalid")); // re-checked on the next submit
+  form.addEventListener("focusout", (e) => {
+    const f = e.target;
+    if (FORM_FIELDS.includes(f.name) && (f.value.trim() || f.getAttribute("aria-invalid") === "true")) checkField(f);
+  });
+  form.addEventListener("input", (e) => {
+    if (e.target.getAttribute("aria-invalid") !== "true") return;
+    checkField(e.target);
+    // Every flagged field is fixed: the summary has done its job
+    if ($("#formStatus").dataset.key === "status_invalid" && formFields().every((f) => f.getAttribute("aria-invalid") !== "true")) setFormStatus(null);
+  });
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const L = ui[state.lang].contact;
-    status.className = "form-status";
+    setFormStatus(null);
 
     if (form.elements._gotcha.value) return; // honeypot: bots fill this hidden field, humans never do
 
-    const fields = ["name", "email", "message"].map((n) => form.elements[n]); // not form.name: that's the form's own name
-    fields.forEach((f) => f.setAttribute("aria-invalid", String(!f.validity.valid)));
-    if (!form.checkValidity()) {
-      status.textContent = L.status_invalid;
-      status.classList.add("err");
-      fields.find((f) => !f.validity.valid).focus();
+    const fields = formFields();
+    const invalid = fields.filter((f) => !checkField(f));
+    if (invalid.length) {
+      setFormStatus("status_invalid", "err");
+      invalid[0].focus();
       return;
     }
     if (!site.formEndpoint) {
-      status.textContent = L.status_unconfigured;
-      status.classList.add("err");
+      setFormStatus("status_unconfigured", "err");
       return;
     }
     const submit = form.querySelector("[type=submit]");
     submit.disabled = true;
-    status.textContent = L.status_sending;
+    setFormStatus("status_sending");
     try {
       const res = await fetch(site.formEndpoint, {
         method: "POST",
@@ -575,12 +610,10 @@ function initHome() {
       });
       if (!res.ok) throw new Error(`Form endpoint answered ${res.status}`);
       form.reset();
-      status.textContent = L.status_ok;
-      status.classList.add("ok");
+      setFormStatus("status_ok", "ok");
     } catch (err) {
       console.error(err);
-      status.textContent = L.status_err;
-      status.classList.add("err");
+      setFormStatus("status_err", "err");
     } finally {
       submit.disabled = false;
     }

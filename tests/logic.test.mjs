@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   pick, esc, lookup, isCurrent, periodLabel, groupTimeline, assignInterludes, skillGroups, softSkills, currentRoles,
-  langFromSearch, withLang, cueIndex, timecode, logLineStates, projectLinkKey, storyParagraphs, textList,
+  langFromSearch, withLang, cueIndex, timecode, logLineStates, projectLinkKey, storyParagraphs, textList, fieldErrorKey,
 } from "../assets/js/logic.mjs";
 
 test("pick returns the language, falls back to nl, passes plain strings through", () => {
@@ -161,4 +161,13 @@ test("textList turns one string or a list per language into a list of non-empty 
   assert.deepEqual(textList({ nl: ["Een", " ", "Twee"], en: ["One", "Two"] }, "nl"), ["Een", "Twee"]);
   assert.deepEqual(textList({ nl: ["Een"] }, "en"), ["Een"]); // missing translation falls back to Dutch
   assert.deepEqual(textList(undefined, "nl"), []);
+});
+
+test("fieldErrorKey names what is wrong per field, null when valid", () => {
+  assert.equal(fieldErrorKey("name", { valid: true }), null);
+  assert.equal(fieldErrorKey("name", { valid: false, valueMissing: true }), "err_name");
+  assert.equal(fieldErrorKey("email", { valid: false, valueMissing: true }), "err_email_missing");
+  assert.equal(fieldErrorKey("email", { valid: false, typeMismatch: true }), "err_email_invalid");
+  assert.equal(fieldErrorKey("message", { valid: false, valueMissing: true }), "err_message");
+  assert.equal(fieldErrorKey("email", undefined), null);
 });
