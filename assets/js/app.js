@@ -48,6 +48,7 @@ try {
   ui = { nl, en };
 } catch (err) {
   $("#main").classList.remove("is-loading");
+  $("#main").removeAttribute("aria-busy");
   $("#main").insertAdjacentHTML(
     "afterbegin",
     '<p class="load-error">Content could not be loaded. Serve the site through a (local) web server, ' +
@@ -225,7 +226,7 @@ function renderTimeline() {
           <div class="row-main">
             <h3 class="row-title">${esc(t(item.title))}</h3>
             <p class="row-org">${esc(item.org)}</p>
-            <details><summary>${esc(L.details)}</summary><p>${esc(t(item.description))}</p></details>
+            <details><summary>${esc(L.details)}<span class="sr-only">: ${esc(t(item.title))}</span></summary><p>${esc(t(item.description))}</p></details>
           </div>
         </li>`;
       }
@@ -449,9 +450,23 @@ document.querySelectorAll("[data-lang]").forEach((btn) =>
     state.lang = btn.dataset.lang;
     // Keep the choice in the address (shareable, survives a reload, stored nowhere)
     history.replaceState(null, "", withLang(location.pathname + location.search + location.hash, state.lang));
+    // The other language has different text lengths: keep the section being read at the same spot on screen
+    const anchor = sectionAtTop();
+    const before = anchor?.getBoundingClientRect().top;
     renderAll();
+    if (anchor) window.scrollBy(0, anchor.getBoundingClientRect().top - before);
+    if (panel.classList.contains("open")) setMenu(false, { returnFocus: true }); // choice made: back to the page
   })
 );
+
+// The section (or other top-level block, which re-renders never replace) under the top of the screen
+function sectionAtTop() {
+  const y = (bar.offsetHeight || 0) + 1;
+  return [...document.querySelectorAll("main > *, .pp > *")].find((el) => {
+    const r = el.getBoundingClientRect();
+    return r.top <= y && r.bottom > y;
+  });
+}
 
 $("#themeBtn").addEventListener("click", () => {
   const dark = state.theme ? state.theme === "dark" : darkQuery.matches;
@@ -517,6 +532,27 @@ window.addEventListener(
   { passive: true }
 );
 bar.addEventListener("focusin", () => bar.classList.remove("tucked"));
+
+/* ---------- Where am I ----------
+   The nav link of the section crossing the middle of the screen gets aria-current, so the long page has a "you are here". */
+const navLinks = [...document.querySelectorAll('.bar-nav a[href^="#"]')];
+if (navLinks.length && "IntersectionObserver" in window) {
+  const byId = new Map(navLinks.map((a) => [a.getAttribute("href").slice(1), a]));
+  const spy = new IntersectionObserver(
+    (entries) =>
+      entries.forEach((e) => {
+        const link = byId.get(e.target.id);
+        if (e.isIntersecting) {
+          navLinks.forEach((a) => a.removeAttribute("aria-current"));
+          link?.setAttribute("aria-current", "location");
+        } else if (link?.hasAttribute("aria-current")) {
+          link.removeAttribute("aria-current"); // e.g. scrolled back up into the hero
+        }
+      }),
+    { rootMargin: "-50% 0px -50% 0px" }
+  );
+  document.querySelectorAll("main > section[id]").forEach((s) => spy.observe(s));
+}
 
 /* ---------- Dark stages ----------
    The dark ground behind projects and contact starts as a rounded, inset panel and widens to full bleed as it
@@ -631,5 +667,6 @@ try {
   renderAll();
 } finally {
   $("#main").classList.remove("is-loading"); // also after a render error, which still surfaces in the console
+  $("#main").removeAttribute("aria-busy");
   updateStages();
 }

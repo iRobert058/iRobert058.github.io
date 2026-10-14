@@ -16,8 +16,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
 input, textarea { font: inherit; color: inherit; caret-color: var(--accent); }
 :focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 3px; border-radius: 4px; }
 main:focus, h1:focus { outline: none; } /* focused only as skip-link / dismissal targets */
-/* Until app.js has rendered once: appear in one go instead of shifting, and keep the footer below the fold meanwhile */
+/* Until app.js has rendered once: appear in one go instead of shifting, and keep the footer below the fold meanwhile.
+   On a slow connection a thin bar shows that something is coming (only after half a second, so fast loads never see it). */
 main.is-loading { visibility: hidden; min-height: 100svh; }
+main.is-loading::before {
+  content: ""; visibility: visible; position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60;
+  background: var(--accent-strong); transform-origin: left;
+  animation: load-bar 1.4s var(--ease-settle) .5s infinite both;
+}
+@keyframes load-bar { from { transform: scaleX(0); } to { transform: scaleX(1); opacity: .2; } }
 
 .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
 .hidden, [hidden] { display: none !important; } /* components that set display must still hide */
@@ -34,6 +41,7 @@ main.is-loading { visibility: hidden; min-height: 100svh; }
 .skip-link:focus { transform: none; }
 .load-error { padding: var(--space-10) var(--gutter); text-align: center; }
 .noscript { max-width: 60ch; margin: 0 auto; padding: var(--space-8) var(--gutter); }
+.noscript h1 { font-family: var(--font-display); font-size: var(--fs-headline); font-weight: 650; letter-spacing: var(--track-headline); line-height: 1.02; margin-bottom: var(--space-5); }
 .noscript p + p { margin-top: var(--space-4); color: var(--ink-muted); }
 
 /* ---------- Type roles ---------- */
@@ -45,9 +53,9 @@ main.is-loading { visibility: hidden; min-height: 100svh; }
   font-family: var(--font-display); font-size: var(--fs-headline); font-weight: 650;
   letter-spacing: var(--track-headline); line-height: 1.02; text-wrap: balance; max-width: 16ch;
 }
-/* Two-tone section headline: the section's plain name in ink, its line in muted ink (no label above the heading) */
-.headline:has(.headline-rest) { max-width: 19ch; }
-.headline-rest { color: var(--ink-muted); }
+/* Two-tone section headline: the section's plain name in ink, its line beneath in muted ink (no label above the heading) */
+.headline:has(.headline-rest) { max-width: 18ch; }
+.headline-rest { display: block; color: var(--ink-muted); }
 .title {
   font-family: var(--font-display); font-size: var(--fs-title); font-weight: 600;
   letter-spacing: var(--track-title); line-height: var(--lh-title); text-wrap: balance;
@@ -135,6 +143,7 @@ a.glass:active, button.glass:active { transform: scale(.97); }
   transition: background-color var(--dur-state);
 }
 .bar-nav a:hover { background: var(--glass-highlight); }
+.bar-nav a[aria-current] { background: var(--glass-highlight); box-shadow: inset 0 0 0 1px var(--hairline-strong); }
 .prefs { display: flex; align-items: center; gap: var(--space-2); }
 .seg { display: inline-flex; padding: 3px; height: 44px; border-radius: var(--radius-pill); align-items: center; }
 .seg button {
@@ -176,6 +185,8 @@ a.glass:active, button.glass:active { transform: scale(.97); }
   .bar-nav a { height: 48px; font-size: var(--fs-lead); font-family: var(--font-display); font-weight: 600; padding: 0 var(--space-3); }
   .prefs { justify-content: space-between; padding-top: var(--space-3); border-top: 1px solid var(--hairline); }
   .prefs .glass { box-shadow: inset 0 0 0 1px var(--hairline); background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .prefs .seg { height: 50px; }
+  .prefs .seg button { height: 44px; min-width: 52px; }
 }
 @media (max-width: 370px) { .wordmark > span:last-child { display: none; } .wordmark { padding-right: 6px; } }
 
@@ -255,7 +266,7 @@ a.glass:active, button.glass:active { transform: scale(.97); }
 .honest-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
 .honest p { font-size: var(--fs-small); line-height: 1.4; }
 .honest-btn {
-  flex: none; min-height: 36px; padding: 0 var(--space-4); border-radius: var(--radius-pill); border: 0;
+  flex: none; min-height: 44px; padding: 0 var(--space-4); border-radius: var(--radius-pill); border: 0;
   background: var(--ink); color: var(--canvas); font-size: var(--fs-label); font-weight: 600;
 }
 
@@ -507,7 +518,8 @@ details p, .roles { color: var(--ink-muted); padding: var(--space-2) 0 var(--spa
 
 /* ---------- Footer ---------- */
 .foot { padding: var(--space-7) 0 var(--space-8); font-size: var(--fs-small); color: var(--ink-muted); }
-.foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3); }
+.foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3); }
+.foot a { display: inline-flex; align-items: center; min-height: 44px; }
 
 /* ---------- Project pages ---------- */
 .pp { padding: calc(var(--nav-h) + clamp(40px, 7vw, 96px)) 0 var(--section-pad); }
